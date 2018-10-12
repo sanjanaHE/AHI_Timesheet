@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import {baseUrl} from './../../contants';
 export function addDepartment(formData) {
   console.log("IN ADD DEPT ",formData);
   let data = {
@@ -12,7 +12,7 @@ export function addDepartment(formData) {
     return (dispatch) => {
       axios({
         method: 'post',
-        url: 'http://localhost:6090/ahits/rest/departments/',
+        url: `${baseUrl}ahits/rest/departments/`,
         data
       })
         .then((response) => {
@@ -41,10 +41,10 @@ export function removeDepartment(id) {
 function getDepartmentsApi(dispatch){
   axios({
     method: 'get',
-    url: 'http://localhost:6090/ahits/rest/departments/all'
+    url: `${baseUrl}ahits/rest/departments/all`
   })
     .then((response) => {
-      console.log("getting departmnets ", response.data)
+      // console.log("getting departmnets ", response.data)
       dispatch({
         type: 'GET_DEPARTMENTS_SUCCESS',
         data: response.data
@@ -62,10 +62,10 @@ export function getUsers(){
   return (dispatch) => {
   axios({
     method: 'get',
-    url: 'http://localhost:6090/ahits/rest/user/users'
+    url: `${baseUrl}ahits/rest/user/users`
   })
     .then((response) => {
-      console.log("getting users ", response.data)
+      // console.log("getting users ", response.data)
       dispatch({
         type: 'GET_USERS_SUCCESS',
         data: response.data
@@ -78,7 +78,7 @@ export function deleteDepartment(id){
   return (dispatch) => {
   axios({
     method: 'get',
-    url: 'http://localhost:6090/ahits/rest/departments/delete?departmentIds=' + id,
+    url: `${baseUrl}ahits/rest/departments/delete?departmentIds=${id}`,
   })
     .then((response) => {
       console.log("deleting department ", response.data)

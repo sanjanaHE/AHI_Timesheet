@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 // TODO: Move Actions based on each component
-import * as DepartmentActionCreators from '../../actions/actions'
+import * as DepartmentActionCreators from './departmentAction'
 
 import EnhancedTable from './../Table/Table'
 import Button from '@material-ui/core/Button';

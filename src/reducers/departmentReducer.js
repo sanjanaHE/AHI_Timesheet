@@ -13,7 +13,7 @@ let initialData = []
 const initialState = {"data": initialData, "hasError": false}
 function transformDataReceivedFromServer(data) {
   let initialData = []
-  console.log("transformDataReceivedFromServer   ",data)
+  // console.log("transformDataReceivedFromServer   ",data)
   data.map(element => {
     initialData.push(createData(element.departmentId, 
       element.departmentName, 

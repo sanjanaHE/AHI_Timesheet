@@ -1,5 +1,7 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as ActionCreators from './projectAction'
 import EnhancedTable from './../Table/Table'
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
@@ -11,11 +13,17 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+
 
 class Project extends React.Component {
-    createData(ProjectName, description, headedBy) {
-        this.counter += 1;
-        return { id: this.counter, ProjectName, description, headedBy };
+    componentDidMount(){
+        // Fetch Data for Department
+        this.props.actions.getProjects();
+        this.props.actions.getUsers();
     }
     handleClickOpen = () => {
         this.setState({ open: true});
@@ -39,13 +47,7 @@ class Project extends React.Component {
         this.setState({isEditDialog : true})
     }
     handleDelete = (rowData) => {
-        let notDeletedArr = [];
-        this.state.data.map(eachData => {
-            if(rowData.id != eachData.id){
-                notDeletedArr.push(eachData);
-            }
-            this.setState({data : notDeletedArr})
-        })
+        this.props.actions.deleteProject(rowData.projectId)
     }
     handleValidation(){
         let fields = this.state.fields;
@@ -67,27 +69,16 @@ class Project extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         if (this.state.isEditDialog) {
-            let editArr = [];
-            this.state.data.map(eachData => {
-                if (eachData.id == this.state.fields.id) {
-                    editArr.push(this.state.fields);
-                }
-                else {
-                    editArr.push(eachData);
-                }
-            })
-            this.setState({ data: editArr });
-            this.setState({ open: false });
+            this.props.actions.addProject(this.state.fields)
         } else {
-            // console.log("department added with state ",this.state);
-
-            console.log(this.state.fields)
-            this.setState({
-                data: [...this.state.data, this.createData(this.state.fields.ProjectName, this.state.fields.description, this.state.fields.headedBy)]
-            })
+            let fields = this.state.fields;
+            fields.departmentId = null;
+            this.setState({fields})
+            this.props.actions.addProject(this.state.fields)
+            }
             this.setState({ open: false });
         }
-     }
+     
     constructor(props) {
         super(props);
         this.counter = 0;
@@ -102,21 +93,16 @@ class Project extends React.Component {
             order: 'asc',
             orderBy: 'headedBy',
             selected: [],
-            data: [
-                this.createData('DevOPs', 'DevOPs', 'AH'),
-                this.createData('Web development', 'Web development', 'AH'),
-                this.createData('Andriod', 'Andriod', 'AH'),
-                this.createData('Database management', 'Database management', 'AH')
-            ],
+            data: [],
             page: 0,
             rowsPerPage: 5,
             title: 'Project',
             rows: [
-                { id: 'index', numeric: false, disablePadding: true, label: 'Index' },
-                { id: 'ProjectName', numeric: false, disablePadding: true, label: 'Project Name' },
-                { id: 'description', numeric: false, disablePadding: true, label: 'Description' },
-                { id: 'headedBy', numeric: false, disablePadding: true, label: 'Headed By' },
-                { id: 'actions', numeric: false, disablePadding: true, label: 'Actions' }
+                { id: 'index', numeric: false, disablePadding: false, label: 'Index' },
+                { id: 'projectName', numeric: false, disablePadding: false, label: 'Project Name' },
+                { id: 'projectDescription', numeric: false, disablePadding: false, label: 'Description' },
+                { id: 'headedBy', numeric: false, disablePadding: false, label: 'Headed By' },
+                { id: 'actions', numeric: false, disablePadding: false, label: 'Actions' }
 
             ]
             
@@ -125,6 +111,7 @@ class Project extends React.Component {
 
     render() {
         const { data, title, order, orderBy, selected, rowsPerPage, page, rows } = this.state;
+        const { employees } = this.props;
         return (
             <div style={{margin : "2%"}}>
                 <h1>Projects</h1>
@@ -140,24 +127,21 @@ class Project extends React.Component {
                 { this.state.isEditDialog ? 'Edit ' : 'Add '}
                  Project</DialogTitle>
                 <DialogContent>
-                    {/* <DialogContentText>
-                    To subscribe to this website, please enter your email address here. We will send
-                    updates occasionally.
-                    </DialogContentText> */}
+                
                     <form  noValidate autoComplete="off" onSubmit={this.handleSubmit}>
 
                     <TextField
                     required
                     autoFocus
                     margin="dense"
-                    id="ProjectName"
+                    id="projectName"
                     label="Project name"
                     type="text"
                     fullWidth
                     // value= {this.state.ProjectName}
                     // onChange={this.handleProjectNameChange}
-                    onChange={this.handleChange.bind(this, "ProjectName")} 
-                    value={this.state.fields["ProjectName"]}
+                    onChange={this.handleChange.bind(this, "projectName")} 
+                    value={this.state.fields["projectName"]}
                     error={this.state.errors.ProjectNameError}
                     helperText={this.state.errors.errorRequired}
                     />
@@ -165,27 +149,34 @@ class Project extends React.Component {
                     <TextField
                     required
                     margin="dense"
-                    id="description"
+                    id="projectDescription"
                     label="Description"
                     type="text"
                     fullWidth
                     // value= {this.state.description}
                     // onChange={this.handleDescriptionChange}
-                    onChange={this.handleChange.bind(this, "description")} 
-                    value={this.state.fields["description"]}
+                    onChange={this.handleChange.bind(this, "projectDescription")} 
+                    value={this.state.fields["projectDescription"]}
                     />
-                    <TextField
-                    required
-                    margin="dense"
-                    id="headedBy"
-                    label="Headed by"
-                    type="text"
-                    fullWidth
-                    // value= {this.state.headedBy}
-                    // onChange={this.handleHeadedByChange}
-                    onChange={this.handleChange.bind(this, "headedBy")} 
-                    value={this.state.fields["headedBy"]}
-                    />
+                  <FormControl fullWidth required>
+                                <InputLabel htmlFor="headedByUserId">Headed By</InputLabel>
+                                <Select
+                                    inputProps={{
+                                        name: 'headedByUserId',
+                                        id: 'headedByUserId',
+                                    }}
+                                    onChange={this.handleChange.bind(this, "headedByUserId")}
+                                    value={this.state.fields["headedByUserId"]}
+                                >
+                                    <MenuItem disabled value="select" selected>
+                                        <em>Select</em>
+                                    </MenuItem>
+                                    {employees.data.map(employee => {
+                                            return <MenuItem key={employee.id} value={employee.id}>{employee.firstName} {employee.lastName}</MenuItem>
+                                        })
+                                    }
+                                </Select>
+                    </FormControl>
                     </form>
                 </DialogContent>
                 <DialogActions>
@@ -201,7 +192,7 @@ class Project extends React.Component {
                     order={order}
                     orderBy={orderBy}
                     selected={selected}
-                    data={data}
+                    data={this.props.projects.data}
                     page={page}
                     rowsPerPage={rowsPerPage}
                     rows={rows}
@@ -214,4 +205,16 @@ class Project extends React.Component {
 
 }
 
-export default Project;
+function mapStateToProps(state){
+    return {
+        projects: state.projects,
+        employees : state.employees
+    }
+}
+
+function mapDispatchToProps(dispatch){
+    return {
+        actions: bindActionCreators({...ActionCreators}, dispatch)
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Project);
