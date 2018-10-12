@@ -295,7 +295,7 @@ class EnhancedTable extends React.Component {
                       {Object.keys(n).map(m => {
                         if (columns.includes(m)){
                           return(
-                            <TableCell>{n[m]}</TableCell>
+                            <TableCell >{n[m]}</TableCell>
                             )
                         }
                         else {

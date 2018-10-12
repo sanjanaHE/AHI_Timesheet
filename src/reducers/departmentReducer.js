@@ -1,7 +1,5 @@
-// let counter = 0;
 function createData(departmentId, departmentName, description, headedBy, headedByUserId) {
-  // counter += 1;
-  // return { id: counter ,departmentName, description, headedBy };
+  //using params same as in api input
   return {departmentId, departmentName, description, headedBy ,headedByUserId};
 }
 

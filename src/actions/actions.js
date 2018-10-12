@@ -57,41 +57,6 @@ export function getDepartments() {
   }
 }
 
-export function login(data){
-  console.log("in login action ", data)
-  // let creds = new FormData();
-
-  // creds.append('username', data.username);
-  // creds.append('password', data.password);
-  // return (dispatch) => {
-  //   axios({
-  //     method: 'post',
-  //     url: 'http://localhost:6090/ahits/login',
-  //     creds
-  //   })
-    
-      // .then((response) => {
-      //   console.log("LOGIN POST ", response.data)
-      //   dispatch({
-      //     type: 'LOGIN_SUCCESS',
-      //     data: response.data
-      //   })
-      // });
-      const newdata = {
-        username : data.username,
-        password :  data.password
-      }
-      return (dispatch) => {
-      axios.post('http://localhost:6090/ahits/login',{newdata}).then(response => {
-        console.log(response);
-           dispatch({
-          type: 'LOGIN_SUCCESS',
-          data: response.data
-        })
-    })
-  }
-  
-}
 
 export function getUsers(){
   return (dispatch) => {

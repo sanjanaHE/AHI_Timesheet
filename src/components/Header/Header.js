@@ -75,7 +75,7 @@ class ButtonAppBar extends React.Component {
                 </Typography>
                         <Menu
                             id="simple-menu"
-                            anchorEl={anchorE2}
+                            anchorE2={anchorE2}
                             open={Boolean(anchorE2)}
                             onClose={this.handleCloseMyAh}
                             style={{ color: 'white' }}>

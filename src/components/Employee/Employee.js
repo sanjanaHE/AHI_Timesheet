@@ -1,4 +1,10 @@
 import React from 'react';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+
+// TODO: Move Actions based on each component
+import * as ActionCreators from './employeeAction';
+import * as LoginActionCreators from './../Login/loginAction'
 import EnhancedTable from './../Table/Table'
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
@@ -13,19 +19,24 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 
 class Employee extends React.Component {
-    createData(employeeId, firstName, lastName, dob, designation, joiningDate, role, supervisor, location) {
-
-        this.counter += 1;
-        return { id: this.counter, employeeId, firstName, lastName, dob, designation, joiningDate, role, supervisor, location };
+    componentDidMount() {
+        this.props.actions.getEmployees();
+        this.props.login_actions.getLoggedUser();
     }
     handleClickOpen = () => {
         this.setState({ open: true });
         var fields = { ... this.state.fields };
-        fields.departmentName = "";
-        fields.description = "";
-        fields.headedBy = "";
+        fields.id = "";
+        fields.firstName = "";
+        fields.lastName = "";
+        fields.dob = "";
+        fields.designation = "";
+        fields.joiningDate = "";
+        fields.role = "";
+        fields.supervisorId = "";
+        fields.location = "";
         this.setState({ fields });
-        this.setState({isEditDialog : false});
+        this.setState({ isEditDialog: false });
     };
 
     handleClose = () => {
@@ -33,99 +44,83 @@ class Employee extends React.Component {
     };
     handleEdit = (rowData) => {
 
-        console.log("DATA", rowData)
+        console.log("EDIT USER DATA", rowData)
         this.setState({ fields: rowData })
         this.setState({ open: true });
         this.setState({ isEditDialog: true })
     }
-    handleDelete = (rowData) => {
-        let notDeletedArr = [];
-        this.state.data.map(eachData => {
-            if (rowData.id != eachData.id) {
-                notDeletedArr.push(eachData);
-            }
-            this.setState({ data: notDeletedArr })
-        })
-    }
+    // handleDelete = (rowData) => {
+    //     this.props.actions.deleteEmployee(rowData.id)
+    // }
     handleChange = (field, e) => {
         let fields = this.state.fields;
         fields[field] = e.target.value;
         this.setState({ fields });
     }
     handleSubmit = (event) => {
-        //Make a network call somewhere
         event.preventDefault();
         if (this.state.isEditDialog) {
-            let editArr = [];
-            this.state.data.map(eachData => {
-                if (eachData.id == this.state.fields.id) {
-                    editArr.push(this.state.fields);
-                }
-                else {
-                    editArr.push(eachData);
-                }
-            })
-            this.setState({ data: editArr });
-            this.setState({ open: false });
+            this.props.actions.addEmployee(this.state.fields,this.props.login.loginId)
         } else {
-            // console.log("department added with state ",this.state);
-
-            console.log(this.state.fields)
-            this.setState({
-                data: [...this.state.data, this.createData(this.state.fields.employeeId,
-                    this.state.fields.firstName, this.state.fields.lastName,
-                    this.state.fields.dob,
-                    this.state.fields.designation,
-                    this.state.fields.joiningDate,
-                    this.state.fields.role,
-                    this.state.fields.supervisor,
-                    this.state.fields.location)]
-            })
-            this.setState({ open: false });
+            let fields = this.state.fields;
+            fields.id = null;
+            this.setState({ fields })
+            this.props.actions.addEmployee(this.state.fields,this.props.login.loginId)
         }
+        this.setState({ open: false });
     }
+
     constructor(props) {
+        
         super(props);
         this.counter = 0;
         this.state = {
             isEditDialog: false,
             fields: {},
-            errors: {
-            },
+            errors: {},
             open: false, //for dialog open
             order: 'asc',
-            orderBy: 'firstName',
+            orderBy: 'id',
             selected: [],
-            data: [
-                this.createData('100011', 'A', 'last', 'qwe', 'designation', 'joiningDate', 'role', 'supervisor', 'Bngalore'),
-                this.createData('100021', 'B', 'last', 'qwe', 'designation', 'joiningDate', 'role', 'supervisor', 'Bngalore'),
-                this.createData('100031', 'C', 'last', 'qwe', 'designation', 'joiningDate', 'role', 'supervisor', 'Bngalore'),
-                this.createData('100041', 'D', 'last', 'qwe', 'designation', 'joiningDate', 'role', 'supervisor', 'Bngalore'),
-                this.createData('100051', 'E', 'last', 'qwe', 'designation', 'joiningDate', 'role', 'supervisor', 'Bngalore'),
-
-            ],
             page: 0,
             rowsPerPage: 5,
             title: 'Employee',
             rows: [
-                { id: 'ID', numeric: false, disablePadding: false, label: 'ID' },
-                { id: 'employeeId', numeric: false, disablePadding: false, label: 'Employee Id' },
+                { id: 'index', numeric: false, disablePadding: false, label: 'Index' },
+                { id: 'id', numeric: false, disablePadding: false, label: 'Employee ID' },
                 { id: 'firstName', numeric: false, disablePadding: false, label: 'First name' },
                 { id: 'lastName', numeric: false, disablePadding: false, label: 'Last name' },
                 { id: 'dob', numeric: false, disablePadding: false, label: 'Date of Birth' },
                 { id: 'designation', numeric: false, disablePadding: false, label: 'Designation' },
                 { id: 'joiningDate', numeric: false, disablePadding: false, label: 'Joining date' },
                 { id: 'role', numeric: false, disablePadding: false, label: 'Role' },
-                { id: 'supervisor', numeric: false, disablePadding: false, label: 'Supervisor' },
+                { id: 'supervisorId', numeric: false, disablePadding: false, label: 'Supervisor' },
                 { id: 'location', numeric: false, disablePadding: false, label: 'Location' },
                 { id: 'actions', numeric: false, disablePadding: false, label: 'Actions' }
             ]
         };
-        console.log(this.state)
     }
     render() {
-        const { data, title, order, orderBy, selected, rowsPerPage, page, rows } = this.state;
-        const { classes } = this.props;
+        const {  title, order, orderBy, selected, rowsPerPage, page, rows } = this.state;
+        const { classes,login } = this.props;
+        // console.log(this.props.employees.data);
+        var idField;
+        if(this.state.isEditDialog){
+            idField =<TextField
+                required
+                autoFocus
+                margin="dense"
+                id="id"
+                label="Employee Id"
+                type="text"
+                fullWidth
+                disabled
+                onChange={this.handleChange.bind(this, "id")}
+                value={this.state.fields["id"]}
+            // error={this.state.errors.departmentNameError}
+            // helperText={this.state.errors.errorRequired}
+            />
+        }
         return (
             <div style={{ margin: "2%" }}>
                 <h1>Employees</h1>
@@ -138,24 +133,11 @@ class Employee extends React.Component {
                     aria-labelledby="form-dialog-title"
                 >
                     <DialogTitle id="form-dialog-title">
-                { this.state.isEditDialog ? 'Edit ' : 'Add '}
-                 Employee</DialogTitle>
+                        {this.state.isEditDialog ? 'Edit ' : 'Add '}
+                        Employee</DialogTitle>
                     <DialogContent>
                         <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-
-                            <TextField
-                                required
-                                autoFocus
-                                margin="dense"
-                                id="employeeId"
-                                label="Employee Id"
-                                type="text"
-                                fullWidth
-                                onChange={this.handleChange.bind(this, "employeeId")}
-                                value={this.state.fields["employeeId"]}
-                            // error={this.state.errors.departmentNameError}
-                            // helperText={this.state.errors.errorRequired}
-                            />
+                            {idField}
                             <TextField
                                 required
                                 margin="dense"
@@ -179,13 +161,13 @@ class Employee extends React.Component {
                             <TextField
                                 required
                                 margin="dense"
-                                id="birthday"
+                                id="dob"
                                 label="Birthday"
                                 type="date"
                                 fullWidth
                                 defaultValue="2017-05-24"
-                                onChange={this.handleChange.bind(this, "birthday")}
-                                value={this.state.fields["birthday"]}
+                                onChange={this.handleChange.bind(this, "dob")}
+                                value={this.state.fields["dob"]}
                             />
                             <TextField
                                 required
@@ -229,19 +211,23 @@ class Employee extends React.Component {
                                 </Select>
                             </FormControl>
                             <FormControl fullWidth required>
-                                <InputLabel htmlFor="supervisor">Supervisor</InputLabel>
+                                <InputLabel htmlFor="supervisorId">Supervisor</InputLabel>
                                 <Select
                                     inputProps={{
-                                        name: 'supervisor',
-                                        id: 'supervisor',
+                                        name: 'supervisorId',
+                                        id: 'supervisorId',
                                     }}
-                                    onChange={this.handleChange.bind(this, "supervisor")}
-                                    value={this.state.fields["supervisor"]}
+                                    onChange={this.handleChange.bind(this, "supervisorId")}
+                                    value={this.state.fields["supervisorId"]}
                                 >
-                                    <MenuItem value="" selected>
-                                        <em>None</em>
+                                    <MenuItem disabled value="select" selected>
+                                        <em>Select</em>
                                     </MenuItem>
-                                    <MenuItem value="100011">100011</MenuItem>
+                                    {
+                                        this.props.employees.data.map(element => {
+                                            return <MenuItem key={element.loginId} value={element.loginId}>{element.loginId}</MenuItem>
+                                        })
+                                    }
                                 </Select>
                             </FormControl>
                             <TextField
@@ -270,15 +256,29 @@ class Employee extends React.Component {
                     order={order}
                     orderBy={orderBy}
                     selected={selected}
-                    data={data}
+                    data={this.props.employees.data}
                     page={page}
                     rowsPerPage={rowsPerPage}
                     rows={rows}
                     onRowEdit={this.handleEdit}
-                    ></EnhancedTable>
+                ></EnhancedTable>
             </div>
         );
     }
+
+}
+function mapStateToProps(state) {
+    return {
+        
+        employees: state.employees,
+        login: state.login
+    }
 }
 
-export default Employee;
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(ActionCreators , dispatch),
+        login_actions: bindActionCreators(LoginActionCreators , dispatch)
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Employee);

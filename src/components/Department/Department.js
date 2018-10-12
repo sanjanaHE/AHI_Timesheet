@@ -39,7 +39,7 @@ class Department extends React.Component {
         this.setState({ open: false });
     };
     handleEdit = (rowData) => {
-        console.log("EDIT DATA",rowData)
+        console.log("EDIT DEPT DATA",rowData)
         // this.props.actions.addDepartment(rowData.departmentId)
         this.setState({fields : rowData})
         this.setState({ open: true});
@@ -145,7 +145,6 @@ class Department extends React.Component {
                 // this.props.actions.getDepartments();
             }
             this.setState({ open: false }); 
-            this.props.actions.getDepartments();
         }
      }
     constructor(props) {
@@ -160,7 +159,7 @@ class Department extends React.Component {
             },
             open: false, //for dialog open
             order: 'asc',
-            orderBy: 'headedBy',
+            orderBy: 'departmentId',
             selected: [],
             page: 0,
             rowsPerPage: 5,
@@ -178,7 +177,7 @@ class Department extends React.Component {
     }
 
     render() {
-        const { data, title, order, orderBy, selected, rowsPerPage, page, rows } = this.state;
+        const { title, order, orderBy, selected, rowsPerPage, page, rows } = this.state;
         const { employees } = this.props;
         // console.log("employees ",JSON.stringify(employees))
         return (
@@ -257,7 +256,7 @@ class Department extends React.Component {
                                         <em>Select</em>
                                     </MenuItem>
                                     {employees.data.map(employee => {
-                                            return <MenuItem value={employee.id}>{employee.firstName} {employee.lastName}</MenuItem>
+                                            return <MenuItem key={employee.id} value={employee.id}>{employee.firstName} {employee.lastName}</MenuItem>
                                         })
                                     }
                                 </Select>
