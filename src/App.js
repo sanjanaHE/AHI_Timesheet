@@ -22,8 +22,7 @@ const App = () => {
         <Provider store = {store}>  
             <HashRouter basename = "/ahits">
             <div className="App">
-              <Header>
-              </Header>
+             
               <Route path="/auth/login/" component={Login} />
               <Route path="/department" component={Department} />
               <Route path="/employee" component={Employee} />

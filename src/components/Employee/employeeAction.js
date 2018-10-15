@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {baseUrl} from './../../contants';
+
 function getEmployeesApi(dispatch){
     axios({
       method: 'get',
@@ -11,7 +12,9 @@ function getEmployeesApi(dispatch){
           data: response.data
         })
       });
-  }
+}
+
+
   export function getEmployees() {
     return (dispatch) => {
         getEmployeesApi(dispatch)
@@ -20,9 +23,10 @@ function getEmployeesApi(dispatch){
 
 
   export function addEmployee(formData,userId) {
-    console.log("IN ADD DEPT ",formData);
+   
     let data = {
-      'id': formData.id,
+      'id':formData.id,
+      'loginId': formData.loginId,
       'firstName': formData.firstName,
       'lastName': formData.lastName,
       'dob': formData.dob,
@@ -30,9 +34,9 @@ function getEmployeesApi(dispatch){
       'joiningDate': formData.joiningDate,
       'role': formData.role,
       'supervisorId': formData.supervisorId,
-      'location': formData.location,
-      'loginId': formData.loginId
+      'location': formData.location
       } 
+      console.log("IN ADD EMPL ",data,userId);
       // TODO: MAKE AN API CALL TO BACKEND SERVER
       return (dispatch) => {
         axios({
@@ -48,3 +52,4 @@ function getEmployeesApi(dispatch){
           
       }
   }
+  

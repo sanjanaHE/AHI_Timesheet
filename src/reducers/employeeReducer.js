@@ -1,13 +1,15 @@
 let initialData = []
 const initialState = {"data": initialData, "hasError": false}
-function createData(id, firstName, lastName, dob, designation, joiningDate, role, supervisorId, location, loginId) {
-    return {id, firstName, lastName, dob, designation, joiningDate, role, supervisorId, location ,loginId};
+function createData(id,loginId,firstName, lastName, dob, designation, joiningDate, role, supervisorId,supervisorName, location) {
+    return {id,loginId,firstName, lastName, dob, designation, joiningDate, role, supervisorId,supervisorName, location};
 }
 function transformDataReceivedFromServer(data) {
     let initialData = []
     // console.log("transformDataReceivedFromServer   ",data)
     data.map(element => {
-      initialData.push(createData(element.id, 
+      initialData.push(createData(
+        element.id,
+        element.loginId, 
         element.firstName, 
         element.lastName, 
         element.dob,
@@ -15,8 +17,11 @@ function transformDataReceivedFromServer(data) {
         element.joiningDate,
         element.role,
         element.supervisorId,
+        element.supervisorName,
         element.location,
-        element.loginId))
+        
+        // element.loginId
+    ))
     });
     return initialData;
   }

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {baseUrl} from './../../contants';
+
 export function addDepartment(formData) {
   console.log("IN ADD DEPT ",formData);
   let data = {
@@ -27,15 +28,6 @@ export function addDepartment(formData) {
         });
         
     }
-}
-
-export function removeDepartment(id) {
-  return (dispatch) => {
-    dispatch({
-      type: 'REMOVE_DEPARTMENT',
-      data: id
-    })
-  }
 }
 
 function getDepartmentsApi(dispatch){

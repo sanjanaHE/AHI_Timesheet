@@ -68,7 +68,6 @@ class EnhancedTableHead extends React.Component {
           {rows.slice(1).map(row => {
             return (
               <TableCell
-                key={row.id}
                 numeric={row.numeric}
                 padding={row.disablePadding ? 'none' : 'default'}
                 sortDirection={orderBy === row.id ? order : false}
@@ -150,7 +149,7 @@ let EnhancedTableToolbar = props => {
         )}
       </div>
       <div className={classes.spacer} />
-      <div className={classes.actions}>
+      {/* <div className={classes.actions}>
         {numSelected > 0 ? (
           <Tooltip title="Delete">
             <IconButton aria-label="Delete">
@@ -166,7 +165,7 @@ let EnhancedTableToolbar = props => {
           </Tooltip>
         )
         }
-      </div>
+      </div> */}
     </Toolbar>
   );
 };
@@ -196,7 +195,7 @@ class EnhancedTable extends React.Component {
         super(props);
         this.state = {
             order: 'asc',
-            orderBy: 'headedBy',
+            // orderBy: 'headedBy',
             selected: [],
             page: 0,
             rowsPerPage: this.props.rowsPerPage || 5
@@ -278,6 +277,7 @@ class EnhancedTable extends React.Component {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(n => {
                   const isSelected = this.isSelected(n.id);
+                  // console.log("COLUMNS  ",columns)
                   return (
                     <TableRow
                       hover
@@ -285,14 +285,15 @@ class EnhancedTable extends React.Component {
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
-                      key={n.id}
                       selected={isSelected}
                     >
                       {/* <TableCell padding="checkbox">
                         <Checkbox checked={isSelected} />
                       </TableCell> */}
                       {/* component="th" scope="row" padding="none" */}
+                      
                       {Object.keys(n).map(m => {
+                        // console.log(m)
                         if (columns.includes(m)){
                           return(
                             <TableCell >{n[m]}</TableCell>
@@ -308,10 +309,11 @@ class EnhancedTable extends React.Component {
                         <IconButton aria-label="Edit" className={classes.button} onClick = {() => this.props.onRowEdit(n)}>
                         <Icon>edit_icon</Icon>
                         </IconButton>
+                        {this.props.isEmployesTable ? null :
                         <IconButton aria-label="Delete" className={classes.button} onClick = {() => this.props.onRowDelete(n)}>
                           <DeleteIcon fontSize="small" />
                         </IconButton>
-                
+                        }
                       </TableCell>
                       {/* <TableCell>Delete</TableCell> */}
                       {/* <TableCell>{n.departmentName}</TableCell>

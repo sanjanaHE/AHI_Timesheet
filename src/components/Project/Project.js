@@ -1,7 +1,8 @@
 import React from 'react';
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import * as ActionCreators from './projectAction'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as ActionCreators from './projectAction';
+import Header from './../Header/Header';
 import EnhancedTable from './../Table/Table'
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
@@ -113,93 +114,97 @@ class Project extends React.Component {
         const { data, title, order, orderBy, selected, rowsPerPage, page, rows } = this.state;
         const { employees } = this.props;
         return (
-            <div style={{margin : "2%"}}>
-                <h1>Projects</h1>
-                <Button variant="fab" color="primary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
-                    <AddIcon />
-                </Button>
-                <Dialog
-                    open={this.state.open}
-                    onClose={this.handleClose}
-                    aria-labelledby="form-dialog-title"
-                    >
-                 <DialogTitle id="form-dialog-title">
-                { this.state.isEditDialog ? 'Edit ' : 'Add '}
-                 Project</DialogTitle>
-                <DialogContent>
-                
-                    <form  noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+            <React.Fragment>
+                <Header>
+                </Header>
+                <div style={{margin : "2%"}}>
+                    <h1>Projects</h1>
+                    <Button variant="fab" color="primary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
+                        <AddIcon />
+                    </Button>
+                    <Dialog
+                        open={this.state.open}
+                        onClose={this.handleClose}
+                        aria-labelledby="form-dialog-title"
+                        >
+                    <DialogTitle id="form-dialog-title">
+                    { this.state.isEditDialog ? 'Edit ' : 'Add '}
+                    Project</DialogTitle>
+                    <DialogContent>
+                    
+                        <form  noValidate autoComplete="off" onSubmit={this.handleSubmit}>
 
-                    <TextField
-                    required
-                    autoFocus
-                    margin="dense"
-                    id="projectName"
-                    label="Project name"
-                    type="text"
-                    fullWidth
-                    // value= {this.state.ProjectName}
-                    // onChange={this.handleProjectNameChange}
-                    onChange={this.handleChange.bind(this, "projectName")} 
-                    value={this.state.fields["projectName"]}
-                    error={this.state.errors.ProjectNameError}
-                    helperText={this.state.errors.errorRequired}
-                    />
-                    {/* <FormHelperText error = {this.state.errors.ProjectNameError}>This field is required</FormHelperText> */}
-                    <TextField
-                    required
-                    margin="dense"
-                    id="projectDescription"
-                    label="Description"
-                    type="text"
-                    fullWidth
-                    // value= {this.state.description}
-                    // onChange={this.handleDescriptionChange}
-                    onChange={this.handleChange.bind(this, "projectDescription")} 
-                    value={this.state.fields["projectDescription"]}
-                    />
-                  <FormControl fullWidth required>
-                                <InputLabel htmlFor="headedByUserId">Headed By</InputLabel>
-                                <Select
-                                    inputProps={{
-                                        name: 'headedByUserId',
-                                        id: 'headedByUserId',
-                                    }}
-                                    onChange={this.handleChange.bind(this, "headedByUserId")}
-                                    value={this.state.fields["headedByUserId"]}
-                                >
-                                    <MenuItem disabled value="select" selected>
-                                        <em>Select</em>
-                                    </MenuItem>
-                                    {employees.data.map(employee => {
-                                            return <MenuItem key={employee.id} value={employee.id}>{employee.firstName} {employee.lastName}</MenuItem>
-                                        })
-                                    }
-                                </Select>
-                    </FormControl>
-                    </form>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={this.handleClose} color="primary">
-                    Cancel
-                    </Button>
-                    <Button type = "submit" onClick={this.handleSubmit} color="primary">
-                    Submit
-                    </Button>
-                </DialogActions>
-                </Dialog>
-                <EnhancedTable title="Project"
-                    order={order}
-                    orderBy={orderBy}
-                    selected={selected}
-                    data={this.props.projects.data}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    rows={rows}
-                    onRowEdit = {this.handleEdit}
-                    onRowDelete = {this.handleDelete}
-                    ></EnhancedTable>
-            </div>
+                        <TextField
+                        required
+                        autoFocus
+                        margin="dense"
+                        id="projectName"
+                        label="Project name"
+                        type="text"
+                        fullWidth
+                        // value= {this.state.ProjectName}
+                        // onChange={this.handleProjectNameChange}
+                        onChange={this.handleChange.bind(this, "projectName")} 
+                        value={this.state.fields["projectName"]}
+                        error={this.state.errors.ProjectNameError}
+                        helperText={this.state.errors.errorRequired}
+                        />
+                        {/* <FormHelperText error = {this.state.errors.ProjectNameError}>This field is required</FormHelperText> */}
+                        <TextField
+                        required
+                        margin="dense"
+                        id="projectDescription"
+                        label="Description"
+                        type="text"
+                        fullWidth
+                        // value= {this.state.description}
+                        // onChange={this.handleDescriptionChange}
+                        onChange={this.handleChange.bind(this, "projectDescription")} 
+                        value={this.state.fields["projectDescription"]}
+                        />
+                    <FormControl fullWidth required>
+                                    <InputLabel htmlFor="headedByUserId">Headed By</InputLabel>
+                                    <Select
+                                        inputProps={{
+                                            name: 'headedByUserId',
+                                            id: 'headedByUserId',
+                                        }}
+                                        onChange={this.handleChange.bind(this, "headedByUserId")}
+                                        value={this.state.fields["headedByUserId"]}
+                                    >
+                                        <MenuItem disabled value="select" selected>
+                                            <em>Select</em>
+                                        </MenuItem>
+                                        {employees.data.map(employee => {
+                                                return <MenuItem key={employee.id} value={employee.id}>{employee.firstName} {employee.lastName}</MenuItem>
+                                            })
+                                        }
+                                    </Select>
+                        </FormControl>
+                        </form>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="primary">
+                        Cancel
+                        </Button>
+                        <Button type = "submit" onClick={this.handleSubmit} color="primary">
+                        Submit
+                        </Button>
+                    </DialogActions>
+                    </Dialog>
+                    <EnhancedTable title="Project"
+                        order={order}
+                        orderBy={orderBy}
+                        selected={selected}
+                        data={this.props.projects.data}
+                        page={page}
+                        rowsPerPage={rowsPerPage}
+                        rows={rows}
+                        onRowEdit = {this.handleEdit}
+                        onRowDelete = {this.handleDelete}
+                        ></EnhancedTable>
+                </div>
+            </React.Fragment>
         );
     }
 

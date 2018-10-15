@@ -9,7 +9,9 @@ export default function login(state = initialState, action) {
     case 'LOGOUT_REQUESTv':
     case 'LOGOUT_SUCCESS':
     case 'GET_LOGGED_USER_SUCCESS':
-      return action.data
+      // return action.data
+      console.log(action)
+      return Object.assign({}, state, action)
     default:
       return state
   }
