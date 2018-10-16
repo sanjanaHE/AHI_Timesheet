@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 // TODO: Move Actions based on each component
 import * as ActionCreators from './employeeAction';
 import * as LoginActionCreators from './../Login/loginAction'
+import moment from 'moment';
 import Header from './../Header/Header';
 import EnhancedTable from './../Table/Table'
 import Button from '@material-ui/core/Button';
@@ -48,14 +49,16 @@ class Employee extends React.Component {
     };
     handleEdit = (rowData) => {
 
+        
+        rowData['dob'] = moment(rowData.dob, 'DD-MM-YYYY').format('MM-DD-YYYY')
+        rowData['joiningDate'] = moment(rowData.joiningDate, 'DD-MM-YYYY').format('MM-DD-YYYY')
         console.log("EDIT USER DATA", rowData)
         this.setState({ fields: rowData })
+        // this.setState({ fields: rowData, dob: moment(rowData.dob).format('MM-DD-YYYY'),  })
+        // this.setState({ fields: rowData })
         this.setState({ open: true });
         this.setState({ isEditDialog: true })
     }
-    // handleDelete = (rowData) => {
-    //     this.props.actions.deleteEmployee(rowData.id)
-    // }
     handleChange = (field, e) => {
         let fields = this.state.fields;
         fields[field] = e.target.value;
@@ -74,7 +77,7 @@ class Employee extends React.Component {
         }
         this.setState({ open: false });
     }
-
+    
     constructor(props) {
 
         super(props);
@@ -115,13 +118,18 @@ class Employee extends React.Component {
                 { id: 'actions', numeric: false, disablePadding: false, label: 'Actions' }
             ]
         };
+       
     }
+    
+   formatDateInGivenFormat = (date) => {
+    let  d = moment(date).format('YYYY-MM-DD');
+    return d;
+   }
 
 
     render() {
         const { title, order, orderBy, selected, rowsPerPage, page, rows } = this.state;
         const { classes, login } = this.props;
-  
         return (
             <React.Fragment>
                 <Header>
@@ -129,11 +137,11 @@ class Employee extends React.Component {
                 <div style={{ margin: "2%" }}>
                     <h1>Employees</h1>
 
-                    <Grid item xs={10}>
+                    {/* <Grid item xs={10}> */}
                         <Button variant="fab" color="primary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
                             <AddIcon />
                         </Button>              
-                    </Grid>
+                    {/* </Grid> */}
                     <Dialog
                         open={this.state.open}
                         onClose={this.handleClose}
@@ -188,7 +196,6 @@ class Employee extends React.Component {
                                     label="Birthday"
                                     type="date"
                                     fullWidth
-                                    // defaultValue="2017-05-24"
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
@@ -196,7 +203,7 @@ class Employee extends React.Component {
                                     maxLength: 10,
                                     }}
                                     onChange={this.handleChange.bind(this, "dob")}
-                                    value={this.state.fields["dob"]}
+                                    defaultValue={this.formatDateInGivenFormat(this.state.fields["dob"])}
                                 />
                                 <TextField
                                     required
@@ -215,15 +222,12 @@ class Employee extends React.Component {
                                     label="Joining Data"
                                     type="date"
                                     fullWidth
-                                    // defaultValue="2017-05-24"
-                                    InputLabelProps={{
+                                    defaultValue={this.formatDateInGivenFormat(this.state.fields["joiningDate"])}
+                                     InputLabelProps={{
                                         shrink: true,
                                     }}
                                     onChange={this.handleChange.bind(this, "joiningDate")}
-                                    value={this.state.fields["joiningDate"]}
                                 />
-
-
                                 <FormControl fullWidth required>
                                     <InputLabel htmlFor="role">Role</InputLabel>
                                     <Select

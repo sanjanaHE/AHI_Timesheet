@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {baseUrl} from './../../contants';
+import moment from 'moment';
 
 function getEmployeesApi(dispatch){
     axios({
@@ -23,15 +24,15 @@ function getEmployeesApi(dispatch){
 
 
   export function addEmployee(formData,userId) {
-   
+    
     let data = {
       'id':formData.id,
       'loginId': formData.loginId,
       'firstName': formData.firstName,
       'lastName': formData.lastName,
-      'dob': formData.dob,
+      'dob': moment(formData.dob).format('YYYY-MM-DD'),
       'designation': formData.designation,
-      'joiningDate': formData.joiningDate,
+      'joiningDate': moment(formData.joiningDate).format('YYYY-MM-DD'),
       'role': formData.role,
       'supervisorId': formData.supervisorId,
       'location': formData.location
@@ -41,7 +42,7 @@ function getEmployeesApi(dispatch){
       return (dispatch) => {
         axios({
           method: 'post',
-          url: 'http://localhost:6090/ahits/rest/user/adduser/'+userId,
+          url: '${baseUrl}ahits/rest/user/adduser/'+userId,
           data
         })
           .then((response) => {

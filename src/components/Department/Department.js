@@ -195,9 +195,11 @@ class Department extends React.Component {
                         onClose={this.handleClose}
                         aria-labelledby="form-dialog-title"
                         >
+
                     <DialogTitle id="form-dialog-title">
                     { this.state.isEditDialog ? 'Edit ' : 'Add '}
                     Department</DialogTitle>
+
                     <DialogContent>
                         {/* <DialogContentText>
                         To subscribe to this website, please enter your email address here. We will send
@@ -213,14 +215,12 @@ class Department extends React.Component {
                         label="Department name"
                         type="text"
                         fullWidth
-                        // value= {this.state.departmentName}
-                        // onChange={this.handleDepartmentNameChange}
                         onChange={this.handleChange.bind(this, "departmentName")} 
                         value={this.state.fields["departmentName"]}
-                        error={this.state.errors.departmentNameError}
+                        error="true"
                         helperText={this.state.errors.errorRequired}
                         />
-                        {/* <FormHelperText error = {this.state.errors.departmentNameError}>This field is required</FormHelperText> */}
+
                         <TextField
                         required
                         margin="dense"
@@ -228,27 +228,15 @@ class Department extends React.Component {
                         label="Description"
                         type="text"
                         fullWidth
-                        // value= {this.state.description}
-                        // onChange={this.handleDescriptionChange}
                         onChange={this.handleChange.bind(this, "description")} 
                         value={this.state.fields["description"]}
                         />
-                        {/* <TextField
-                        required
-                        margin="dense"
-                        id="headedBy"
-                        label="Headed by"
-                        type="number"
-                        fullWidth
-                        onChange={this.handleChange.bind(this, "headedBy")} 
-                        value={this.state.fields["headedBy"]}
-                        /> */}
-                    
 
 
                         <FormControl fullWidth required>
                                     <InputLabel htmlFor="headedByUserId">Headed By</InputLabel>
                                     <Select
+                                        required
                                         inputProps={{
                                             name: 'headedByUserId',
                                             id: 'headedByUserId',

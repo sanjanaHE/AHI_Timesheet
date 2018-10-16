@@ -14,7 +14,7 @@ export function addProject(formData) {
     return (dispatch) => {
       axios({
         method: 'post',
-        url: `${baseUrl}/ahits/api/projects/`,
+        url: `${baseUrl}ahits/api/projects/`,
         data
       })
         .then((response) => {
