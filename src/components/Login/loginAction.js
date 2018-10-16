@@ -1,17 +1,22 @@
 import axios from 'axios';
 import {baseUrl} from './../../contants';
-
-export function login( creds){
+let isAuthenticated = false
+export function login(creds){
   console.log("in login action ",  creds)
       let data = new FormData();
       data.append('username', creds.username);
-        data.append('password', creds.password); 
+        data.append('password', creds.password);
       return (dispatch) => {
-      axios.post('http://localhost:6090/ahits/login', creds).then(response => {
-        console.log(response.data);
-           dispatch({
-          type: 'LOGIN_SUCCESS',
-          data: response.data
+      axios({
+          method : 'post' ,
+          url:'http://localhost:6090/ahits/login',
+          data
+          
+    }).then(response => {
+            console.log(response);
+            dispatch({
+            type: 'LOGIN_SUCCESS',
+            isAuthenticated : true
         })
     })
   }

@@ -217,7 +217,7 @@ class Department extends React.Component {
                         fullWidth
                         onChange={this.handleChange.bind(this, "departmentName")} 
                         value={this.state.fields["departmentName"]}
-                        error="true"
+                        // error=
                         helperText={this.state.errors.errorRequired}
                         />
 

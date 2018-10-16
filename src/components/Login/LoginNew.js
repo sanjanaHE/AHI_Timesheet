@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as ActionCreators from './loginAction';
@@ -65,11 +66,18 @@ class SignIn extends React.Component {
   }
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log("login state ",this.state)
-    this.props.actions.login(this.state)
+    console.log("this.props.login.isAuthenticated",this.props.login.isAuthenticated);
+      this.props.actions.login(this.state)
+      
+      // return <Redirect to="http://localhost:3000/#/ahits/home" push />
     }
   render(){
-    const { classes } = this.props;
+    const { classes,login } = this.props;
+    console.log(this.props.login)
+    if(this.props.login.isAuthenticated == true){
+        console.log("redirecting....")
+        return <Redirect to="/employee" push />
+      }
     return (
       <React.Fragment>
         <CssBaseline />
@@ -78,9 +86,13 @@ class SignIn extends React.Component {
             <Avatar className={classes.avatar}>
               <LockIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
+            <img src="logo.jpg"/>
+            <Typography component="h1" >
               Sign in
             </Typography>
+            {/* <Typography variant="h3" gutterBottom>
+              h3. Heading
+            </Typography> */}
             {/* <form className={classes.form} action = "http://localhost:6090/ahits/login" method = "post"> */}
             <form className={classes.form} autoComplete="off" onSubmit={this.handleSubmit}>
               <FormControl margin="normal" required fullWidth>
@@ -136,4 +148,3 @@ function mapDispatchToProps(dispatch){
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SignIn));
-// export default withStyles(styles)(SignIn);

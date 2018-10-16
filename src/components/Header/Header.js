@@ -5,8 +5,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-// import IconButton from '@material-ui/core/IconButton';
-// import MenuIcon from '@material-ui/icons/Menu';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Link } from 'react-router-dom';
@@ -33,65 +31,86 @@ class ButtonAppBar extends React.Component {
         super(props)
         this.state = {
             anchorEl: null,
-            anchorE2: null
+            anchorE2:null
         };
     }
-    handleClick = event => {
+    handleMenu = event => {
+        console.log(event.currentTarget)
+        console.log(this.state.anchorEl)
         this.setState({ anchorEl: event.currentTarget });
     };
-    handleClickMyAh = event => {
+    handleMenuAH = event => {
+        console.log(event.currentTarget)
+        console.log(this.state.anchorEl)
         this.setState({ anchorE2: event.currentTarget });
     };
 
     handleClose = () => {
         this.setState({ anchorEl: false });
     };
-    handleCloseMyAh = () => {
+    handleCloseAH = () => {
         this.setState({ anchorE2: false });
-    }
+    };
     render() {
-        const { anchorEl } = this.state;
-        const { anchorE2 } = this.state;
+        const { anchorEl,anchorE2 } = this.state;
         const { classes } = this.props;
         return (
             <div className={classes.root}>
                 <AppBar position="static">
                     <Toolbar>
-                      <Typography variant="subheading" color="inherit" className={classes.grow}>
-                            Home
-                  </Typography>
                         <Typography variant="subheading" color="inherit" className={classes.grow}>
-                            Timesheet
-                  </Typography>
+                        <Button>
+                               <Link to="/home/" style={{ "color": "white" ,"textDecoration":"blink"}}> Home</Link>
+                        </Button>
+                      
+                        </Typography>
+                        <Typography variant="subheading" color="inherit" className={classes.grow}>
+                                TIMESHEET
+                        </Typography>
+                            {/* <Typography variant="subheading" color="inherit" className={classes.grow}>
+                                <Button
+                                    style={{ "color": "white" }}
+                                    aria-owns={anchorEl ? 'menu' : null}
+                                    aria-haspopup="true"
+                                    onClick={this.handleMenu} >My AH
+                                </Button>
+                            </Typography>
+                            <Menu
+                                id="menu"
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={this.handleClose}
+                                style={{ color: 'white' }}>
+                                <MenuItem component={Link} to="/task" onClick={this.handleClose}>Task</MenuItem>
+                                <MenuItem component={Link} to="/profile" onClick={this.handleClose}>Profile</MenuItem>
+                            </Menu> */}
 
+                            <Typography variant="subheading" color="inherit" className={classes.grow}>
+                                <Button
+                                    style={{ "color": "white" }}
+                                    aria-owns={anchorE2 ? 'menu' : null}
+                                    aria-haspopup="true"
+                                    onClick={this.handleMenuAH} >My AH
+                                </Button>
+                            </Typography>
+                            <Menu
+                                id="menu"
+                                anchorEl={anchorE2}
+                                open={Boolean(anchorE2)}
+                                onClose={this.handleCloseAH}
+                                style={{ color: 'white' }}>
+                                <MenuItem component={Link} to="/task" onClick={this.handleCloseAH}>Task</MenuItem>
+                                <MenuItem component={Link} to="/profile" onClick={this.handleCloseAH}>Profile</MenuItem>
+                            </Menu>
 
-                <Typography variant="subheading" color="inherit" className={classes.grow}>
-                    <Button
-                        style={{ "color": "white" }}
-                        aria-owns={anchorE2 ? 'simple-menu' : null}
-                        aria-haspopup="true"
-                        onClick={this.handleClickMyAh} >My AH
-                    </Button>
-                </Typography>
-                        <Menu
-                            id="simple-menu"
-                            anchorE2={anchorE2}
-                            open={Boolean(anchorE2)}
-                            onClose={this.handleCloseMyAh}
-                            style={{ color: 'white' }}>
-                            <MenuItem component={Link} to="/task" onClick={this.handleCloseMyAh}>Task</MenuItem>
-                            <MenuItem component={Link} to="/profile" onClick={this.handleCloseMyAh}>Profile</MenuItem>
-                        </Menu>
-
-
-                <Typography variant="subheading" color="inherit" className={classes.grow}>
-                    <Button
-                        style={{ "color": "white" }}
-                        aria-owns={anchorEl ? 'simple-menu' : null}
-                        aria-haspopup="true"
-                        onClick={this.handleClick} >Admin
-                    </Button>
-                </Typography>
+                        <Typography variant="subheading" color="inherit" className={classes.grow}>
+                            <Button
+                                style={{ "color": "white" }}
+                                aria-owns={anchorEl ? 'simple-menu' : null}
+                                aria-haspopup="true"
+                                onClick={this.handleMenu} >Admin
+                            </Button>
+                        </Typography>
                         <Menu
                             id="simple-menu"
                             anchorEl={anchorEl}

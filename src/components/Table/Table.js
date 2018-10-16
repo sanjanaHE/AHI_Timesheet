@@ -195,7 +195,7 @@ class EnhancedTable extends React.Component {
         super(props);
         this.state = {
             order: 'asc',
-            // orderBy: 'headedBy',
+            orderBy: this.props.orderBy,
             selected: [],
             page: 0,
             rowsPerPage: this.props.rowsPerPage || 5
