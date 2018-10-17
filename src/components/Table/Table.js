@@ -305,15 +305,18 @@ class EnhancedTable extends React.Component {
                         
                       })}
                       <TableCell>
-                   
+                      <Tooltip title="Edit">
                         <IconButton aria-label="Edit" className={classes.button} onClick = {() => this.props.onRowEdit(n)}>
                         <Icon>edit_icon</Icon>
                         </IconButton>
+                        </Tooltip>
+                        
                         {this.props.isEmployesTable ? null :
-                        <IconButton aria-label="Delete" className={classes.button} onClick = {() => this.props.onRowDelete(n)}>
+                        <Tooltip title="Delete"><IconButton aria-label="Delete" className={classes.button} onClick = {() => this.props.onRowDelete(n)}>
                           <DeleteIcon fontSize="small" />
-                        </IconButton>
+                        </IconButton></Tooltip>
                         }
+                        
                       </TableCell>
                       {/* <TableCell>Delete</TableCell> */}
                       {/* <TableCell>{n.departmentName}</TableCell>

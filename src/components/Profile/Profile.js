@@ -3,96 +3,95 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as LoginActionCreators from './../Login/loginAction'
 import Header from './../Header/Header';
-import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/core/styles';
 
+import { withStyles } from '@material-ui/core/styles';
+import Divider from '@material-ui/core/Divider';
+import TableRow from '@material-ui/core/TableRow/TableRow';
+import TableCell from '@material-ui/core/TableCell/TableCell';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
 const styles = theme => ({
     root: {
-      flexGrow: 1,
+        flexGrow: 1,
     },
     paper: {
-      padding: theme.spacing.unit * 2,
-      textAlign: 'center',
-      color: theme.palette.text.secondary,
+        padding: theme.spacing.unit * 2,
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
     },
-  });
+});
 
 class Profile extends Component {
-    componentDidMount(){
+    componentDidMount() {
         this.props.login_actions.getLoggedUser();
     }
-    constructor(props){
+    constructor(props) {
         super(props);
-        
+
 
     }
-  render() {
-    const { classes } = this.props;
-      console.log(this.props);
-    return (
-        <React.Fragment>
-       
-            <Header></Header>  
-            <div style={{margin : "2%"}}>
-                <h1>Profile</h1>
-                <Paper>
-                <Grid container spacing={24}>
-                    <Grid item xs={6}>
-                    First name
-                    </Grid>
-                    <Grid item xs={6}>
-                    {this.props.login.data.firstName}
-                    </Grid>
-                </Grid>
-                <Grid container spacing={24}>
-                    <Grid item xs={6}>
-                    Last name
-                    </Grid>
-                    <Grid item xs={6}>
-                    {this.props.login.data.lastName}
-                    </Grid>
-                </Grid>
-                <Grid container spacing={24}>
-                    <Grid item xs={6}>
-                    DOB
-                    </Grid>
-                    <Grid item xs={6}>
-                    {this.props.login.data.dob}
-                    </Grid>
-                </Grid>
-                <Grid container spacing={24}>
-                    <Grid item xs={6}>
-                    Role
-                    </Grid>
-                    <Grid item xs={6}>
-                    {this.props.login.data.role}
-                    </Grid>
-                </Grid>
-                <Grid container spacing={24}>
-                    <Grid item xs={6}>
-                    Designation
-                    </Grid>
-                    <Grid item xs={6}>
-                    {this.props.login.data.designation}
-                    </Grid>
-                </Grid>
-                </Paper>
-            </div>
-        </React.Fragment>
-    )
-  }
+    render() {
+        const { classes } = this.props;
+        console.log(this.props);
+        return (
+            <React.Fragment>
+
+                <Header></Header>
+                <div style={{ margin: "2%" }}>
+                    <h1>Profile</h1>
+                    <Table>
+                        <TableRow>
+                            <TableCell></TableCell>
+                            <TableCell>First name</TableCell>
+                            <TableCell>{this.props.login.data.firstName}</TableCell>
+                            
+                        </TableRow>
+                        <TableRow>
+                            <TableCell></TableCell>
+                            <TableCell>Last name</TableCell>
+                            <TableCell>{this.props.login.data.lastName}</TableCell>
+                         
+                        </TableRow>
+                        <TableRow>
+                            <TableCell></TableCell>
+                            <TableCell>Email</TableCell>
+                            <TableCell>{this.props.login.data.email}</TableCell>
+                            
+                        </TableRow>
+                        <TableRow>
+                            <TableCell></TableCell>
+                            <TableCell>DOB</TableCell>
+                            <TableCell>{this.props.login.data.dob}</TableCell>
+                          
+                        </TableRow>
+                        <TableRow>
+                            <TableCell></TableCell>
+                            <TableCell>Designation</TableCell>
+                            <TableCell>{this.props.login.data.designation}</TableCell>
+                            
+                        </TableRow>
+                        <TableRow>
+                            <TableCell></TableCell>
+                            <TableCell>Role</TableCell>
+                            <TableCell>{this.props.login.data.role}</TableCell>
+                            
+                        </TableRow>
+                    </Table>
+
+                </div>
+            </React.Fragment>
+        )
+    }
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
     return {
         login: state.login
     }
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
     return {
         login_actions: bindActionCreators(LoginActionCreators, dispatch)
     }

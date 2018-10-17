@@ -19,15 +19,15 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
+import Tooltip from '@material-ui/core/Tooltip';
 
 
 class Task extends React.Component {
     componentDidMount(){
         this.props.login_actions.getLoggedUser();
-        // console.log(this.props); //not accessible
-        if(this.props.login.data.id == undefined){
+        console.log(this.props); //not accessible
+        if(this.props.login.data == undefined){
             this.props.actions.getTasks(this.props.login.data.id);
-
         }
     }
 
@@ -108,16 +108,22 @@ class Task extends React.Component {
     render() {
         const { data, title, order, orderBy, selected, rowsPerPage, page, rows } = this.state;
         const { tasks ,login} = this.props;
-        console.log(this.props.login.data.id)
+        // console.log(this.props.login.data.id)
         return (
             <React.Fragment>
                 <Header>
                 </Header>
                 <div style={{margin : "2%"}}>
                     <h1>Tasks</h1>
-                    <Button variant="fab" color="primary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
+                    <Tooltip title="Add task">
+                        <Button variant="fab" color="primary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
+                            <AddIcon />
+                        </Button>
+                    </Tooltip>
+                    {/* <Button variant="contained" color="primary">
+                        Add
                         <AddIcon />
-                    </Button>
+                    </Button> */}
                     <Dialog
                         open={this.state.open}
                         onClose={this.handleClose}

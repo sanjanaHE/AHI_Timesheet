@@ -18,6 +18,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
+import Tooltip from '@material-ui/core/Tooltip';
 
 
 class Project extends React.Component {
@@ -119,9 +120,11 @@ class Project extends React.Component {
                 </Header>
                 <div style={{margin : "2%"}}>
                     <h1>Projects</h1>
+                    <Tooltip title="Add project">
                     <Button variant="fab" color="primary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
                         <AddIcon />
                     </Button>
+                    </Tooltip>
                     <Dialog
                         open={this.state.open}
                         onClose={this.handleClose}

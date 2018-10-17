@@ -86,7 +86,7 @@ class SignIn extends React.Component {
             <Avatar className={classes.avatar}>
               <LockIcon />
             </Avatar>
-            <Typography component="h1" >
+            <Typography component="h1" variant="h1" >
               Sign in
             </Typography>
             {/* <Typography variant="h3" gutterBottom>

@@ -17,6 +17,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
+import Tooltip from '@material-ui/core/Tooltip';
 
 class Department extends React.Component {
     componentDidMount(){
@@ -187,9 +188,11 @@ class Department extends React.Component {
             
                 <div style={{margin : "2%"}}>
                     <h1>Departments</h1>
+                    <Tooltip title="Add department">
                     <Button variant="fab" color="primary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
                         <AddIcon />
                     </Button>
+                    </Tooltip>
                     <Dialog
                         open={this.state.open}
                         onClose={this.handleClose}
@@ -201,10 +204,6 @@ class Department extends React.Component {
                     Department</DialogTitle>
 
                     <DialogContent>
-                        {/* <DialogContentText>
-                        To subscribe to this website, please enter your email address here. We will send
-                        updates occasionally.
-                        </DialogContentText> */}
                         <form  noValidate autoComplete="off" onSubmit={this.handleSubmit}>
 
                         <TextField

@@ -13,7 +13,7 @@ import SignIn from './components/Login/Login';
 import Login from './components/Login/LoginNew';
 import Home from './components/Home/Home';
 import Profile from './components/Profile/Profile';
-
+import Timesheet from './components/Timesheet/Timesheet';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { HashRouter } from 'react-router-dom'
 const theme = createMuiTheme({
@@ -26,10 +26,10 @@ const App = () => {
         <Provider store = {store}>  
             <HashRouter basename = "/ahits">
             <div className="App">
-              {/* <Route path="" component={Home} /> */}
               <Route path="/auth/login/" component={SignIn} />
               <Route path="/login/" component={Login} />
               <Route path="/home/" component={Home} />
+              <Route path="/timesheet/" component={Timesheet} />
               <Route path="/department" component={Department} />
               <Route path="/employee" component={Employee} />
               <Route path="/project" component={Project} />

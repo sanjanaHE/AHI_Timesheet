@@ -16,7 +16,8 @@ export function login(creds){
             // console.log(response);
             dispatch({
             type: 'LOGIN_SUCCESS',
-            isAuthenticated : true
+            isAuthenticated : true,
+            data:response.data
         })
     })
   }

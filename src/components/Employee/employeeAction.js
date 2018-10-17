@@ -42,7 +42,7 @@ function getEmployeesApi(dispatch){
       return (dispatch) => {
         axios({
           method: 'post',
-          url: '${baseUrl}ahits/rest/user/adduser/'+userId,
+          url: `${baseUrl}ahits/rest/user/adduser/${userId}`,
           data
         })
           .then((response) => {

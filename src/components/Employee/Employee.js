@@ -20,6 +20,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Grid from '@material-ui/core/Grid';
+import Tooltip from '@material-ui/core/Tooltip';
 
 
 class Employee extends React.Component {
@@ -136,12 +137,11 @@ class Employee extends React.Component {
                 </Header>
                 <div style={{ margin: "2%" }}>
                     <h1>Employees</h1>
-
-                    {/* <Grid item xs={10}> */}
+                    <Tooltip title="Add employee">
                         <Button variant="fab" color="primary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
                             <AddIcon />
                         </Button>              
-                    {/* </Grid> */}
+                    </Tooltip>
                     <Dialog
                         open={this.state.open}
                         onClose={this.handleClose}
