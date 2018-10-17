@@ -25,7 +25,10 @@ class Task extends React.Component {
     componentDidMount(){
         this.props.login_actions.getLoggedUser();
         // console.log(this.props); //not accessible
-        this.props.actions.getTasks(this.props.login.data.id);
+        if(this.props.login.data.id == undefined){
+            this.props.actions.getTasks(this.props.login.data.id);
+
+        }
     }
 
     componentWillReceiveProps(nextProps){
@@ -105,7 +108,7 @@ class Task extends React.Component {
     render() {
         const { data, title, order, orderBy, selected, rowsPerPage, page, rows } = this.state;
         const { tasks ,login} = this.props;
-        // console.log(this.props.login.data.id)
+        console.log(this.props.login.data.id)
         return (
             <React.Fragment>
                 <Header>

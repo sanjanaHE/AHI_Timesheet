@@ -35,13 +35,13 @@ class ButtonAppBar extends React.Component {
         };
     }
     handleMenu = event => {
-        console.log(event.currentTarget)
-        console.log(this.state.anchorEl)
+        // console.log(event.currentTarget)
+        // console.log(this.state.anchorEl)
         this.setState({ anchorEl: event.currentTarget });
     };
     handleMenuAH = event => {
-        console.log(event.currentTarget)
-        console.log(this.state.anchorEl)
+        // console.log(event.currentTarget)
+        // console.log(this.state.anchorEl)
         this.setState({ anchorE2: event.currentTarget });
     };
 
@@ -121,7 +121,11 @@ class ButtonAppBar extends React.Component {
                             <MenuItem component={Link} to="/employee" onClick={this.handleClose}>Employees</MenuItem>
                             <MenuItem component={Link} to="/project" onClick={this.handleClose}>Project</MenuItem>
                         </Menu>
-                        <Button color="inherit">Logout</Button>
+                        <Typography variant="subheading" color="inherit" className={classes.grow}>
+                        <Button>
+                               <Link to="/login/" style={{ "color": "white" ,"textDecoration":"blink"}}> Logout</Link>
+                        </Button>
+                        </Typography>
                     </Toolbar>
                 </AppBar>
             </div>

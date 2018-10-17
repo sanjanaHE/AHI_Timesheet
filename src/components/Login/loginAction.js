@@ -13,7 +13,7 @@ export function login(creds){
           data
           
     }).then(response => {
-            console.log(response);
+            // console.log(response);
             dispatch({
             type: 'LOGIN_SUCCESS',
             isAuthenticated : true

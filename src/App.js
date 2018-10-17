@@ -12,6 +12,8 @@ import Task from './components/Task/Task';
 import SignIn from './components/Login/Login';
 import Login from './components/Login/LoginNew';
 import Home from './components/Home/Home';
+import Profile from './components/Profile/Profile';
+
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { HashRouter } from 'react-router-dom'
 const theme = createMuiTheme({
@@ -32,6 +34,7 @@ const App = () => {
               <Route path="/employee" component={Employee} />
               <Route path="/project" component={Project} />
               <Route path="/task" component={Task} />
+              <Route path="/profile" component={Profile} />
             </div>
           </HashRouter>
         </Provider>

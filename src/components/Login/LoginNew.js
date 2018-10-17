@@ -73,10 +73,10 @@ class SignIn extends React.Component {
     }
   render(){
     const { classes,login } = this.props;
-    console.log(this.props.login)
+    // console.log(this.props.login)
     if(this.props.login.isAuthenticated == true){
         console.log("redirecting....")
-        return <Redirect to="/employee" push />
+        return <Redirect to="/home" push />
       }
     return (
       <React.Fragment>
@@ -86,7 +86,6 @@ class SignIn extends React.Component {
             <Avatar className={classes.avatar}>
               <LockIcon />
             </Avatar>
-            <img src="logo.jpg"/>
             <Typography component="h1" >
               Sign in
             </Typography>
