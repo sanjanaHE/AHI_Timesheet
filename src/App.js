@@ -11,6 +11,8 @@ import Project from './components/Project/Project';
 import Task from './components/Task/Task';
 import SignIn from './components/Login/Login';
 import Login from './components/Login/LoginNew';
+import Logout from './components/Logout/Logout';
+
 import Home from './components/Home/Home';
 import Profile from './components/Profile/Profile';
 import Timesheet from './components/Timesheet/Timesheet';
@@ -28,6 +30,7 @@ const App = () => {
             <div className="App">
               <Route path="/auth/login/" component={SignIn} />
               <Route path="/login/" component={Login} />
+              <Route path="/logout/" component={Logout} />
               <Route path="/home/" component={Home} />
               <Route path="/timesheet/" component={Timesheet} />
               <Route path="/department" component={Department} />

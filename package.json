@@ -8,6 +8,8 @@
     "@material-ui/icons": "^3.0.1",
     "axios": "^0.18.0",
     "moment": "^2.22.2",
+    "moment-range": "^4.0.1",
+    "moment-timezone": "^0.5.21",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",

@@ -113,7 +113,7 @@ class ButtonAppBar extends React.Component {
                         </Menu>
                         <Typography variant="subheading" color="inherit" className={classes.grow}>
                             <Button>
-                                <Link to="/login/" style={{ "color": "white" ,"textDecoration":"blink"}}> Logout</Link>
+                                <Link to="/logout/" style={{ "color": "white" ,"textDecoration":"blink"}}> Logout</Link>
                             </Button>
                         </Typography>
                     </Toolbar>

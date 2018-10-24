@@ -75,7 +75,7 @@ class SignIn extends React.Component {
     const { classes,login } = this.props;
     // console.log(this.props.login)
     if(this.props.login.isAuthenticated == true){
-        console.log("redirecting....")
+        console.log("redirecting to homepage....")
         return <Redirect to="/home" push />
       }
     return (
@@ -89,10 +89,7 @@ class SignIn extends React.Component {
             <Typography component="h1" variant="h1" >
               Sign in
             </Typography>
-            {/* <Typography variant="h3" gutterBottom>
-              h3. Heading
-            </Typography> */}
-            {/* <form className={classes.form} action = "http://localhost:6090/ahits/login" method = "post"> */}
+            
             <form className={classes.form} autoComplete="off" onSubmit={this.handleSubmit}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="username">Employee Id</InputLabel>
