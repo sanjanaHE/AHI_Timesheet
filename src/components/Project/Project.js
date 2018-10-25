@@ -28,12 +28,15 @@ class Project extends React.Component {
         this.props.actions.getUsers();
     }
     handleClickOpen = () => {
+        console.log("in handle click open")
         this.setState({ open: true});
-        var fields = {... this.state.fields};
-        fields.ProjectName = "";
-        fields.description = "";
-        fields.headedBy = "";
+        var fields = {...this.state.fields};
+        fields.projectName = "";
+        fields.projectDescription = "";
+        fields.headedByUserId = "";
         this.setState({fields});
+        this.setState({isEditDialog : false})
+        console.log(this.state)
     };
 
     handleClose = () => {
@@ -51,17 +54,7 @@ class Project extends React.Component {
     handleDelete = (rowData) => {
         this.props.actions.deleteProject(rowData.projectId)
     }
-    handleValidation(){
-        let fields = this.state.fields;
-        let errors = {};
-        let formIsValid = true;
-
-        //Name
-        if(!fields["name"]){
-           formIsValid = false;
-           errors["ProjectName"] = "This field is required";
-        }
-   }
+  
     handleChange = (field, e) =>{         
         let fields = this.state.fields;
         fields[field] = e.target.value;        
@@ -87,13 +80,10 @@ class Project extends React.Component {
         this.state = {
             isEditDialog: false,
             fields : {},
-            errors : {
-                ProjectNameError : false,
-                errorRequired : "This field is required"
-            },
+            errors : {},
             open: false, //for dialog open
             order: 'asc',
-            orderBy: 'headedBy',
+            orderBy: 'projectName',
             selected: [],
             data: [],
             page: 0,
@@ -149,10 +139,7 @@ class Project extends React.Component {
                         // onChange={this.handleProjectNameChange}
                         onChange={this.handleChange.bind(this, "projectName")} 
                         value={this.state.fields["projectName"]}
-                        error={this.state.errors.ProjectNameError}
-                        helperText={this.state.errors.errorRequired}
                         />
-                        {/* <FormHelperText error = {this.state.errors.ProjectNameError}>This field is required</FormHelperText> */}
                         <TextField
                         required
                         margin="dense"
@@ -160,8 +147,6 @@ class Project extends React.Component {
                         label="Description"
                         type="text"
                         fullWidth
-                        // value= {this.state.description}
-                        // onChange={this.handleDescriptionChange}
                         onChange={this.handleChange.bind(this, "projectDescription")} 
                         value={this.state.fields["projectDescription"]}
                         />

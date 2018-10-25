@@ -9,7 +9,7 @@ export function addProject(formData) {
     'projectDescription': formData.projectDescription,
     'headedByUserId': formData.headedByUserId
     } 
-    console.log("ADD PROJECT DATA" , data)
+    // console.log("ADD PROJECT DATA" , data)
     // TODO: MAKE AN API CALL TO BACKEND SERVER
     return (dispatch) => {
       axios({
@@ -32,7 +32,7 @@ function getProjectsApi(dispatch){
     url: `${baseUrl}ahits/api/projects/all`
   })
     .then((response) => {
-      console.log("getting projects ", response.data)
+      // console.log("getting projects ", response.data)
       dispatch({
         type: 'GET_PROJECTS_SUCCESS',
         data: response.data
