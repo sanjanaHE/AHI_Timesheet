@@ -18,17 +18,18 @@ function transformData(data){
     }
   });
   let counter = 0
-  // let rowId = uuid.v4()
   resp = Object.keys(transformData).map( ele => {
+    let rowId = uuid.v4()
     let splitArray = ele.split('|')
     return {
       isRowDeletable : false,
-      rowId: counter++,
+      rowId: rowId,
       projectName: splitArray[0],
       taskName: splitArray[1],
       timesheetEnteries: transformData[ele]
     }
   })
+  console.log("resp ",resp)
   return resp
 }
 export default function timesheetReducer(state = initialState, action) {
