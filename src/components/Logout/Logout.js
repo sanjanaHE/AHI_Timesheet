@@ -8,16 +8,25 @@ import { Redirect } from 'react-router-dom'
 
 class Logout extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+        this.state = {
+            isAuthenticated : false
+        }
     }
     componentDidMount() {
         // console.log(this.props)
         this.props.logout_actions.logout()
+        this.setState({isAuthenticated : this.props.logout.isAuthenticated})
 
     }
+    
     render() {
         console.log(this.props.logout.isAuthenticated);
-        if(this.props.logout.isAuthenticated == false){
+        // if(this.props.logout.isAuthenticated == false){
+        //     console.log("redirecting to login....")
+        //     return <Redirect to="/login" push />
+        //   }
+        if(this.state.isAuthenticated == false){
             console.log("redirecting to login....")
             return <Redirect to="/login" push />
           }

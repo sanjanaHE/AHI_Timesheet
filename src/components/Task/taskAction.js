@@ -9,7 +9,7 @@ export function addTask(formData,empId) {
     'taskDescription': formData.taskDescription,
     'userId': empId
     } 
-    console.log("ADD TASK DATA" , data)
+    // console.log("ADD TASK DATA" , data)
     // TODO: MAKE AN API CALL TO BACKEND SERVER
     return (dispatch) => {
       axios({
@@ -32,7 +32,7 @@ function getTasksApi(dispatch,empId){
     url: `${baseUrl}ahits/api/tasks/all/${empId}`
   })
     .then((response) => {
-      console.log("getting taskss ", response.data)
+      // console.log("getting taskss ", response.data)
       dispatch({
         type: 'GET_TASKS_SUCCESS',
         data: response.data
@@ -41,7 +41,7 @@ function getTasksApi(dispatch,empId){
 }
 
 export function getTasks(empId) {
-    console.log(empId)
+    // console.log(empId)
   return (dispatch) => {
     getTasksApi(dispatch,empId)
   }

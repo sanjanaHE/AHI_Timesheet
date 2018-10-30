@@ -1,4 +1,11 @@
 import React, { Component } from 'react';
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGhost } from '@fortawesome/free-solid-svg-icons'
+
+
+
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import {Provider} from 'react-redux';
 import store from './store/store';
@@ -23,12 +30,14 @@ const theme = createMuiTheme({
     type: 'dark',
   },
 });
+
+library.add(faGhost)
 const App = () => {
     return (
         <Provider store = {store}>  
             <HashRouter basename = "/ahits">
             <div className="App">
-              <Route path="/auth/login/" component={SignIn} />
+              {/* <Route path="/auth/login/" component={SignIn} /> */}
               <Route path="/login/" component={Login} />
               <Route path="/logout/" component={Logout} />
               <Route path="/home/" component={Home} />

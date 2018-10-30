@@ -42,6 +42,7 @@ class Task extends React.Component {
         fields.taskName = "";
         fields.taskDescription = "";
         this.setState({fields});
+        this.setState({isEditDialog : false})
     };
 
     handleClose = () => {
