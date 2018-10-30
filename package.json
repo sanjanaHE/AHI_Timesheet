@@ -22,6 +22,7 @@
     "react-scripts": "2.0.3",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
+    "trim": "0.0.1",
     "uuid": "^3.3.2"
   },
   "scripts": {

@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import trim from 'trim'
 
 // TODO: Move Actions based on each component
 import * as DepartmentActionCreators from './departmentAction'
@@ -18,145 +19,151 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Tooltip from '@material-ui/core/Tooltip';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 class Department extends React.Component {
-    componentDidMount(){
+    componentDidMount() {
         // Fetch Data for Department
         this.props.actions.getDepartments();
         this.props.actions.getUsers();
     }
-    
+
     handleClickOpen = () => {
-        this.setState({ open: true});
-        var fields = {...this.state.fields};
+        this.setState({ open: true });
+        var fields = { ...this.state.fields };
         fields.departmentName = "";
         fields.description = "";
         fields.headedByUserId = "";
-        this.setState({fields});
-        this.setState({isEditDialog : false})
+        this.setState({ fields });
+        this.setState({ isEditDialog: false })
     };
 
     handleClose = () => {
         this.setState({ open: false });
+        this.setState({ errors: {} });
+        this.setState({ errorColor: {} });
     };
     handleEdit = (rowData) => {
-        console.log("EDIT DEPT DATA",rowData)
+        console.log("EDIT DEPT DATA", rowData)
         // this.props.actions.addDepartment(rowData.departmentId)
-        this.setState({fields : rowData})
-        this.setState({ open: true});
-        this.setState({isEditDialog : true})
+        this.setState({ fields: rowData })
+        this.setState({ open: true });
+        this.setState({ isEditDialog: true })
     }
     handleDelete = (rowData) => {
-        // let notDeletedArr = [];
-        // this.state.data.map(eachData => {
-        //     if(rowData.id != eachData.id){
-        //         notDeletedArr.push(eachData);
-        //     }
-        //     this.setState({data : notDeletedArr})
-        // })
-        console.log("row data id ",rowData)
-        this.props.actions.deleteDepartment(rowData.departmentId)
+        console.log("row data id ", rowData);
+        this.props.actions.deleteDepartment(rowData.departmentId);  
     }
 
-    handleValidation(){
-        let fields = this.state.fields;
-        let errors = {};
-        let formIsValid = true;
+    handleValidation() {
 
-        //Name
-        if(!fields["name"]){
-           formIsValid = false;
-           errors["departmentName"] = "This field is required";
+        let fields = this.state.fields;
+        let errors = {};    //error messages
+        let errorColor = {}; //true/false
+        let formIsValid = true; 
+
+        if (!fields["departmentName"]) {
+            errorColor["departmentName"] = true;    //true for error(red color will appear)
+            formIsValid = false;
+            errors["departmentName"] = "This field is required";
+
+        }
+        else if (trim(fields["departmentName"]) == '') {
+            errorColor["departmentName"] = true;
+            formIsValid = false;
+            errors["departmentName"] = "Please enter valid department name";
+        }
+        if (!fields["description"]) {
+            errorColor["description"] = true;
+            formIsValid = false;
+            errors["description"] = "This field is required";
+
+        }
+        else if (trim(fields["description"]) == '') {
+            errorColor["description"] = true;
+            formIsValid = false;
+            errors["description"] = "Please enter valid description";
+        }
+        if (!fields["headedByUserId"]) {
+            errorColor["headedByUserId"] = true;
+            formIsValid = false;
+            errors["headedByUserId"] = "This field is required";
+
         }
 
-        // if(typeof fields["name"] !== "undefined"){
-        //    if(!fields["name"].match(/^[a-zA-Z]+$/)){
-        //       formIsValid = false;
-        //       errors["name"] = "Only letters";
-        //    }        
-        // }
-
-        //Email
-    //     if(!fields["email"]){
-    //        formIsValid = false;
-    //        errors["email"] = "Cannot be empty";
-    //     }
-
-    //     if(typeof fields["email"] !== "undefined"){
-    //        let lastAtPos = fields["email"].lastIndexOf('@');
-    //        let lastDotPos = fields["email"].lastIndexOf('.');
-
-    //        if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
-    //           formIsValid = false;
-    //           errors["email"] = "Email is not valid";
-    //         }
-    //    }  
-
-    //    this.setState({errors: errors});
-    //    return formIsValid;
-   }
-    handleChange = (field, e) =>{         
+        this.setState({ errors: errors });
+        this.setState({ errorColor: errorColor });
+        return formIsValid;
+    }
+    handleChange = (field, e) => {
         let fields = this.state.fields;
-        fields[field] = e.target.value;        
-        this.setState({fields});
+        fields[field] = e.target.value;
+        this.setState({ fields });
+
+        //setting errors and errorcolor in state
+        let errorColor = this.state.errorColor;
+        let errors = this.state.errors;
+
+        if (fields[field] == '') {
+            errorColor[e.target.name] = true;
+            errors[e.target.name] = "This field is required";
+            this.setState({ errorColor: errorColor, errors: errors })
+        }
+        else {
+            // console.log(e.target);
+            errorColor[e.target.name] = false;
+            errors[e.target.name] = "";
+            this.setState({ errorColor: errorColor, errors: errors })
+        }
+
     }
 
     handleSubmit = (event) => {
         //Make a network call somewhere
         event.preventDefault();
-       
-        // if(this.handleValidation()){
-        //     alert("Form submitted");
-        //     this.setState({ open: false });
-        //  }else{
-        //     alert("Form has errors.")
-        //  }
-        if(this.state.fields.departmentName == ""){
-            this.state.errors.departmentNameError= true;
-            this.setState({ open: true });
-        }
-        else{
-            
-            if(this.state.isEditDialog){
-                // let editArr = [];
-                // this.state.data.map(eachData => {
-                //     if(eachData.id == this.state.fields.id){
-                //         editArr.push(this.state.fields);
-                //     }
-                //     else{
-                //         editArr.push(eachData);
-                //     }
-                // })
-                // this.setState({data : editArr})
-                console.log("Fields in EDIT mode ",this.state.fields);
-                this.props.actions.addDepartment(this.state.fields)
-            } else  {
-                // console.log("department added with state ",this.state);
-                this.state.errors.departmentNameError= false;
+        this.setState({ open: true });
+        if (this.state.isEditDialog) {
 
-                console.log(this.state.fields)
-                // this.setState({data : [...this.state.data,this.createData(this.state.fields.departmentName, 
-                //     this.state.fields.description,
-                //     this.state.fields.headedBy
-                // )]})
-                let fields = this.state.fields;
-                fields.departmentId = null;
-                this.setState({fields})
-                this.props.actions.addDepartment(this.state.fields)
-                // this.props.actions.getDepartments();
+            console.log("Fields in EDIT mode ", this.state.fields);
+
+            //checking for validation 
+            if (this.handleValidation()) { 
+                this.props.actions.addDepartment(this.state.fields);     //edited form submission
+                this.setState({ open: false });
             }
-            this.setState({ open: false }); 
+
+
+        } else {
+            this.state.errors.departmentNameError = false;
+
+            console.log(this.state.fields);
+
+            let fields = this.state.fields;
+            fields.departmentId = null;
+            this.setState({ fields })
+
+            //checking for validation 
+            if (this.handleValidation()) {
+                this.props.actions.addDepartment(this.state.fields);    //added form submission
+                this.setState({ open: false });
+            }
+
+            // this.props.actions.getDepartments();
         }
-     }
+
+
+        // }
+    }
     constructor(props) {
         super(props);
         this.counter = 0;
         this.state = {
-            isEditDialog : false,
-            fields : {},
-            errors : {
-                departmentNameError : false,
-                errorRequired : "This field is required"
+            errorColor: {},
+            isEditDialog: false,
+            fields: {},
+            errors: {
+                departmentNameError: false,
+                errorRequired: "This field is required"
             },
             open: false, //for dialog open
             order: 'asc',
@@ -172,7 +179,7 @@ class Department extends React.Component {
                 { id: 'headedBy', numeric: false, disablePadding: false, label: 'Headed By' },
                 { id: 'actions', numeric: false, disablePadding: false, label: 'Actions' }
             ]
-            
+
         };
         // console.log(this.state.rows);
     }
@@ -185,54 +192,60 @@ class Department extends React.Component {
             <React.Fragment>
                 <Header>
                 </Header>
-            
-                <div style={{margin : "2%"}}>
+
+                <div style={{ margin: "2%" }}>
                     <h1>Departments</h1>
                     <Tooltip title="Add department">
-                    <Button variant="fab" color="primary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
-                        <AddIcon />
-                    </Button>
+                        <Button variant="fab" color="primary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
+                            <AddIcon />
+                        </Button>
                     </Tooltip>
                     <Dialog
                         open={this.state.open}
                         onClose={this.handleClose}
                         aria-labelledby="form-dialog-title"
-                        >
+                    >
 
-                    <DialogTitle id="form-dialog-title">
-                    { this.state.isEditDialog ? 'Edit ' : 'Add '}
-                    Department</DialogTitle>
+                        <DialogTitle id="form-dialog-title">
+                            {this.state.isEditDialog ? 'Edit ' : 'Add '}
+                            Department</DialogTitle>
 
-                    <DialogContent>
-                        <form  noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+                        <DialogContent>
+                            <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
 
-                        <TextField
-                        required
-                        autoFocus
-                        margin="dense"
-                        id="departmentName"
-                        label="Department name"
-                        type="text"
-                        fullWidth
-                        onChange={this.handleChange.bind(this, "departmentName")} 
-                        value={this.state.fields["departmentName"]}
-                        // error=
-                        helperText={this.state.errors.errorRequired}
-                        />
-
-                        <TextField
-                        required
-                        margin="dense"
-                        id="description"
-                        label="Description"
-                        type="text"
-                        fullWidth
-                        onChange={this.handleChange.bind(this, "description")} 
-                        value={this.state.fields["description"]}
-                        />
+                                <TextField
+                                    required
+                                    autoFocus
+                                    margin="dense"
+                                    id="departmentName"
+                                    name="departmentName"
+                                    label="Department name"
+                                    type="text"
+                                    fullWidth
+                                    onChange={this.handleChange.bind(this, "departmentName")}
+                                    value={this.state.fields["departmentName"]}
+                                    error={this.state.errorColor.departmentName}
+                                    helperText={this.state.errors.departmentName}
 
 
-                        <FormControl fullWidth required>
+                                />
+
+                                <TextField
+                                    required
+                                    margin="dense"
+                                    id="description"
+                                    name="description"
+                                    label="Description"
+                                    type="text"
+                                    fullWidth
+                                    onChange={this.handleChange.bind(this, "description")}
+                                    value={this.state.fields["description"]}
+                                    error={this.state.errorColor.description}
+                                    helperText={this.state.errors.description}
+                                />
+
+
+                                <FormControl fullWidth required error={this.state.errorColor.headedByUserId}>
                                     <InputLabel htmlFor="headedByUserId">Headed By</InputLabel>
                                     <Select
                                         required
@@ -242,27 +255,29 @@ class Department extends React.Component {
                                         }}
                                         onChange={this.handleChange.bind(this, "headedByUserId")}
                                         value={this.state.fields["headedByUserId"]}
+
                                     >
-                                        <MenuItem disabled value="select" selected>
+                                        <MenuItem disabled value="select" >
                                             <em>Select</em>
                                         </MenuItem>
                                         {employees.data.map(employee => {
-                                                return <MenuItem key={employee.id} value={employee.id}>{employee.firstName} {employee.lastName}</MenuItem>
-                                            })
+                                            return <MenuItem key={employee.id} value={employee.id}>{employee.firstName} {employee.lastName}</MenuItem>
+                                        })
                                         }
                                     </Select>
-                        </FormControl>
+                                    <FormHelperText>{this.state.errors.headedByUserId}</FormHelperText>
+                                </FormControl>
 
-                        </form>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleClose} color="primary">
-                        Cancel
+                            </form>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.handleClose} color="primary">
+                                Cancel
                         </Button>
-                        <Button type = "submit" onClick={this.handleSubmit} color="primary">
-                        Submit
+                            <Button type="submit" onClick={this.handleSubmit} color="primary">
+                                Submit
                         </Button>
-                    </DialogActions>
+                        </DialogActions>
                     </Dialog>
                     <EnhancedTable title="Department"
                         order={order}
@@ -272,8 +287,8 @@ class Department extends React.Component {
                         page={page}
                         rowsPerPage={rowsPerPage}
                         rows={rows}
-                        onRowEdit = {this.handleEdit}
-                        onRowDelete = {this.handleDelete}></EnhancedTable>
+                        onRowEdit={this.handleEdit}
+                        onRowDelete={this.handleDelete}></EnhancedTable>
                 </div>
             </React.Fragment>
         );
@@ -281,16 +296,16 @@ class Department extends React.Component {
 
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
     return {
         departments: state.departments,
-        employees : state.employees
+        employees: state.employees
     }
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({...DepartmentActionCreators}, dispatch)
+        actions: bindActionCreators({ ...DepartmentActionCreators }, dispatch)
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Department);
