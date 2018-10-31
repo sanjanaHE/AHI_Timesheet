@@ -80,7 +80,7 @@ class Timesheet extends Component {
     componentDidMount() {
         this.props.login_actions.getLoggedUser();
         this.props.project_actions.getProjects();
-        this.updateDateRangeBasedOnSelectedDate(this.state.endDate)
+        this.updateDateRangeBasedOnSelectedDate(this.state.endDate);
     }
 
     componentWillUnmount() {
@@ -100,10 +100,10 @@ class Timesheet extends Component {
 
     renderProjects(rowId, activeProject) {
         return (
-            <Grid item sm={2} md={2} xs>
+            <Grid item sm={2} md={2} xs={2}>
                 {/* <InputLabel htmlFor="projectId">Projects</InputLabel> */}
                 <Select
-                    style={{ marginTop: "10%" }}
+                    style={{ marginTop: "9%", height: "40%" }}
                     fullWidth
                     autoWidth={true}
                     input={
@@ -128,11 +128,11 @@ class Timesheet extends Component {
     }
 
     renderTasks(rowId, activeTask) {
-        return (<Grid item sm={2} md={2} xs>
+        return (<Grid item sm={2} md={2} xs={2}>
             {/* <FormControl fullWidth> */}
             {/* <InputLabel htmlFor="taskId">Tasks</InputLabel> */}
             <Select
-                style={{ marginTop: "10%" }}
+                style={{ marginTop: "9%", height: "40%" }}
                 label="Tasks"
                 fullWidth
                 // inputProps={{
@@ -164,13 +164,13 @@ class Timesheet extends Component {
 
     handleChangeHours = (e, timesheetEntry) => {
         let timesheet = Object.assign([], this.state.timesheet);
-        console.log(timesheetEntry)
+        // console.log(timesheetEntry)
         for (let i = 0; i < timesheet.length; i++) {
             // if (timesheet[i].projectName === timesheetEntry.projectName
             //     && timesheet[i].taskName === timesheetEntry.taskName) {
             // console.log(timesheet[i].rowId ,"==", timesheetEntry.hasOwnProperty(rowId));
             if (timesheet[i].rowId == timesheetEntry.rowId) {
-                console.log(timesheet[i].rowId, "==", timesheetEntry.rowId);
+                // console.log(timesheet[i].rowId, "==", timesheetEntry.rowId);
                 timesheet[i].timesheetEnteries[timesheetEntry.date] = timesheetEntry
                 timesheet[i].timesheetEnteries[timesheetEntry.date]['totalHours'] = e.target.value
             }
@@ -178,22 +178,22 @@ class Timesheet extends Component {
         this.setState({ timesheet: timesheet })
     }
     handleDeleteRow(rowId) {
-        
+
         let timesheet = Object.assign([], this.state.timesheet);
-        
+
         timesheet.forEach(element => {
-            if(element.rowId == rowId){
-                console.log("deleting....",timesheet[rowId])
+            if (element.rowId == rowId) {
+                // console.log("deleting....",timesheet[rowId])
                 timesheet.pop(element)
                 // delete timesheet[rowId]
             }
         })
-        this.setState({timesheet:timesheet})
+        this.setState({ timesheet: timesheet })
         console.log(timesheet)
     }
     handleChangeTaskAndProjectName = (e, rowId) => {
         // console.log("in change taskName,projectname ", e.target.value);
-        console.log("state --- ", this.state.timesheet);
+        // console.log("state --- ", this.state.timesheet);
         let timesheet = Object.assign([], this.state.timesheet);
         for (let i = 0; i < timesheet.length; i++) {
             if (timesheet[i].rowId == rowId) {
@@ -211,16 +211,17 @@ class Timesheet extends Component {
             }
         }
         this.setState({ timesheet: timesheet })
-        console.log(timesheet)
+        // console.log(timesheet)
 
     }
     renderTimesheetInput(timesheetEntry) {
-        console.log("in render timesheet input ",timesheetEntry.totalHours)
-        if(timesheetEntry.totalHours == null) timesheetEntry.totalHours = 0;
+        // console.log("in render timesheet input ",timesheetEntry.totalHours)
+        if (timesheetEntry.totalHours == null) timesheetEntry.totalHours = 0;
         return (
             <React.Fragment>
-                <Grid item sm={1} xs md={1}>
+                <Grid item sm={1} xs={1} s md={1}>
                     <TextField
+                        style={{ height: "40%" }}
                         id="totalHours"
                         // label={timesheetEntry?moment(timesheetEntry.date).format('DD-MM-YYYY'):null}
                         type="number"
@@ -230,22 +231,22 @@ class Timesheet extends Component {
                         inputProps={{ maxLength: 1, min: 0, max: 9 }}
                         onChange={(e) => this.handleChangeHours(e, timesheetEntry)}
                         value={timesheetEntry ? timesheetEntry.totalHours : 0}
-                        inputProps={{ style: { height: "10%" }}}
+                        inputProps={{ style: { height: "10%" } }}
                     />
                 </Grid>
             </React.Fragment>)
     }
-    deleteRow(rowId){
-        console.log(rowId)
-        return(
-            <Grid item sm={1} xs md={1} alignItems="center" justify="center"  style={{"margin-top": "2%"}} >
-               <IconButton aria-label="Delete" onClick={() => this.handleDeleteRow(rowId)}>
-                          <DeleteIcon style={{"color": "red"}} fontSize="small" />
+    deleteRow(rowId) {
+        // console.log(rowId)
+        return (
+            <Grid item sm={1} xs md={1} alignItems="center" justify="center" style={{ "margin-top": "1%" }} >
+                <IconButton aria-label="Delete" onClick={() => this.handleDeleteRow(rowId)}>
+                    <DeleteIcon style={{ "color": "red" }} fontSize="small" />
                 </IconButton>
             </Grid>
         )
     }
-   
+
     dateCheck(rowId, project, task, timesheet) {
         return this.state.selectedDatesRange.map(date => {
             var m = momentTZ.tz(date + 'T00:00:00.000', 'Asia/Kolkata');
@@ -264,7 +265,7 @@ class Timesheet extends Component {
     }
 
     renderRow(isRowDeletable, rowId, project, task, timesheet) {
-        console.log("timesheet in render row",timesheet)
+        // console.log("timesheet in render row",timesheet)
         return (<Grid container spacing={24}>
             {this.renderProjects(rowId, project)}
             {this.renderTasks(rowId, task)}
@@ -280,15 +281,15 @@ class Timesheet extends Component {
     }
 
     handleSubmitAction = () => {
-        console.log("in save ", this.state.timesheet)
+        // console.log("in save ", this.state.timesheet)
         this.props.actions.saveTimesheetEntries(this.state.timesheet)
-        this.setState({ submitSuccessSnackBar: true})
+        this.setState({ submitSuccessSnackBar: true })
 
         let timesheet = Object.assign([], this.state.timesheet);
         timesheet.forEach(element => {
-                element.isRowDeletable = false;
+            element.isRowDeletable = false;
         })
-        this.setState({timesheet:timesheet})
+        this.setState({ timesheet: timesheet })
     }
 
     handleCloseSnackBar = () => {
@@ -299,7 +300,7 @@ class Timesheet extends Component {
         this.updateDateRangeBasedOnSelectedDate(endDate)
     }
     handleMoveNextWeek = () => {
-        let  endDate;
+        let endDate;
         // let prevCurDate = this.state.endDate.subtract(1, "day")
         // let curDate = moment();
         // console.log("end date ",this.state.endDate)
@@ -317,7 +318,7 @@ class Timesheet extends Component {
     }
     handleAddRowAction = () => {
         console.log(this.state.timesheet.length)
-        this.setState({ timesheet: [...this.state.timesheet, {isRowDeletable:true, rowId: uuid.v4(), projectName: null, taskName: null, timesheetEnteries: {} }] })
+        this.setState({ timesheet: [...this.state.timesheet, { isRowDeletable: true, rowId: uuid.v4(), projectName: null, taskName: null, timesheetEnteries: {} }] })
     }
     render() {
         const { classes } = this.props;
@@ -329,38 +330,38 @@ class Timesheet extends Component {
                 <div style={{ margin: "2%", "background": "whitesmoke" }}>
                     <h1>Timesheet</h1>
                     <Grid container spacing={8} style={{ "margin-bottom": "2%" }}>
-                        <Grid item md={2}>
+                        <Grid item md={2} sm={2} xs={2}>
                             <Button variant="contained" color="primary" onClick={this.handleAddRowAction}> <AddIcon /> Add Row</Button>
                         </Grid>
-                        <Grid item md={1}>
+                        <Grid item md={1} sm={1} xs={1}>
                         </Grid>
-                        <Grid item md={2}>
+                        <Grid item md={2} sm={2} xs={2}>
                             <Button variant="contained" color="primary" onClick={this.handleMovePrevWeek}>
                                 {/* <FontAwesomeIcon icon="arrow-left" />  */}
                                 {/* <Icon className="fa fa-plus-circle"/> */}
                                 Previous Week </Button>
                         </Grid>
-                        <Grid item md={2}>
+                        <Grid item md={2} sm={2} xs={2}>
                             <Button variant="outlined" color="primary">
                                 {this.state.startDate != undefined ? this.state.startDate.format('DD/MM/YYYY') : null} -
                                 {this.state.endDate.format('DD/MM/YYYY')}
                             </Button>
                         </Grid>
-                        <Grid item md={2}>
+                        <Grid item md={2} sm={2} xs={2}>
                             <Button variant="contained" color="primary"
-                            disabled={this.state.endDate.diff(moment(),'day')>=0?true:false}
-                            onClick={this.handleMoveNextWeek}> Next Week </Button>
+                                disabled={this.state.endDate.diff(moment(), 'day') >= 0 ? true : false}
+                                onClick={this.handleMoveNextWeek}> Next Week </Button>
                         </Grid>
                     </Grid>
                     <Grid container style={{ "margin-bottom": "2%", "background": "darkgray" }}>
-                        <Grid item sm={2} md={2} xs>
+                        <Grid item sm={2} md={2} xs={2}>
                             <Typography variant="subheading">Projects</Typography>
                         </Grid>
-                        <Grid item sm={2} md={2} xs>
+                        <Grid item sm={2} md={2} xs={2}>
                             <Typography variant="subheading">Tasks</Typography>
                         </Grid>
                         {this.state.selectedDatesRange.map(date => {
-                            return (<Grid item sm={1} xs md={1}>
+                            return (<Grid item sm={1} xs={1} md={1}>
                                 <Typography variant="subheading">{moment(date).format('DD MMM')}</Typography>
                             </Grid>);
                         })}
@@ -371,8 +372,8 @@ class Timesheet extends Component {
                             // console.log("timesheet entries",ele.timesheetEnteries)
                             return this.renderRow(ele.isRowDeletable, ele.rowId, ele.projectName, ele.taskName, ele.timesheetEnteries)
                         }) : null}
-                    <Button variant="contained" color="primary" 
-                    onClick={this.handleSubmitAction}>Submit</Button>
+                    <Button variant="contained" color="primary"
+                        onClick={this.handleSubmitAction}>Submit</Button>
                 </div>
                 <Snackbar
                     anchorOrigin={{
