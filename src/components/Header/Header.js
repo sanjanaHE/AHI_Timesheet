@@ -10,6 +10,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Link } from 'react-router-dom';
 // import IconButton from '@material-ui/core/IconButton';
 // import MenuIcon from '@material-ui/icons/Menu';
+
+import * as LoginActionCreators from './../Login/loginAction';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
 const styles = {
     root: {
         flexGrow: 1,
@@ -35,6 +40,9 @@ class ButtonAppBar extends React.Component {
             anchorEl: null,
             anchorE2:null
         };
+    }
+    componentDidMount() {
+        this.props.login_actions.getLoggedUser();
     }
     handleMenu = event => {
         // console.log(event.currentTarget)
@@ -92,15 +100,17 @@ class ButtonAppBar extends React.Component {
                             <MenuItem component={Link} to="/task" onClick={this.handleCloseAH}>Task</MenuItem>
                             <MenuItem component={Link} to="/profile" onClick={this.handleCloseAH}>Profile</MenuItem>
                         </Menu>
-
-                        <Typography variant="subheading" color="inherit" className={classes.grow}>
+                        {this.props.login.data.role == "admin" ? (
+                            <Typography variant="subheading" color="inherit" className={classes.grow}>
                             <Button
                                 style={{ "color": "white" }}
                                 aria-owns={anchorEl ? 'simple-menu' : null}
                                 aria-haspopup="true"
                                 onClick={this.handleMenu} >Admin
                             </Button>
-                        </Typography>
+                        </Typography>) :null
+                        }
+                        
                         <Menu
                             id="simple-menu"
                             anchorEl={anchorEl}
@@ -127,4 +137,16 @@ ButtonAppBar.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ButtonAppBar);
+function mapStateToProps(state) {
+    return {
+        login: state.login
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        login_actions: bindActionCreators(LoginActionCreators, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ButtonAppBar));
