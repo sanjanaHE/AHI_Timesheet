@@ -27,21 +27,17 @@ import trim from 'trim'
 class Task extends React.Component {
     componentDidMount() {
         this.props.login_actions.getLoggedUser();
-        console.log(this.props); //not accessible
-        if (this.props.login.data == undefined) {
-            this.props.actions.getTasks(this.props.login.data.id);
-        }
+        if (this.props.login.data.length != 0)
+        this.props.actions.getTasks(this.props.login.data.id);
+            this.setState({data:this.props.tasks.data})
     }
-    componentDidUpdate(prevProps, prevState){
-        console.log(prevProps,prevState)
-        if(this.props.login.data.length==0)
-            this.props.task_actions.getTasks(prevProps.login.data.id);       
-    }
+    
 
     componentWillReceiveProps(nextProps) {
         // console.log(nextProps);
         if (this.props.login.data.length == 0)
             this.props.actions.getTasks(nextProps.login.data.id);
+        this.setState({data:nextProps.tasks.data})
     }
     handleClickOpen = () => {
         this.setState({ open: true });
@@ -155,6 +151,7 @@ class Task extends React.Component {
         super(props);
         this.counter = 0;
         this.state = {
+            data:[],
             isEditDialog: false,
             fields: {},
             errors: {},
@@ -253,7 +250,7 @@ class Task extends React.Component {
                         order={order}
                         orderBy={orderBy}
                         selected={selected}
-                        data={this.props.tasks.data}
+                        data={data}
                         page={page}
                         rowsPerPage={rowsPerPage}
                         rows={rows}

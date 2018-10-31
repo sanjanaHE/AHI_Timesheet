@@ -53,6 +53,7 @@ class Timesheet extends Component {
         super(props)
         const today = moment()
         this.state = {
+            tasks:[],
             gotDates: false,
             endDate: today,
             timesheet: [],
@@ -81,6 +82,10 @@ class Timesheet extends Component {
         this.props.login_actions.getLoggedUser();
         this.props.project_actions.getProjects();
         this.updateDateRangeBasedOnSelectedDate(this.state.endDate);
+        if (this.props.login.data.length != 0) {
+            this.props.task_actions.getTasks(this.props.login.data.id);
+            this.setState({tasks:this.props.tasks.data})
+        }
     }
 
     componentWillUnmount() {
@@ -94,7 +99,8 @@ class Timesheet extends Component {
                 this.state.startDate.format('DD-MM-YYYY'),
                 this.state.endDate.format('DD-MM-YYYY'));
         }
-        this.setState({ timesheet: nextProps.timesheet.data })
+        console.log("received tasks!!!", nextProps)
+        this.setState({ timesheet: nextProps.timesheet.data ,tasks : nextProps.tasks.data})
 
     }
 
@@ -153,7 +159,7 @@ class Timesheet extends Component {
                     <em>Select</em>
                 </MenuItem>
                 {
-                    this.props.tasks.data.map(element => {
+                    this.state.tasks.map(element => {
                         return <MenuItem value={element.taskName}>{element.taskName}</MenuItem>
                     })
                 }
@@ -219,7 +225,7 @@ class Timesheet extends Component {
         if (timesheetEntry.totalHours == null) timesheetEntry.totalHours = 0;
         return (
             <React.Fragment>
-                <Grid item sm={1} xs={1} s md={1}>
+                <Grid item sm={1} xs={1} md={1}>
                     <TextField
                         style={{ height: "40%" }}
                         id="totalHours"
@@ -231,7 +237,6 @@ class Timesheet extends Component {
                         inputProps={{ maxLength: 1, min: 0, max: 9 }}
                         onChange={(e) => this.handleChangeHours(e, timesheetEntry)}
                         value={timesheetEntry ? timesheetEntry.totalHours : 0}
-                        inputProps={{ style: { height: "10%" } }}
                     />
                 </Grid>
             </React.Fragment>)
