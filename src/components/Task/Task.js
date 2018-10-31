@@ -32,6 +32,11 @@ class Task extends React.Component {
             this.props.actions.getTasks(this.props.login.data.id);
         }
     }
+    componentDidUpdate(prevProps, prevState){
+        console.log(prevProps,prevState)
+        if(this.props.login.data.length==0)
+            this.props.task_actions.getTasks(prevProps.login.data.id);       
+    }
 
     componentWillReceiveProps(nextProps) {
         // console.log(nextProps);
