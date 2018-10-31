@@ -186,12 +186,12 @@ class Timesheet extends Component {
     handleDeleteRow(rowId) {
 
         let timesheet = Object.assign([], this.state.timesheet);
-
-        timesheet.forEach(element => {
+        // console.log("handling delete ", timesheet)
+        timesheet.forEach((element,index) => {
             if (element.rowId == rowId) {
+                console.log(element.rowId," ==", rowId)
                 // console.log("deleting....",timesheet[rowId])
-                timesheet.pop(element)
-                // delete timesheet[rowId]
+                timesheet.splice(index,1)
             }
         })
         this.setState({ timesheet: timesheet })
