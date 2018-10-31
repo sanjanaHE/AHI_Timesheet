@@ -5,7 +5,8 @@ export default function logout(state = initialState, action) {
   switch (action.type) {
     case 'LOGOUT_SUCCESS':
         console.log(action)
-        return { data:action.data ,isAuthenticated : action.isAuthenticated}
+        // return { data:action.data ,isAuthenticated : action.isAuthenticated}
+        return { data:[] ,isAuthenticated : action.isAuthenticated}
    
     case 'GET_LOGGED_USER_SUCCESS':
       // return action.data

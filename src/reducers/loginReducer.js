@@ -4,8 +4,9 @@ const initialState = {"data": initialData, "hasError": false, isAuthenticated: f
 export default function login(state = initialState, action) {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
-      console.log(action)
-      return { data:action.data ,isAuthenticated : action.isAuthenticated}
+      // console.log(action)
+      // return { data:action.data ,isAuthenticated : action.isAuthenticated}
+      return {data : [],isAuthenticated : action.isAuthenticated}
    
     case 'LOGIN_FAILURE':
   
