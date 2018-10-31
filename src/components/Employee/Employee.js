@@ -2,6 +2,8 @@ import React from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+import trim from 'trim'
+
 // TODO: Move Actions based on each component
 import * as ActionCreators from './employeeAction';
 import * as LoginActionCreators from './../Login/loginAction'
@@ -21,6 +23,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 
 class Employee extends React.Component {
@@ -47,10 +50,12 @@ class Employee extends React.Component {
 
     handleClose = () => {
         this.setState({ open: false });
+        this.setState({ errors: {} });
+        this.setState({ errorColor: {} });
     };
     handleEdit = (rowData) => {
 
-        
+
         rowData['dob'] = moment(rowData.dob, 'DD-MM-YYYY').format('MM-DD-YYYY')
         rowData['joiningDate'] = moment(rowData.joiningDate, 'DD-MM-YYYY').format('MM-DD-YYYY')
         console.log("EDIT USER DATA", rowData)
@@ -64,21 +69,144 @@ class Employee extends React.Component {
         let fields = this.state.fields;
         fields[field] = e.target.value;
         this.setState({ fields });
+
+        //setting errors and errorcolor in state
+        let errorColor = this.state.errorColor;
+        let errors = this.state.errors;
+
+        if (fields[field] == '') {
+            errorColor[e.target.name] = true;
+            errors[e.target.name] = "This field is required";
+            this.setState({ errorColor: errorColor, errors: errors })
+        }
+        else {
+            // console.log(e.target);
+            errorColor[e.target.name] = false;
+            errors[e.target.name] = "";
+            this.setState({ errorColor: errorColor, errors: errors })
+        }
+    }
+    handleValidation() {
+
+        let fields = this.state.fields;
+        let errors = {};    //error messages
+        let errorColor = {}; //true/false
+        let formIsValid = true;
+
+        this.props.employees.data.map(element => {
+            if (element.loginId == fields["loginId"] && this.state.isEditDialog == false) {
+                errorColor["loginId"] = true;
+                formIsValid = false;
+                errors["loginId"] = "This empId is already added";
+            }
+        })
+
+        if (!trim(fields["loginId"]).match(/[0-9]{6}/g)) {
+            errorColor["loginId"] = true;
+            formIsValid = false;
+            errors["loginId"] = "Please enter digits only";
+        }
+
+        if (!fields["firstName"]) {
+            errorColor["firstName"] = true;
+            formIsValid = false;
+            errors["firstName"] = "This field is required";
+
+        }
+        else if (trim(fields["firstName"]) == '') {
+            errorColor["firstName"] = true;
+            formIsValid = false;
+            errors["firstName"] = "Please enter valid firstName";
+        }
+        if (!fields["lastName"]) {
+            errorColor["lastName"] = true;
+            formIsValid = false;
+            errors["lastName"] = "This field is required";
+
+        }
+        else if (trim(fields["lastName"]) == '') {
+            errorColor["lastName"] = true;
+            formIsValid = false;
+            errors["lastName"] = "Please enter valid lastName";
+        }
+        if (!fields["dob"]) {
+            errorColor["dob"] = true;
+            formIsValid = false;
+            errors["dob"] = "This field is required";
+
+        }
+        if (!fields["designation"]) {
+            errorColor["designation"] = true;
+            formIsValid = false;
+            errors["designation"] = "This field is required";
+
+        }
+        else if (trim(fields["designation"]) == '') {
+            errorColor["designation"] = true;
+            formIsValid = false;
+            errors["designation"] = "Please enter valid designation";
+        }
+        if (!fields["joiningDate"]) {
+            errorColor["joiningDate"] = true;
+            formIsValid = false;
+            errors["joiningDate"] = "This field is required";
+
+        }
+        if (!fields["role"]) {
+            errorColor["role"] = true;
+            formIsValid = false;
+            errors["role"] = "This field is required";
+
+        }
+        if (!fields["supervisorId"]) {
+            errorColor["supervisorId"] = true;
+            formIsValid = false;
+            errors["supervisorId"] = "This field is required";
+
+        }
+        if (!fields["location"]) {
+            errorColor["location"] = true;
+            formIsValid = false;
+            errors["location"] = "This field is required";
+
+        }
+        else if (trim(fields["location"]) == '') {
+            errorColor["location"] = true;
+            formIsValid = false;
+            errors["location"] = "Please enter valid location";
+        }
+
+
+        this.setState({ errors: errors });
+        this.setState({ errorColor: errorColor });
+        return formIsValid;
     }
     handleSubmit = (event) => {
         event.preventDefault();
-        // console.log("user login id ",this.state.fields)
+
+        this.setState({ open: true });  //dialogue box will be open
+
         if (this.state.isEditDialog) {
-            this.props.actions.addEmployee(this.state.fields, this.props.login.data.loginId)
+            //checking for validation 
+            if (this.handleValidation()) {
+                this.props.actions.addEmployee(this.state.fields, this.props.login.data.loginId)
+                this.setState({ open: false });
+            }
+
         } else {
             let fields = this.state.fields;
             fields.id = null;
             this.setState({ fields })
-            this.props.actions.addEmployee(this.state.fields, this.props.login.data.loginId)
+            //checking for validation 
+            if (this.handleValidation()) {
+                this.props.actions.addEmployee(this.state.fields, this.props.login.data.loginId)
+                this.setState({ open: false });
+            }
+
         }
-        this.setState({ open: false });
+
     }
-    
+
     constructor(props) {
 
         super(props);
@@ -86,18 +214,19 @@ class Employee extends React.Component {
         this.state = {
             isEditDialog: false,
             fields: {
-                "id":null,
-                "loginId":"",
-                "firstName":"", 
-                "lastName":"",
-                 "dob":"", 
-                 "designation":"", 
-                 "joiningDate":"",
-                  "role":"", 
-                  "supervisorId":"", 
-                  "location":""
+                "id": null,
+                "loginId": "",
+                "firstName": "",
+                "lastName": "",
+                "dob": "",
+                "designation": "",
+                "joiningDate": "",
+                "role": "",
+                "supervisorId": "",
+                "location": ""
             },
             errors: {},
+            errorColor: {},
             open: false, //for dialog open
             order: 'asc',
             orderBy: 'id',
@@ -119,13 +248,13 @@ class Employee extends React.Component {
                 { id: 'actions', numeric: false, disablePadding: false, label: 'Actions' }
             ]
         };
-       
+
     }
-    
-   formatDateInGivenFormat = (date) => {
-    let  d = moment(date).format('YYYY-MM-DD');
-    return d;
-   }
+
+    formatDateInGivenFormat = (date) => {
+        let d = moment(date).format('YYYY-MM-DD');
+        return d;
+    }
 
 
     render() {
@@ -140,7 +269,7 @@ class Employee extends React.Component {
                     <Tooltip title="Add employee">
                         <Button variant="fab" color="primary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
                             <AddIcon />
-                        </Button>              
+                        </Button>
                     </Tooltip>
                     <Dialog
                         open={this.state.open}
@@ -152,47 +281,55 @@ class Employee extends React.Component {
                             Employee</DialogTitle>
                         <DialogContent>
                             <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-                            <TextField
-                            required
-                            autoFocus
-                            margin="dense"
-                            id="loginId"
-                            label="Employee Id"
-                            type="text"
-                            inputProps={{
-                                maxLength: 6,
-                            }}
-                            fullWidth
-                            disabled={this.state.isEditDialog}
-                            onChange={this.handleChange.bind(this, "loginId")}
-                            value={this.state.fields["loginId"]}
-                        // error={this.state.errors.departmentNameError}
-                        // helperText={this.state.errors.errorRequired}
-                        />
+                                <TextField
+                                    required
+                                    autoFocus
+                                    margin="dense"
+                                    id="loginId"
+                                    name="loginId"
+                                    label="Employee Id"
+                                    type="text"
+                                    inputProps={{
+                                        maxLength: 6,
+                                    }}
+                                    fullWidth
+                                    disabled={this.state.isEditDialog}
+                                    onChange={this.handleChange.bind(this, "loginId")}
+                                    value={this.state.fields["loginId"]}
+                                    error={this.state.errorColor.loginId}
+                                    helperText={this.state.errors.loginId}
+                                />
                                 <TextField
                                     required
                                     margin="dense"
                                     id="firstName"
+                                    name="firstName"
                                     label="First name"
                                     type="text"
                                     fullWidth
                                     onChange={this.handleChange.bind(this, "firstName")}
                                     value={this.state.fields["firstName"]}
+                                    error={this.state.errorColor.firstName}
+                                    helperText={this.state.errors.firstName}
                                 />
                                 <TextField
                                     required
                                     margin="dense"
                                     id="lastName"
+                                    name="lastName"
                                     label="Last name"
                                     type="text"
                                     fullWidth
                                     onChange={this.handleChange.bind(this, "lastName")}
                                     value={this.state.fields["lastName"]}
+                                    error={this.state.errorColor.lastName}
+                                    helperText={this.state.errors.lastName}
                                 />
                                 <TextField
                                     required
                                     margin="dense"
                                     id="dob"
+                                    name="dob"
                                     label="Birthday"
                                     type="date"
                                     fullWidth
@@ -200,35 +337,43 @@ class Employee extends React.Component {
                                         shrink: true,
                                     }}
                                     inputProps={{
-                                    maxLength: 10,
+                                        maxLength: 10,
                                     }}
                                     onChange={this.handleChange.bind(this, "dob")}
                                     defaultValue={this.formatDateInGivenFormat(this.state.fields["dob"])}
+                                    error={this.state.errorColor.dob}
+                                    helperText={this.state.errors.dob}
                                 />
                                 <TextField
                                     required
                                     margin="dense"
                                     id="designation"
+                                    name="designation"
                                     label="Designation"
                                     type="text"
                                     fullWidth
                                     onChange={this.handleChange.bind(this, "designation")}
                                     value={this.state.fields["designation"]}
+                                    error={this.state.errorColor.designation}
+                                    helperText={this.state.errors.designation}
                                 />
                                 <TextField
                                     required
                                     margin="dense"
                                     id="joiningDate"
+                                    name="joiningDate"
                                     label="Joining Data"
                                     type="date"
                                     fullWidth
                                     defaultValue={this.formatDateInGivenFormat(this.state.fields["joiningDate"])}
-                                     InputLabelProps={{
+                                    InputLabelProps={{
                                         shrink: true,
                                     }}
                                     onChange={this.handleChange.bind(this, "joiningDate")}
+                                    error={this.state.errorColor.joiningDate}
+                                    helperText={this.state.errors.joiningDate}
                                 />
-                                <FormControl fullWidth required>
+                                <FormControl fullWidth required error={this.state.errorColor.role}>
                                     <InputLabel htmlFor="role">Role</InputLabel>
                                     <Select
                                         inputProps={{
@@ -245,8 +390,9 @@ class Employee extends React.Component {
                                         <MenuItem value="manager">Manager</MenuItem>
                                         <MenuItem value="user">User</MenuItem>
                                     </Select>
+                                    <FormHelperText>{this.state.errors.role}</FormHelperText>
                                 </FormControl>
-                                <FormControl fullWidth required>
+                                <FormControl fullWidth required error={this.state.errorColor.supervisorId}>
                                     <InputLabel htmlFor="supervisorId">Supervisor</InputLabel>
                                     <Select
                                         inputProps={{
@@ -265,16 +411,20 @@ class Employee extends React.Component {
                                             })
                                         }
                                     </Select>
+                                    <FormHelperText>{this.state.errors.supervisorId}</FormHelperText>
                                 </FormControl>
                                 <TextField
                                     required
                                     margin="dense"
                                     id="location"
+                                    name="location"
                                     label="Location"
                                     type="text"
                                     fullWidth
                                     onChange={this.handleChange.bind(this, "location")}
                                     value={this.state.fields["location"]}
+                                    error={this.state.errorColor.location}
+                                    helperText={this.state.errors.location}
                                 />
                             </form>
                         </DialogContent>
@@ -297,7 +447,7 @@ class Employee extends React.Component {
                         rowsPerPage={rowsPerPage}
                         rows={rows}
                         onRowEdit={this.handleEdit}
-                        isEmployesTable = "true"
+                        isEmployesTable="true"
                     ></EnhancedTable>
                 </div>
             </React.Fragment>

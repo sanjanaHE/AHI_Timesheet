@@ -21,72 +21,139 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 
+import trim from 'trim'
+
 
 class Task extends React.Component {
-    componentDidMount(){
+    componentDidMount() {
         this.props.login_actions.getLoggedUser();
         console.log(this.props); //not accessible
-        if(this.props.login.data == undefined){
+        if (this.props.login.data == undefined) {
             this.props.actions.getTasks(this.props.login.data.id);
         }
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         // console.log(nextProps);
-        if(this.props.login.data.length==0)
+        if (this.props.login.data.length == 0)
             this.props.actions.getTasks(nextProps.login.data.id);
     }
     handleClickOpen = () => {
-        this.setState({ open: true});
-        var fields = {... this.state.fields};
+        this.setState({ open: true });
+        var fields = { ... this.state.fields };
         fields.taskName = "";
         fields.taskDescription = "";
-        this.setState({fields});
-        this.setState({isEditDialog : false})
+        this.setState({ fields });
+        this.setState({ isEditDialog: false })
     };
 
     handleClose = () => {
         this.setState({ open: false });
+        this.setState({ errors: {} });
+        this.setState({ errorColor: {} });
     };
 
 
     handleEdit = (rowData) => {
 
-        console.log("DATA",rowData)
-        this.setState({fields : rowData})
-        this.setState({ open: true});
-        this.setState({isEditDialog : true})
+        console.log("DATA", rowData)
+        this.setState({ fields: rowData })
+        this.setState({ open: true });
+        this.setState({ isEditDialog: true })
     }
     handleDelete = (rowData) => {
-        this.props.actions.deleteTask(rowData.taskId,this.props.login.data.id)
+        this.props.actions.deleteTask(rowData.taskId, this.props.login.data.id)
     }
 
-    handleChange = (field, e) =>{         
+    handleChange = (field, e) => {
         let fields = this.state.fields;
-        fields[field] = e.target.value;        
-        this.setState({fields});
+        fields[field] = e.target.value;
+        this.setState({ fields });
+
+            //setting errors and errorcolor in state
+            let errorColor = this.state.errorColor;
+            let errors = this.state.errors;
+    
+            if (fields[field] == '') {
+                errorColor[e.target.name] = true;
+                errors[e.target.name] = "This field is required";
+                this.setState({ errorColor: errorColor, errors: errors })
+            }
+            else {
+                // console.log(e.target);
+                errorColor[e.target.name] = false;
+                errors[e.target.name] = "";
+                this.setState({ errorColor: errorColor, errors: errors })
+            }
+    }
+
+    handleValidation() {
+
+        let fields = this.state.fields;
+        let errors = {};    //error messages
+        let errorColor = {}; //true/false
+        let formIsValid = true;
+
+        if (!fields["taskName"]) {
+            errorColor["taskName"] = true;    //true for error(red color will appear)
+            formIsValid = false;
+            errors["taskName"] = "This field is required";
+
+        }
+        else if (trim(fields["taskName"]) == '') {
+            errorColor["taskName"] = true;
+            formIsValid = false;
+            errors["taskName"] = "Please enter valid task name";
+        }
+        if (!fields["taskDescription"]) {
+            errorColor["taskDescription"] = true;
+            formIsValid = false;
+            errors["taskDescription"] = "This field is required";
+
+        }
+        else if (trim(fields["taskDescription"]) == '') {
+            errorColor["taskDescription"] = true;
+            formIsValid = false;
+            errors["taskDescription"] = "Please enter valid description";
+        }
+
+        this.setState({ errors: errors });
+        this.setState({ errorColor: errorColor });
+        return formIsValid;
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
+
+        this.setState({ open: true });  //dialogue box will be open
         if (this.state.isEditDialog) {
-            this.props.actions.addTask(this.state.fields,this.props.login.data.id)
+            //checking for validation
+            if (this.handleValidation()) {
+                this.props.actions.addTask(this.state.fields, this.props.login.data.id)     //edited form submission
+                this.setState({ open: false });
+            }
+            
         } else {
             let fields = this.state.fields;
             fields.taskId = null;
-            this.setState({fields})
-            this.props.actions.addTask(this.state.fields,this.props.login.data.id)
+            this.setState({ fields })
+            //checking for validation
+            if (this.handleValidation()) {
+                this.props.actions.addTask(this.state.fields, this.props.login.data.id)    //added form submission
+                this.setState({ open: false });
             }
-            this.setState({ open: false });
+           
         }
-     
+    }
+
     constructor(props) {
         super(props);
         this.counter = 0;
         this.state = {
             isEditDialog: false,
-            fields : {},
-            errors : {},
+            fields: {},
+            errors: {},
+            errorColor: {},
             open: false, //for dialog open
             order: 'asc',
             orderBy: 'taskName',
@@ -102,19 +169,19 @@ class Task extends React.Component {
                 { id: 'actions', numeric: false, disablePadding: false, label: 'Actions' }
 
             ]
-            
+
         };
     }
 
     render() {
         const { data, title, order, orderBy, selected, rowsPerPage, page, rows } = this.state;
-        const { tasks ,login} = this.props;
+        const { tasks, login } = this.props;
         // console.log(this.props.login.data.id)
         return (
             <React.Fragment>
                 <Header>
                 </Header>
-                <div style={{margin : "2%"}}>
+                <div style={{ margin: "2%" }}>
                     <h1>Tasks</h1>
                     <Tooltip title="Add task">
                         <Button variant="fab" color="primary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
@@ -129,47 +196,53 @@ class Task extends React.Component {
                         open={this.state.open}
                         onClose={this.handleClose}
                         aria-labelledby="form-dialog-title"
-                        >
-                    <DialogTitle id="form-dialog-title">
-                    { this.state.isEditDialog ? 'Edit ' : 'Add '}
-                    Task</DialogTitle>
-                    <DialogContent>
-                    
-                        <form  noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+                    >
+                        <DialogTitle id="form-dialog-title">
+                            {this.state.isEditDialog ? 'Edit ' : 'Add '}
+                            Task</DialogTitle>
+                        <DialogContent>
 
-                        <TextField
-                        required
-                        autoFocus
-                        margin="dense"
-                        id="taskName"
-                        label="Task name"
-                        type="text"
-                        fullWidth
-                        onChange={this.handleChange.bind(this, "taskName")} 
-                        value={this.state.fields["taskName"]}
-                        />
-                        {/* <FormHelperText error = {this.state.errors.TaskNameError}>This field is required</FormHelperText> */}
-                        <TextField
-                        required
-                        margin="dense"
-                        id="taskDescription"
-                        label="Description"
-                        type="text"
-                        fullWidth
-                        onChange={this.handleChange.bind(this, "taskDescription")} 
-                        value={this.state.fields["taskDescription"]}
-                        />
-                    
-                        </form>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleClose} color="primary">
-                        Cancel
+                            <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+
+                                <TextField
+                                    required
+                                    autoFocus
+                                    margin="dense"
+                                    id="taskName"
+                                    name="taskName"
+                                    label="Task name"
+                                    type="text"
+                                    fullWidth
+                                    onChange={this.handleChange.bind(this, "taskName")}
+                                    value={this.state.fields["taskName"]}
+                                    error={this.state.errorColor.taskName}
+                                    helperText={this.state.errors.taskName}
+                                />
+                                {/* <FormHelperText error = {this.state.errors.TaskNameError}>This field is required</FormHelperText> */}
+                                <TextField
+                                    required
+                                    margin="dense"
+                                    id="taskDescription"
+                                    name="taskDescription"
+                                    label="Description"
+                                    type="text"
+                                    fullWidth
+                                    onChange={this.handleChange.bind(this, "taskDescription")}
+                                    value={this.state.fields["taskDescription"]}
+                                    error={this.state.errorColor.taskDescription}
+                                    helperText={this.state.errors.taskDescription}
+                                />
+
+                            </form>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.handleClose} color="primary">
+                                Cancel
                         </Button>
-                        <Button type = "submit" onClick={this.handleSubmit} color="primary">
-                        Submit
+                            <Button type="submit" onClick={this.handleSubmit} color="primary">
+                                Submit
                         </Button>
-                    </DialogActions>
+                        </DialogActions>
                     </Dialog>
                     <EnhancedTable title="Task"
                         order={order}
@@ -179,9 +252,9 @@ class Task extends React.Component {
                         page={page}
                         rowsPerPage={rowsPerPage}
                         rows={rows}
-                        onRowEdit = {this.handleEdit}
-                        onRowDelete = {this.handleDelete}
-                        ></EnhancedTable>
+                        onRowEdit={this.handleEdit}
+                        onRowDelete={this.handleDelete}
+                    ></EnhancedTable>
                 </div>
             </React.Fragment>
         );
@@ -189,16 +262,16 @@ class Task extends React.Component {
 
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
     return {
         tasks: state.tasks,
         login: state.login
     }
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({...ActionCreators}, dispatch),
+        actions: bindActionCreators({ ...ActionCreators }, dispatch),
         login_actions: bindActionCreators(LoginActionCreators, dispatch)
     }
 }

@@ -84,6 +84,8 @@ class Project extends React.Component {
 
     handleClose = () => {
         this.setState({ open: false });
+        this.setState({ errors: {} });
+        this.setState({ errorColor: {} });
     };
 
 
