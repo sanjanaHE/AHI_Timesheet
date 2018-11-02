@@ -235,6 +235,7 @@ class Timesheet extends Component {
                         margin="normal"
                         variant="outlined"
                         inputProps={{ maxLength: 1, min: 0, max: 9 }}
+                        
                         onChange={(e) => this.handleChangeHours(e, timesheetEntry)}
                         value={timesheetEntry ? timesheetEntry.totalHours : 0}
                     />

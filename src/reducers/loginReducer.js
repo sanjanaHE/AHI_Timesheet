@@ -9,11 +9,14 @@ export default function login(state = initialState, action) {
       return {data : [],isAuthenticated : action.isAuthenticated}
    
     case 'LOGIN_FAILURE':
-  
+      return {isAuthenticated:false}
+      
     case 'GET_LOGGED_USER_SUCCESS':
-      // return action.data
-      // console.log(action)
       return Object.assign({}, state, action)
+
+    case 'GET_LOGGED_USER_ERROR':
+      return {isAuthenticated:false}
+
     default:
       return state
   }

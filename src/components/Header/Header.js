@@ -14,24 +14,40 @@ import { Link } from 'react-router-dom';
 import * as LoginActionCreators from './../Login/loginAction';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Logo from "./AH_Long.png";
 
-const styles = {
+const styles = theme =>({
     root: {
         flexGrow: 1,
     },
     grow: {
-        flexGrow: 2,
+        flexGrow:0,
     },
     menuButton: {
         marginLeft: -12,
         marginRight: 20,
     },
+    sectionDesktop: {
+        display: 'none',
+        [theme.breakpoints.up('md')]: {
+          display: 'flex',
+        },
+      },
+      sectionMobile: {
+        display: 'flex',
+        [theme.breakpoints.up('md')]: {
+          display: 'none',
+        },
+      },
     //   menu:{
     //       bg:{
     //           color:'white'
     //       }
     //   }
-};
+});
 
 class ButtonAppBar extends React.Component {
     constructor(props) {
@@ -64,13 +80,18 @@ class ButtonAppBar extends React.Component {
     render() {
         const { anchorEl,anchorE2 } = this.state;
         const { classes } = this.props;
+
         return (
+            <div>
+            { this.props.login.isAuthenticated == true ? 
             <div className={classes.root}>
                 <AppBar position="static">
-                    <Toolbar>
+                    <Toolbar >
                     {/* <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
                         <MenuIcon />
                     </IconButton> */}
+                    <img src={Logo} height="40" alt="ah-logo" />
+                    <React.Fragment className={classes.sectionDesktop}>
                         <Typography variant="subheading" color="inherit" className={classes.grow}>
                             <Button>
                                 <Link to="/home/" style={{ "color": "white" ,"textDecoration":"blink"}}> Home</Link>
@@ -82,7 +103,6 @@ class ButtonAppBar extends React.Component {
                                 <Link to="/timesheet/" style={{ "color": "white" ,"textDecoration":"blink"}}> Timesheet</Link>
                             </Button>
                         </Typography>
-
                         <Typography variant="subheading" color="inherit" className={classes.grow}>
                             <Button
                                 style={{ "color": "white" }}
@@ -121,14 +141,17 @@ class ButtonAppBar extends React.Component {
                             <MenuItem component={Link} to="/employee" onClick={this.handleClose}>Employees</MenuItem>
                             <MenuItem component={Link} to="/project" onClick={this.handleClose}>Project</MenuItem>
                         </Menu>
-                        <Typography variant="subheading" color="inherit" className={classes.grow}>
+                        {/* <Typography variant="subheading" color="inherit" className={classes.grow}> */}
                             <Button>
-                                <Link to="/logout/" style={{ "color": "white" ,"textDecoration":"blink"}}> Logout</Link>
+                               <Link to="/logout/" style={{ "color": "white" ,"textDecoration":"blink"}}> Logout</Link>
                             </Button>
-                        </Typography>
+                        {/* </Typography> */}
+                        </React.Fragment>
                     </Toolbar>
                 </AppBar>
             </div>
+             : <Redirect to="/login" push />}
+             </div>
         );
     }
 }

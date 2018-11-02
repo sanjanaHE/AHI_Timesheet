@@ -16,16 +16,19 @@ class Logout extends Component {
     componentDidMount() {
         // console.log(this.props)
         this.props.logout_actions.logout()
-        this.setState({isAuthenticated : this.props.logout.isAuthenticated})
+        // this.setState({isAuthenticated : this.props.logout.isAuthenticated})
 
     }
-    
+    componentWillReceiveProps(nextProps){
+        this.setState({isAuthenticated : nextProps.logout.isAuthenticated})
+
+    }
     render() {
         console.log(this.props.logout.isAuthenticated);
-        // if(this.props.logout.isAuthenticated == false){
-        //     console.log("redirecting to login....")
-        //     return <Redirect to="/login" push />
-        //   }
+        console.log("LOGOUT SUCCESS---")
+        // return(
+        //     <div>LOGOUT SUCCESS</div>
+        // )
         if(this.state.isAuthenticated == false){
             console.log("redirecting to login....")
             return <Redirect to="/login" push />
