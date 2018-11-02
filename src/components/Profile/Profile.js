@@ -20,6 +20,10 @@ const styles = theme => ({
         textAlign: 'center',
         color: theme.palette.text.secondary,
     },
+    tableStyle:{
+        width : "30%",
+        display:"inline-block"
+    },
 });
 
 class Profile extends Component {
@@ -36,49 +40,47 @@ class Profile extends Component {
         console.log(this.props);
         return (
             <React.Fragment>
-
                 <Header></Header>
                 <div style={{ margin: "2%" }}>
                     <h1>Profile</h1>
-                    <Table>
+                    <Table className = {classes.tableStyle}>
                         <TableRow>
-                            <TableCell></TableCell>
+                            {/* <TableCell></TableCell> */}
                             <TableCell>First name</TableCell>
                             <TableCell>{this.props.login.data.firstName}</TableCell>
                             
                         </TableRow>
                         <TableRow>
-                            <TableCell></TableCell>
+                            {/* <TableCell></TableCell> */}
                             <TableCell>Last name</TableCell>
                             <TableCell>{this.props.login.data.lastName}</TableCell>
                          
                         </TableRow>
                         <TableRow>
-                            <TableCell></TableCell>
+                            {/* <TableCell></TableCell> */}
                             <TableCell>Email</TableCell>
                             <TableCell>{this.props.login.data.email}</TableCell>
                             
                         </TableRow>
                         <TableRow>
-                            <TableCell></TableCell>
+                            {/* <TableCell></TableCell> */}
                             <TableCell>DOB</TableCell>
                             <TableCell>{this.props.login.data.dob}</TableCell>
                           
                         </TableRow>
                         <TableRow>
-                            <TableCell></TableCell>
+                            {/* <TableCell></TableCell> */}
                             <TableCell>Designation</TableCell>
                             <TableCell>{this.props.login.data.designation}</TableCell>
                             
                         </TableRow>
                         <TableRow>
-                            <TableCell></TableCell>
+                            {/* <TableCell></TableCell> */}
                             <TableCell>Role</TableCell>
                             <TableCell>{this.props.login.data.role}</TableCell>
                             
                         </TableRow>
                     </Table>
-
                 </div>
             </React.Fragment>
         )

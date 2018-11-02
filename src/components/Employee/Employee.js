@@ -239,9 +239,9 @@ class Employee extends React.Component {
                 { id: 'loginId', numeric: false, disablePadding: false, label: 'Employee ID' },
                 { id: 'firstName', numeric: false, disablePadding: false, label: 'First name' },
                 { id: 'lastName', numeric: false, disablePadding: false, label: 'Last name' },
-                { id: 'dob', numeric: false, disablePadding: false, label: 'Date of Birth' },
+                // { id: 'dob', numeric: false, disablePadding: false, label: 'Date of Birth' },
                 { id: 'designation', numeric: false, disablePadding: false, label: 'Designation' },
-                { id: 'joiningDate', numeric: false, disablePadding: false, label: 'Joining date' },
+                // { id: 'joiningDate', numeric: false, disablePadding: false, label: 'Joining date' },
                 { id: 'role', numeric: false, disablePadding: false, label: 'Role' },
                 { id: 'supervisorName', numeric: false, disablePadding: false, label: 'Supervisor' },
                 { id: 'location', numeric: false, disablePadding: false, label: 'Location' },
@@ -267,7 +267,7 @@ class Employee extends React.Component {
                 <div style={{ margin: "2%" }}>
                     <h1>Employees</h1>
                     <Tooltip title="Add employee">
-                        <Button variant="fab" color="primary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
+                        <Button variant="fab" color="secondary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
                             <AddIcon />
                         </Button>
                     </Tooltip>

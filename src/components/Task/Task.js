@@ -186,7 +186,7 @@ class Task extends React.Component {
                 <div style={{ margin: "2%" }}>
                     <h1>Tasks</h1>
                     <Tooltip title="Add task">
-                        <Button variant="fab" color="primary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
+                        <Button variant="fab" color="secondary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
                             <AddIcon />
                         </Button>
                     </Tooltip>

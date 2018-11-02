@@ -46,7 +46,15 @@ function getSorting(order, orderBy) {
   return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
 }
 
-
+const CustomTableCell = withStyles(theme => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
 
 class EnhancedTableHead extends React.Component {
   createSortHandler = property => event => {
@@ -67,7 +75,7 @@ class EnhancedTableHead extends React.Component {
           </TableCell> */}
           {rows.slice(1).map(row => {
             return (
-              <TableCell
+              <CustomTableCell
                 numeric={row.numeric}
                 padding={row.disablePadding ? 'none' : 'default'}
                 sortDirection={orderBy === row.id ? order : false}
@@ -77,7 +85,7 @@ class EnhancedTableHead extends React.Component {
                   placement={row.numeric ? 'bottom-end' : 'bottom-start'}
                   enterDelay={300}
                 >
-                  <TableSortLabel
+                  <TableSortLabel style={{color:(orderBy === row.id)?"white":"white"}}
                     active={orderBy === row.id}
                     direction={order}
                     onClick={this.createSortHandler(row.id)}
@@ -85,7 +93,7 @@ class EnhancedTableHead extends React.Component {
                     {row.label}
                   </TableSortLabel>
                 </Tooltip>
-              </TableCell>
+              </CustomTableCell>
             );
           }, this)}
         </TableRow>
@@ -179,8 +187,9 @@ EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 
 const styles = theme => ({
   root: {
-    width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    width: '90%',
+    display:"inline-block",
+    marginTop: theme.spacing.unit *1,
   },
   table: {
     minWidth: 720,
@@ -260,7 +269,7 @@ class EnhancedTable extends React.Component {
     return (
         
       <Paper className={classes.root}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
@@ -296,7 +305,7 @@ class EnhancedTable extends React.Component {
                         // console.log(m)
                         if (columns.includes(m)){
                           return(
-                            <TableCell >{n[m]}</TableCell>
+                            <CustomTableCell >{n[m]}</CustomTableCell>
                             )
                         }
                         else {
@@ -304,7 +313,7 @@ class EnhancedTable extends React.Component {
                         }
                         
                       })}
-                      <TableCell>
+                      <CustomTableCell>
                       <Tooltip title="Edit">
                         <IconButton aria-label="Edit" className={classes.button} onClick = {() => this.props.onRowEdit(n)}>
                         <Icon>edit_icon</Icon>
@@ -317,7 +326,7 @@ class EnhancedTable extends React.Component {
                         </IconButton></Tooltip>
                         }
                         
-                      </TableCell>
+                      </CustomTableCell>
                       {/* <TableCell>Delete</TableCell> */}
                       {/* <TableCell>{n.departmentName}</TableCell>
                       <TableCell >{n.description}</TableCell>
@@ -327,7 +336,7 @@ class EnhancedTable extends React.Component {
                 })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={6} />
+                  <CustomTableCell colSpan={6} />
                 </TableRow>
               )}
             </TableBody>

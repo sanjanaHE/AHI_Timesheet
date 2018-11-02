@@ -134,6 +134,7 @@ class Timesheet extends Component {
     }
 
     renderTasks(rowId, activeTask) {
+        console.log("active tasks ", activeTask)
         return (<Grid item sm={2} md={2} xs={2}>
             {/* <FormControl fullWidth> */}
             {/* <InputLabel htmlFor="taskId">Tasks</InputLabel> */}
@@ -160,7 +161,9 @@ class Timesheet extends Component {
                 </MenuItem>
                 {
                     this.state.tasks.map(element => {
-                        return <MenuItem value={element.taskName}>{element.taskName}</MenuItem>
+                        return(
+                            <MenuItem key={element.taskName} value={element.taskName}>{element.taskName}</MenuItem>
+                        );
                     })
                 }
             </Select>
@@ -272,7 +275,7 @@ class Timesheet extends Component {
 
     renderRow(isRowDeletable, rowId, project, task, timesheet) {
         // console.log("timesheet in render row",timesheet)
-        return (<Grid container spacing={24}>
+        return (<Grid container spacing={24} style={{margin: "0 3% -3% -1%",paddingLeft:"1%"}}>
             {this.renderProjects(rowId, project)}
             {this.renderTasks(rowId, task)}
             {/* // Generate an array of dates from startDate to endDate
@@ -345,10 +348,10 @@ class Timesheet extends Component {
                             <Button variant="contained" color="primary" onClick={this.handleMovePrevWeek}>
                                 {/* <FontAwesomeIcon icon="arrow-left" />  */}
                                 {/* <Icon className="fa fa-plus-circle"/> */}
-                                Previous Week </Button>
+                                Previous </Button>
                         </Grid>
                         <Grid item md={2} sm={2} xs={2}>
-                            <Button variant="outlined" color="primary">
+                            <Button variant="outlined" color="primary" disabled>
                                 {this.state.startDate != undefined ? this.state.startDate.format('DD/MM/YYYY') : null} -
                                 {this.state.endDate.format('DD/MM/YYYY')}
                             </Button>
@@ -356,10 +359,10 @@ class Timesheet extends Component {
                         <Grid item md={2} sm={2} xs={2}>
                             <Button variant="contained" color="primary"
                                 disabled={this.state.endDate.diff(moment(), 'day') >= 0 ? true : false}
-                                onClick={this.handleMoveNextWeek}> Next Week </Button>
+                                onClick={this.handleMoveNextWeek}> Next </Button>
                         </Grid>
                     </Grid>
-                    <Grid container style={{ "margin-bottom": "2%", "background": "darkgray" }}>
+                    <Grid container style={{ "margin-bottom": "2%", "background": "gainsboro" }}>
                         <Grid item sm={2} md={2} xs={2}>
                             <Typography variant="subheading">Projects</Typography>
                         </Grid>
@@ -369,6 +372,8 @@ class Timesheet extends Component {
                         {this.state.selectedDatesRange.map(date => {
                             return (<Grid item sm={1} xs={1} md={1}>
                                 <Typography variant="subheading">{moment(date).format('DD MMM')}</Typography>
+                                <Typography variant="subheading">{moment(date).format('ddd')}</Typography>
+
                             </Grid>);
                         })}
                     </Grid>

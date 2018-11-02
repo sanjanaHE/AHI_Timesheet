@@ -184,7 +184,7 @@ class Project extends React.Component {
                 <div style={{ margin: "2%" }}>
                     <h1>Projects</h1>
                     <Tooltip title="Add project">
-                        <Button variant="fab" color="primary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
+                        <Button variant="fab" color="secondary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
                             <AddIcon />
                         </Button>
                     </Tooltip>

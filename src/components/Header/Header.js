@@ -24,7 +24,7 @@ const styles = theme =>({
         flexGrow: 1,
     },
     grow: {
-        flexGrow:0,
+        flexGrow:1,
     },
     menuButton: {
         marginLeft: -12,
@@ -86,24 +86,24 @@ class ButtonAppBar extends React.Component {
             { this.props.login.isAuthenticated == true ? 
             <div className={classes.root}>
                 <AppBar position="static">
-                    <Toolbar >
+                    <Toolbar style={{minHeight:"55px"}}>
                     {/* <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
                         <MenuIcon />
                     </IconButton> */}
-                    <img src={Logo} height="40" alt="ah-logo" />
+                    <img src={Logo} height="55" alt="ah-logo" />
                     <React.Fragment className={classes.sectionDesktop}>
-                        <Typography variant="subheading" color="inherit" className={classes.grow}>
+                        <Typography variant="subheading" color="inherit" >
                             <Button>
                                 <Link to="/home/" style={{ "color": "white" ,"textDecoration":"blink"}}> Home</Link>
                             </Button>
                       
                         </Typography>
-                        <Typography variant="subheading" color="inherit" className={classes.grow}>
+                        <Typography variant="subheading" color="inherit" >
                             <Button>
                                 <Link to="/timesheet/" style={{ "color": "white" ,"textDecoration":"blink"}}> Timesheet</Link>
                             </Button>
                         </Typography>
-                        <Typography variant="subheading" color="inherit" className={classes.grow}>
+                        <Typography variant="subheading" color="inherit" >
                             <Button
                                 style={{ "color": "white" }}
                                 aria-owns={anchorE2 ? 'menu' : null}
@@ -121,7 +121,7 @@ class ButtonAppBar extends React.Component {
                             <MenuItem component={Link} to="/profile" onClick={this.handleCloseAH}>Profile</MenuItem>
                         </Menu>
                         {this.props.login.data.role == "admin" ? (
-                            <Typography variant="subheading" color="inherit" className={classes.grow}>
+                            <Typography variant="subheading" color="inherit" >
                             <Button
                                 style={{ "color": "white" }}
                                 aria-owns={anchorEl ? 'simple-menu' : null}
@@ -141,11 +141,11 @@ class ButtonAppBar extends React.Component {
                             <MenuItem component={Link} to="/employee" onClick={this.handleClose}>Employees</MenuItem>
                             <MenuItem component={Link} to="/project" onClick={this.handleClose}>Project</MenuItem>
                         </Menu>
-                        {/* <Typography variant="subheading" color="inherit" className={classes.grow}> */}
+                        <Typography align="right" variant="subheading" color="inherit" className={classes.grow}>
                             <Button>
                                <Link to="/logout/" style={{ "color": "white" ,"textDecoration":"blink"}}> Logout</Link>
                             </Button>
-                        {/* </Typography> */}
+                        </Typography>
                         </React.Fragment>
                     </Toolbar>
                 </AppBar>
