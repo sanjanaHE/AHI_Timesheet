@@ -16,6 +16,7 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import AHILogo from './logof1.jpg';
 
 const styles = theme => ({
   layout: {
@@ -83,9 +84,10 @@ class SignIn extends React.Component {
         <CssBaseline />
         <main className={classes.layout}>
           <Paper className={classes.paper}>
-            <Avatar className={classes.avatar}>
+            {/* <Avatar className={classes.avatar}>
               <LockIcon />
-            </Avatar>
+            </Avatar> */}
+            <img className = "ahi-login-page-logo"  src={AHILogo} width="20%"  alt="ahi-logo" />
             <Typography component="h1" variant="h1" >
               Sign in
             </Typography>
@@ -108,11 +110,11 @@ class SignIn extends React.Component {
                     value={this.state["password"]}
                 />
               </FormControl>
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
-              />
-              <Button
+              /> */}
+              <Button style={{marginTop : "15%"}}
                 type="submit"
                 fullWidth
                 variant="contained"
