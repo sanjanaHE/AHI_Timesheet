@@ -195,8 +195,8 @@ class Department extends React.Component {
         // console.log("employees ",JSON.stringify(employees))
         return (
             <React.Fragment>
-                <Header>
-                </Header>
+                {/* <Header>
+                </Header> */}
 
                 <div style={{ margin: "2%" }}>
                     <h1>Departments</h1>

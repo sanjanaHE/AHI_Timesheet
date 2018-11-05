@@ -181,8 +181,8 @@ class Task extends React.Component {
         // console.log(this.props.login.data.id)
         return (
             <React.Fragment>
-                <Header>
-                </Header>
+                {/* <Header>
+                </Header> */}
                 <div style={{ margin: "2%" }}>
                     <h1>Tasks</h1>
                     <Tooltip title="Add task">

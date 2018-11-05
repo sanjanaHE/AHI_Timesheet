@@ -3,7 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import {Provider} from 'react-redux';
+import store from './store/store';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import UnauthorizedRoute  from '../src/route/UnauthorisedRoute';
+import AuthorisedRoute  from '../src/route/AuthorisedRoute';
+import { HashRouter,Switch, Route, Link,Redirect  } from 'react-router-dom';
+
+
+
 const theme = createMuiTheme({
     palette: {
       type: 'light',
@@ -31,9 +39,18 @@ const theme = createMuiTheme({
       },
   });
 ReactDOM.render(
-    <MuiThemeProvider theme={theme}>
-    <App />
-    </MuiThemeProvider>
+          <Provider store = {store}>  
+            <MuiThemeProvider theme={theme}>
+              <HashRouter basename = "/ahits">
+                <div className="App">
+                  <Switch>
+                    <Route path="/auth" component={UnauthorizedRoute} />
+                    <AuthorisedRoute path="/app" component={App} />
+                  </Switch>
+              </div>
+            </HashRouter>
+       </MuiThemeProvider>
+     </Provider>
 , document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

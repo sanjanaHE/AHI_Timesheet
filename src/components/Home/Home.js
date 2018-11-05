@@ -5,8 +5,8 @@ export default class Home extends Component {
   render() {
     return (
       <React.Fragment>
-                <Header>
-                </Header>
+                {/* <Header>
+                </Header> */}
                 <div style={{margin : "2%"}}>
                     <h1>Home</h1>
                     <h2>AH INFOTECH</h2>

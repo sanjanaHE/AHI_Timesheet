@@ -31,7 +31,7 @@ class Logout extends Component {
         // )
         if(this.state.isAuthenticated == false){
             console.log("redirecting to login....")
-            return <Redirect to="/login" push />
+            return <Redirect to="/auth/login" push />
           }
     }
 }

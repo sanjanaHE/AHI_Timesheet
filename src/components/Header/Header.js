@@ -82,8 +82,6 @@ class ButtonAppBar extends React.Component {
         const { classes } = this.props;
 
         return (
-            <div>
-            { this.props.login.isAuthenticated == true ? 
             <div className={classes.root}>
                 <AppBar position="static">
                     <Toolbar style={{minHeight:"55px"}}>
@@ -94,13 +92,13 @@ class ButtonAppBar extends React.Component {
                     <React.Fragment className={classes.sectionDesktop}>
                         <Typography variant="subheading" color="inherit" >
                             <Button>
-                                <Link to="/home/" style={{ "color": "white" ,"textDecoration":"blink"}}> Home</Link>
+                                <Link to="/app/home/" style={{ "color": "white" ,"textDecoration":"blink"}}> Home</Link>
                             </Button>
                       
                         </Typography>
                         <Typography variant="subheading" color="inherit" >
                             <Button>
-                                <Link to="/timesheet/" style={{ "color": "white" ,"textDecoration":"blink"}}> Timesheet</Link>
+                                <Link to="/app/timesheet/" style={{ "color": "white" ,"textDecoration":"blink"}}> Timesheet</Link>
                             </Button>
                         </Typography>
                         <Typography variant="subheading" color="inherit" >
@@ -117,8 +115,8 @@ class ButtonAppBar extends React.Component {
                             open={Boolean(anchorE2)}
                             onClose={this.handleCloseAH}
                             style={{ color: 'white' }}>
-                            <MenuItem component={Link} to="/task" onClick={this.handleCloseAH}>Task</MenuItem>
-                            <MenuItem component={Link} to="/profile" onClick={this.handleCloseAH}>Profile</MenuItem>
+                            <MenuItem component={Link} to="/app/task" onClick={this.handleCloseAH}>Task</MenuItem>
+                            <MenuItem component={Link} to="/app/profile" onClick={this.handleCloseAH}>Profile</MenuItem>
                         </Menu>
                         {this.props.login.data.role == "admin" ? (
                             <Typography variant="subheading" color="inherit" >
@@ -137,24 +135,22 @@ class ButtonAppBar extends React.Component {
                             open={Boolean(anchorEl)}
                             onClose={this.handleClose}
                             style={{ color: 'white' }}>
-                            <MenuItem component={Link} to="/department" onClick={this.handleClose}>Department</MenuItem>
-                            <MenuItem component={Link} to="/employee" onClick={this.handleClose}>Employees</MenuItem>
-                            <MenuItem component={Link} to="/project" onClick={this.handleClose}>Project</MenuItem>
+                            <MenuItem component={Link} to="/app/department" onClick={this.handleClose}>Department</MenuItem>
+                            <MenuItem component={Link} to="/app/employee" onClick={this.handleClose}>Employees</MenuItem>
+                            <MenuItem component={Link} to="/app/project" onClick={this.handleClose}>Project</MenuItem>
                         </Menu>
                         <Typography align="right" variant="subheading" color="inherit" className={classes.grow}>
                             <Button>
                                <span style={{ "color": "white" ,"textDecoration":"blink"}}> {this.props.login.data.firstName} {this.props.login.data.lastName}</span>
                             </Button>
                             <Button>
-                               <Link to="/logout/" style={{ "color": "white" ,"textDecoration":"blink"}}> Logout</Link>
+                               <Link to="/auth/logout/" style={{ "color": "white" ,"textDecoration":"blink"}}> Logout</Link>
                             </Button>
                         </Typography>
                         </React.Fragment>
                     </Toolbar>
                 </AppBar>
             </div>
-             : <Redirect to="/login" push />}
-             </div>
         );
     }
 }

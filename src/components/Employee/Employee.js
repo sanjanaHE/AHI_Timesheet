@@ -262,8 +262,8 @@ class Employee extends React.Component {
         const { classes, login } = this.props;
         return (
             <React.Fragment>
-                <Header>
-                </Header>
+                {/* <Header>
+                </Header> */}
                 <div style={{ margin: "2%" }}>
                     <h1>Employees</h1>
                     <Tooltip title="Add employee">

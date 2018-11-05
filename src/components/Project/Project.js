@@ -179,8 +179,8 @@ class Project extends React.Component {
         const { employees } = this.props;
         return (
             <React.Fragment>
-                <Header>
-                </Header>
+                {/* <Header>
+                </Header> */}
                 <div style={{ margin: "2%" }}>
                     <h1>Projects</h1>
                     <Tooltip title="Add project">

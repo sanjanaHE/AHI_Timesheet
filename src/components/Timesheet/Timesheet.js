@@ -335,7 +335,7 @@ class Timesheet extends Component {
         // console.log(this.state)
         return (
             <React.Fragment>
-                <Header></Header>
+                {/* <Header></Header> */}
                 <div style={{ margin: "2%", "background": "whitesmoke" }}>
                     <h1>Timesheet</h1>
                     <Grid container spacing={8} style={{ "margin-bottom": "2%" }}>
@@ -362,7 +362,7 @@ class Timesheet extends Component {
                                 onClick={this.handleMoveNextWeek}> Next </Button>
                         </Grid>
                     </Grid>
-                    <Grid container style={{ "margin-bottom": "2%", "background": "gainsboro" }}>
+                    <Grid container style={{ "margin-bottom": "2%", "background": "#BDBDBD" }}>
                         <Grid item sm={2} md={2} xs={2}>
                             <Typography variant="subheading">Projects</Typography>
                         </Grid>
@@ -384,7 +384,8 @@ class Timesheet extends Component {
                             return this.renderRow(ele.isRowDeletable, ele.rowId, ele.projectName, ele.taskName, ele.timesheetEnteries)
                         }) : null}
                     <Button variant="contained" color="primary"
-                        onClick={this.handleSubmitAction}>Submit</Button>
+                        onClick={this.handleSubmitAction}
+                        style={{ "margin-top": "2%" }}>Submit</Button>
                 </div>
                 <Snackbar
                     anchorOrigin={{
