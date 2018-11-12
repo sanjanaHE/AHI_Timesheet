@@ -362,7 +362,7 @@ class Timesheet extends Component {
                                 onClick={this.handleMoveNextWeek}> Next </Button>
                         </Grid>
                     </Grid>
-                    <Grid container style={{ "margin-bottom": "2%", "background": "#BDBDBD" }}>
+                    <Grid container style={{ "margin-bottom": "2%", "background": "#BDBDBD",fontWeight : "bold" }}>
                         <Grid item sm={2} md={2} xs={2}>
                             <Typography variant="subheading">Projects</Typography>
                         </Grid>

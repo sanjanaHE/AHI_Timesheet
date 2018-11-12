@@ -12,15 +12,15 @@ export const Main = () =>
 
   (
     <main>
-      <Switch>
+      {/* <Switch> */}
           <Route path="/app/home/" component={Home} />
           <Route path="/app/timesheet/" component={Timesheet} />
-          <Route path="/app/department" component={Department} />
-          <Route path="/app/employee" component={Employee} />
-          <Route path="/app/project" component={Project} />
+          <Route path="/app/admin/department" component={Department} />
+          <Route path="/app/admin/employee" component={Employee} />
+          <Route path="/app/admin/project" component={Project} />
           <Route path="/app/task" component={Task} />
           <Route path="/app/profile" component={Profile} />
           <Route exact path='/app' component={Home} />
-      </Switch>
+      {/* </Switch> */}
     </main>
   )

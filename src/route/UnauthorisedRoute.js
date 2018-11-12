@@ -12,7 +12,6 @@ const UnauthorizedRoute = () => {
     <Switch>
       <Route path="/auth/login" component={Login} />
       <Route path="/auth/logout" component={Logout} />
-      <Route exact path='/' component={Login} />
       <Redirect to="/auth/login" />
     </Switch>
   

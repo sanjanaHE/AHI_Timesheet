@@ -25,6 +25,9 @@ export function login(creds){
 
 export function getLoggedUser(){
     return (dispatch) => {
+        dispatch({
+            type: 'INITIATE_GET_LOGGED_IN_USER'
+        })
         axios.get('http://localhost:6090/ahits/rest/user/userdetails')
         .then(response => {
             console.log("GET lOGGED USER ID" , response.status)

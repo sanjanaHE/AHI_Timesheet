@@ -40,7 +40,7 @@ class Profile extends Component {
         console.log(this.props);
         return (
             <React.Fragment>
-                <Header></Header>
+                {/* <Header></Header> */}
                 <div style={{ margin: "2%" }}>
                     <h1>Profile</h1>
                     <Table className = {classes.tableStyle}>

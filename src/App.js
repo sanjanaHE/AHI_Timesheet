@@ -28,29 +28,6 @@ const App = () => {
       <Header />
       <Main />
       </div>
-        // <Provider store = {store}>  
-         
-        //     <HashRouter basename = "/ahits">
-        //     <div className="App">
-        //       <Route path="/login/" component={Login} />
-        //       <Route path="/logout/" component={Logout} />
-        //       <Route path="/home/" component={Home} />
-        //       <Route path="/timesheet/" component={Timesheet} />
-        //       <Route path="/department" component={Department} />
-        //       <Route path="/employee" component={Employee} />
-        //       <Route path="/project" component={Project} />
-        //       <Route path="/task" component={Task} />
-        //       <Route path="/profile" component={Profile} />
-        //       {/* <Route path="/">
-        //         <Redirect to="/login" />
-        //       </Route> */}
-             
-        //     </div>
-        //   </HashRouter>
-         
-        // </Provider>
-
-      
     );
   }
 

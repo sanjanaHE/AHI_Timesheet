@@ -7,6 +7,8 @@ import { connect } from 'react-redux'
 
 // import local
 import * as LoginActionCreators from '../components/Login/loginAction';
+import * as DepartmentActionCreators from '../components/Department/departmentAction';
+
 import { bindActionCreators } from 'redux';
 
 
@@ -16,25 +18,42 @@ class AuthorizedRouteComponent extends React.Component {
     // this.props.resetFetch();
   }
   componentDidMount() {
-    this.props.login_actions.getLoggedUser();
+    if(this.props.login.dataFetched == false){
+      this.props.login_actions.getLoggedUser();
+    }
   }
 
   render() {
     
     const { component: Component, pending, location, ...rest } = this.props;
-    const { children:routes } = this.props;
+    // const { children:routes } = this.props;
+    console.log("PENDING is..",this.props)
     return (
       <Route {...rest} render={props => {
-        if (pending) {return <div>Loading...</div>}
+        if (this.props.login.dataFetched == false) {return <div>Loading...</div>}
         else{
+          console.log("PROPS--",this.props);
           if(this.props.login.isAuthenticated == false){
             return <Redirect to={{
                           pathname: '/auth/login',
                           state: { referrer: location }
                         }}/>   
-          }else{
+          }
+          //handling routing for user role
+          else if(this.props.login.data.role == "user"){
+              if(this.props.location.pathname.match(/admin/)){
+                return <Redirect to={{
+                  pathname: '/app/home',
+                  state: { referrer: location }
+                }}/>
+              }    
+              else{
+                return <Component {...this.props} />;
+              }   
+            } 
+          else{
             return <Component {...this.props} />;
-          }             
+          }      
         }
       }} />
     )
@@ -43,13 +62,15 @@ class AuthorizedRouteComponent extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        login: state.login
+        login: state.login,
+        departments: state.departments
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        login_actions: bindActionCreators(LoginActionCreators, dispatch)
+        login_actions: bindActionCreators(LoginActionCreators, dispatch),
+        department_actions: bindActionCreators(DepartmentActionCreators, dispatch)
     }
 }
 
