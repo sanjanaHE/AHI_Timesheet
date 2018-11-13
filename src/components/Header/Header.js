@@ -87,7 +87,7 @@ class ButtonAppBar extends React.Component {
                         <MenuIcon />
                     </IconButton> */}
                     <img src={Logo} height="55" alt="ah-logo" />
-                    <React.Fragment className={classes.sectionDesktop}>
+                    <React.Fragment>
                         <Typography variant="subheading" color="inherit" >
                             <Button>
                                 <Link to="/app/home/" style={{ "color": "white" ,"textDecoration":"blink"}}> Home</Link>

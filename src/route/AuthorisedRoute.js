@@ -10,10 +10,21 @@ import * as LoginActionCreators from '../components/Login/loginAction';
 import * as DepartmentActionCreators from '../components/Department/departmentAction';
 
 import { bindActionCreators } from 'redux';
-
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+const styles = theme => ({
+  progress: {
+    margin: theme.spacing.unit * 2,
+  },
+});
 
 class AuthorizedRouteComponent extends React.Component {
   
+  constructor(props){
+    super(props);
+    
+  }
+
   componentWillUnmount () {
     // this.props.resetFetch();
   }
@@ -24,13 +35,13 @@ class AuthorizedRouteComponent extends React.Component {
   }
 
   render() {
-    
+    const { classes } = this.props;
     const { component: Component, pending, location, ...rest } = this.props;
     // const { children:routes } = this.props;
-    console.log("PENDING is..",this.props)
+    // console.log("PENDING is..",this.props)
     return (
       <Route {...rest} render={props => {
-        if (this.props.login.dataFetched == false) {return <div>Loading...</div>}
+        if (this.props.login.dataFetched == false) {return <div><CircularProgress className={classes.progress} color="secondary" /></div>}
         else{
           console.log("PROPS--",this.props);
           if(this.props.login.isAuthenticated == false){
@@ -76,4 +87,4 @@ function mapDispatchToProps(dispatch) {
 
 const AuthorizedRoute = connect(mapStateToProps, mapDispatchToProps)(AuthorizedRouteComponent);
 
-export default AuthorizedRoute
+export default withStyles(styles)(AuthorizedRoute);

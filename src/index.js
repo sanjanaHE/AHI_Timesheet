@@ -44,6 +44,7 @@ ReactDOM.render(
               <HashRouter basename = "/ahits">
                 <div className="App">
                   <Switch>
+                    <Route path="/" component={UnauthorizedRoute} />
                     <Route path="/auth" component={UnauthorizedRoute} />
                     <AuthorisedRoute path="/app" component={App} />
                   </Switch>
