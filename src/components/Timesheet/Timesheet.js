@@ -340,7 +340,7 @@ class Timesheet extends Component {
                     <h1>Timesheet</h1>
                     <Grid container spacing={8} style={{ "margin-bottom": "2%" }}>
                         <Grid item md={2} sm={2} xs={2}>
-                            <Button variant="contained" color="primary" onClick={this.handleAddRowAction}> <AddIcon /> Add Row</Button>
+                            <Button variant="contained" color="secondary" onClick={this.handleAddRowAction}> <AddIcon /> Add Row</Button>
                         </Grid>
                         <Grid item md={1} sm={1} xs={1}>
                         </Grid>

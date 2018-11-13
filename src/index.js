@@ -21,6 +21,9 @@ const theme = createMuiTheme({
         // dark: will be calculated from palette.primary.main,
         // contrastText: will be calculated to contrast with palette.primary.main
       },
+      secondary:{
+        main:'#00e676'
+      }
     },
     typography: {
         // Use the system font instead of the default Roboto font.
@@ -44,7 +47,7 @@ ReactDOM.render(
               <HashRouter basename = "/ahits">
                 <div className="App">
                   <Switch>
-                    <Route path="/" component={UnauthorizedRoute} />
+                    {/* <Route path="/" component={UnauthorizedRoute} /> */}
                     <Route path="/auth" component={UnauthorizedRoute} />
                     <AuthorisedRoute path="/app" component={App} />
                   </Switch>
