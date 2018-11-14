@@ -35,7 +35,8 @@ function getEmployeesApi(dispatch){
       'joiningDate': moment(formData.joiningDate).format('YYYY-MM-DD'),
       'role': formData.role,
       'supervisorId': formData.supervisorId,
-      'location': formData.location
+      'location': formData.location,
+      'email':formData.email
       } 
       console.log("IN ADD EMPL ",data,userId);
       // TODO: MAKE AN API CALL TO BACKEND SERVER

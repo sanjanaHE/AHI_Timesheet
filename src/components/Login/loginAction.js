@@ -38,7 +38,8 @@ export function getLoggedUser(){
         }).catch(error  => {
             console.log(error);
             dispatch({
-                type : 'GET_LOGGED_USER_ERROR'
+                type : 'GET_LOGGED_USER_ERROR',
+                data:error
             })
         })
     }

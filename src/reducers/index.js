@@ -7,7 +7,9 @@ import employeeReducer from './employeeReducer';
 import projectReducer from './projectReducer';
 import taskReducer from './taskReducer';
 import timesheetReducer from './timesheetReducer';
-import logoutReducer from './logoutReducer'
+import logoutReducer from './logoutReducer';
+import authenticationReducer from './authenticationReducer';
+import changePassswordReducer from './changePasswordReducer';
 const rootReducer = combineReducers({
     departments: departmentReducer,
     login : loginReducer,
@@ -15,7 +17,9 @@ const rootReducer = combineReducers({
     projects : projectReducer,
     tasks:taskReducer,
     timesheet:timesheetReducer,
-    logout:logoutReducer
+    logout:logoutReducer,
+    authentication:authenticationReducer,
+    changePassword : changePassswordReducer
     })
 
 export default rootReducer

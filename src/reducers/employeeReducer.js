@@ -1,7 +1,7 @@
 let initialData = []
 const initialState = {"data": initialData, "hasError": false}
-function createData(id,loginId,firstName, lastName, dob, designation, joiningDate, role, supervisorId,supervisorName, location) {
-    return {id,loginId,firstName, lastName, dob, designation, joiningDate, role, supervisorId,supervisorName, location};
+function createData(id,loginId,firstName, lastName, dob, designation, joiningDate, role, supervisorId,supervisorName, location,email) {
+    return {id,loginId,firstName, lastName, dob, designation, joiningDate, role, supervisorId,supervisorName, location,email};
 }
 function transformDataReceivedFromServer(data) {
     let initialData = []
@@ -19,6 +19,7 @@ function transformDataReceivedFromServer(data) {
         element.supervisorId,
         element.supervisorName,
         element.location,
+        element.email
         
         // element.loginId
     ))

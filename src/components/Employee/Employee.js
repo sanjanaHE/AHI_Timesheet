@@ -44,6 +44,7 @@ class Employee extends React.Component {
         fields.role = "";
         fields.supervisorId = "";
         fields.location = "";
+        fields.email = "";
         this.setState({ fields });
         this.setState({ isEditDialog: false });
     };
@@ -118,6 +119,24 @@ class Employee extends React.Component {
             formIsValid = false;
             errors["firstName"] = "Please enter valid firstName";
         }
+        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!fields["email"]) {
+            errorColor["email"] = true;
+            formIsValid = false;
+            errors["email"] = "This field is required";
+
+        }
+        else if (trim(fields["email"]) == '') {
+            errorColor["email"] = true;
+            formIsValid = false;
+            errors["email"] = "Please enter valid email id";
+        }
+        if(re.test(fields["email"])){}
+        else{
+            errorColor["email"] = true;
+            formIsValid = false;
+            errors["email"] = "Please enter valid email id";
+        }
         if (!fields["lastName"]) {
             errorColor["lastName"] = true;
             formIsValid = false;
@@ -189,6 +208,7 @@ class Employee extends React.Component {
         if (this.state.isEditDialog) {
             //checking for validation 
             if (this.handleValidation()) {
+                console.log(this.state.fields);
                 this.props.actions.addEmployee(this.state.fields, this.props.login.data.loginId)
                 this.setState({ open: false });
             }
@@ -223,7 +243,8 @@ class Employee extends React.Component {
                 "joiningDate": "",
                 "role": "",
                 "supervisorId": "",
-                "location": ""
+                "location": "",
+                "email":""
             },
             errors: {},
             errorColor: {},
@@ -343,6 +364,19 @@ class Employee extends React.Component {
                                     defaultValue={this.formatDateInGivenFormat(this.state.fields["dob"])}
                                     error={this.state.errorColor.dob}
                                     helperText={this.state.errors.dob}
+                                />
+                                <TextField
+                                    required
+                                    margin="dense"
+                                    id="email"
+                                    name="email"
+                                    label="Email"
+                                    type="email"
+                                    fullWidth
+                                    onChange={this.handleChange.bind(this, "email")}
+                                    value={this.state.fields["email"]}
+                                    error={this.state.errorColor.email}
+                                    helperText={this.state.errors.email}
                                 />
                                 <TextField
                                     required

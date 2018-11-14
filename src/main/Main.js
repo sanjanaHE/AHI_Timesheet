@@ -7,7 +7,7 @@ import Employee from '../components/Employee/Employee'
 import Project from '../components/Project/Project'
 import Task from '../components/Task/Task'
 import Profile from '../components/Profile/Profile'
-
+import ChangePassword from '../components/ChangePassword/ChangePassword'
 export const Main = () =>
 
   (
@@ -20,6 +20,7 @@ export const Main = () =>
           <Route path="/app/admin/project" component={Project} />
           <Route path="/app/task" component={Task} />
           <Route path="/app/profile" component={Profile} />
+          <Route path="/app/changePassword" component={ChangePassword} />
           <Route exact path='/app' component={Home} />
       {/* </Switch> */}
     </main>
