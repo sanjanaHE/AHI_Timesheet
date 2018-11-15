@@ -250,10 +250,10 @@ class Project extends React.Component {
                             </form>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={this.handleClose} color="primary">
+                            <Button variant="contained" onClick={this.handleClose} color="primary">
                                 Cancel
                         </Button>
-                            <Button type="submit" onClick={this.handleSubmit} color="primary">
+                            <Button variant="contained" type="submit" onClick={this.handleSubmit} color="primary">
                                 Submit
                         </Button>
                         </DialogActions>
@@ -268,6 +268,7 @@ class Project extends React.Component {
                         rows={rows}
                         onRowEdit={this.handleEdit}
                         onRowDelete={this.handleDelete}
+                        isDeleteButtonRequired="false"
                     ></EnhancedTable>
                 </div>
             </React.Fragment>

@@ -48,8 +48,10 @@ function getSorting(order, orderBy) {
 
 const CustomTableCell = withStyles(theme => ({
   head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+    // backgroundColor: theme.palette.common.black,
+    // color: theme.palette.common.white,
+    backgroundColor: '#E0E0E0',
+    color: theme.palette.common.black,
     fontSize:16
   },
   body: {
@@ -86,7 +88,7 @@ class EnhancedTableHead extends React.Component {
                   placement={row.numeric ? 'bottom-end' : 'bottom-start'}
                   enterDelay={300}
                 >
-                  <TableSortLabel style={{color:(orderBy === row.id)?"white":"white"}}
+                  <TableSortLabel style={{color:(orderBy === row.id)?"black":"black"}}
                     active={orderBy === row.id}
                     direction={order}
                     onClick={this.createSortHandler(row.id)}
@@ -321,7 +323,7 @@ class EnhancedTable extends React.Component {
                         </IconButton>
                         </Tooltip>
                         
-                        {this.props.isEmployesTable ? null :
+                        {this.props.isDeleteButtonRequired == "false" ? null :
                         <Tooltip title="Delete"><IconButton aria-label="Delete" className={classes.button} onClick = {() => this.props.onRowDelete(n)}>
                           <DeleteIcon fontSize="small" />
                         </IconButton></Tooltip>
