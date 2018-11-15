@@ -1,6 +1,14 @@
 import axios from 'axios';
 import {baseUrl} from './../../contants';
 
+
+export function resetPasswordState(){
+  return (dispatch) => {
+    dispatch({
+      type : 'RESET_CHANGE_PASSWORD'
+    })
+  }
+}
 export function changePassword(oldPassword,newPassword) {
     console.log("IN PASSWORD CHANGE ",oldPassword,newPassword);
     let data = {
@@ -23,7 +31,8 @@ export function changePassword(oldPassword,newPassword) {
             console.log("changing password ..... ", response.data)
             dispatch({
                 type: 'CHANGE_PASSOWORD_SUCCESS',
-                data: response
+                data: response,
+                message:"Successfully changed password"
               })
           }).catch(error  => {
             console.log(error);

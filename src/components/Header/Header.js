@@ -17,7 +17,10 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import Logo from "./AH_Long.png";
+// import Logo from "./AH_Long.png";
+// import Logo from "./AH_Logo_dark_background.PNG";
+// import Logo from './../Login/AHI_Logo.png';
+import Logo from "./infotech.png";
 
 const styles = theme =>({
     root: {
@@ -41,8 +44,8 @@ const styles = theme =>({
         color:'red',
         textDecoration:"blink"
     },
-    inactive:{
-        color:'white',
+    head:{
+        color:'whitesmoke',
         textDecoration:"blink"
     }
 });
@@ -86,23 +89,23 @@ class ButtonAppBar extends React.Component {
                     {/* <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
                         <MenuIcon />
                     </IconButton> */}
-                    <img src={Logo} height="55" alt="ah-logo" />
+                    <img src={Logo} height="45" alt="ah-logo" />
                     <React.Fragment>
                         <Typography variant="subheading" color="inherit" >
                             <Button>
-                                <Link to="/app/home/" style={{ "color": "white" ,"textDecoration":"blink"}}> Home</Link>
+                                <Link to="/app/home/" className={classes.head}> Home</Link>
                                 {/* <NavLink to="/app/home/" activeClassName={classes.active} inactiveClassName={classes.inactive}>Home</NavLink> */}
                             </Button>
                       
                         </Typography>
                         <Typography variant="subheading" color="inherit" >
                             <Button>
-                                <Link to="/app/timesheet/" style={{ "color": "white" ,"textDecoration":"blink"}}> Timesheet</Link>
+                                <Link to="/app/timesheet/" className={classes.head}> Timesheet</Link>
                             </Button>
                         </Typography>
                         <Typography variant="subheading" color="inherit" >
                             <Button
-                                style={{ "color": "white" }}
+                                className={classes.head}
                                 aria-owns={anchorE2 ? 'menu' : null}
                                 aria-haspopup="true"
                                 onClick={this.handleMenuAH} >My AH
@@ -113,14 +116,15 @@ class ButtonAppBar extends React.Component {
                             anchorEl={anchorE2}
                             open={Boolean(anchorE2)}
                             onClose={this.handleCloseAH}
-                            style={{ color: 'white' }}>
+                            className={classes.head}>
                             <MenuItem component={Link} to="/app/task" onClick={this.handleCloseAH}>Task</MenuItem>
                             <MenuItem component={Link} to="/app/profile" onClick={this.handleCloseAH}>Profile</MenuItem>
                         </Menu>
+                        {/* admin section access restricted to user */}
                         {this.props.login.data.role == "admin" ? (
                             <Typography variant="subheading" color="inherit" >
                             <Button
-                                style={{ "color": "white" }}
+                               className={classes.head}
                                 aria-owns={anchorEl ? 'simple-menu' : null}
                                 aria-haspopup="true"
                                 onClick={this.handleMenu} >Admin
@@ -133,20 +137,20 @@ class ButtonAppBar extends React.Component {
                             anchorEl={anchorEl}
                             open={Boolean(anchorEl)}
                             onClose={this.handleClose}
-                            style={{ color: 'white' }}>
+                            className={classes.head}>
                             <MenuItem component={Link} to="/app/admin/department" onClick={this.handleClose}>Department</MenuItem>
                             <MenuItem component={Link} to="/app/admin/employee" onClick={this.handleClose}>Employees</MenuItem>
                             <MenuItem component={Link} to="/app/admin/project" onClick={this.handleClose}>Project</MenuItem>
                         </Menu>
                         <Typography align="right" variant="subheading" color="inherit" className={classes.grow}>
                             <Button>
-                               <span style={{ "color": "white" ,"textDecoration":"blink"}}> {this.props.login.data.firstName} {this.props.login.data.lastName}</span>
+                               <span className={classes.head}>Welcome {this.props.login.data.firstName}</span>
                             </Button>
-                        {/* </Typography> */}
-                        {/* <Typography align="right" variant="subheading" color="inherit" className={classes.grow}> */}
-
                             <Button>
-                               <Link to="/auth/logout/" style={{ "color": "white" ,"textDecoration":"blink"}}> Logout</Link>
+                               <Link to="/app/changePassword/" className={classes.head}> Change Password</Link>
+                            </Button>
+                            <Button>
+                               <Link to="/auth/logout/" className={classes.head}> Logout</Link>
                             </Button>
                         </Typography>
                         </React.Fragment>

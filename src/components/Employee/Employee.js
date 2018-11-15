@@ -263,7 +263,7 @@ class Employee extends React.Component {
                 // { id: 'dob', numeric: false, disablePadding: false, label: 'Date of Birth' },
                 { id: 'designation', numeric: false, disablePadding: false, label: 'Designation' },
                 // { id: 'joiningDate', numeric: false, disablePadding: false, label: 'Joining date' },
-                { id: 'role', numeric: false, disablePadding: false, label: 'Role' },
+                // { id: 'role', numeric: false, disablePadding: false, label: 'Role' },
                 { id: 'supervisorName', numeric: false, disablePadding: false, label: 'Supervisor' },
                 { id: 'location', numeric: false, disablePadding: false, label: 'Location' },
                 { id: 'actions', numeric: false, disablePadding: false, label: 'Actions' }
@@ -463,10 +463,10 @@ class Employee extends React.Component {
                             </form>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={this.handleClose} color="primary">
+                            <Button variant="contained" onClick={this.handleClose} color="primary">
                                 Cancel
                         </Button>
-                            <Button type="submit" onClick={this.handleSubmit} color="primary">
+                            <Button variant="contained" type="submit" onClick={this.handleSubmit} color="primary">
                                 Submit
                         </Button>
                         </DialogActions>
@@ -481,7 +481,7 @@ class Employee extends React.Component {
                         rowsPerPage={rowsPerPage}
                         rows={rows}
                         onRowEdit={this.handleEdit}
-                        isEmployesTable="true"
+                        isDeleteButtonRequired="false"
                     ></EnhancedTable>
                 </div>
             </React.Fragment>

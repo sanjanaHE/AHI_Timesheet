@@ -18,9 +18,12 @@ import { withStyles } from '@material-ui/core/styles';
 
 
 var errorMessage, successMessage ,message = "";
-var error;
+var color;
 const styles = theme => ({
     successSnackbar: {
+        backgroundColor: "#E65100"
+    },
+    errorSnackbar: {
         backgroundColor: green[600]
     }
 });
@@ -28,18 +31,20 @@ class ChangePassword extends Component {
 
     componentWillReceiveProps(nextProps) {
         console.log("NEXT PROPS ", nextProps)
-        if (nextProps.changePassword.pending == true) {
-            if (nextProps.changePassword.hasError == true) {
+        // if (nextProps.changePassword.pending == true) {
+            if (nextProps.changePassword.pending ==  false 
+                && nextProps.changePassword.hasError == true) {
                 message = "Failed to change password";
                 this.setState({ showSnackBar: true })
                 this.handleReset();
             }
-            else {
+            else if (nextProps.changePassword.pending ==  false 
+                && nextProps.changePassword.hasError == false) {
                 message =  "Successfully changed password";
                 this.setState({ showSnackBar: true })
                 this.handleReset();
             }
-        }
+        // }
     }
     handleChange = (e) => {
         let fields = this.state.fields;
@@ -64,7 +69,9 @@ class ChangePassword extends Component {
         }
     }
 
-
+    componentDidMount(){
+        this.props.actions.resetPasswordState();
+    }
     constructor(props) {
         super(props)
         this.state = {
@@ -72,6 +79,7 @@ class ChangePassword extends Component {
             errorColor: {},
             errors: {}
         }
+        
     }
     handleValidation() {
 
@@ -157,6 +165,7 @@ class ChangePassword extends Component {
         fields.newPassword = "";
         fields.confirmPassword = "";
         this.setState({ fields })
+        this.props.actions.resetPasswordState();
     }
     handleCloseSnackBar = () => {
         this.setState({ showSnackBar: false })
@@ -225,14 +234,17 @@ class ChangePassword extends Component {
                         <Snackbar
                         // className={classes.successSnackbar}
                             anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'right',
+                                vertical: 'top',
+                                horizontal: 'center',
                             }}
                             open={this.state.showSnackBar}
-                            autoHideDuration={900}
+                            autoHideDuration={1500}
                             onClose={this.handleCloseSnackBar}
                             ContentProps={{
                                 'aria-describedby': 'message-id',
+                                classes: {
+                                    root: classes.successSnackbar
+                                }
                             }}
                             
                             message={<span id="message-id">{message}</span>}
