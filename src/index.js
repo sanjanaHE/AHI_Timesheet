@@ -17,27 +17,30 @@ const theme = createMuiTheme({
       type: 'light',
       primary: {
         // light: will be calculated from palette.primary.main,
-        main: '#000000',
+        main: '#313130',
+        // main:'#E0E0E0'
         // dark: will be calculated from palette.primary.main,
         // contrastText: will be calculated to contrast with palette.primary.main
       },
       secondary:{
-        main:'#00e676'
+        // main:'#00e676'
+        main:'#377627'
       }
     },
     typography: {
         // Use the system font instead of the default Roboto font.
         fontFamily: [
-          '-apple-system',
-          'BlinkMacSystemFont',
-          '"Segoe UI"',
-          'Roboto',
-          '"Helvetica Neue"',
-          'Arial',
-          'sans-serif',
-          '"Apple Color Emoji"',
-          '"Segoe UI Emoji"',
-          '"Segoe UI Symbol"',
+          // '-apple-system',
+          // 'BlinkMacSystemFont',
+          // '"Segoe UI"',
+          // 'Roboto',
+          // '"Helvetica Neue"',
+          // 'Arial',
+          // 'sans-serif',
+          // '"Apple Color Emoji"',
+          // '"Segoe UI Emoji"',
+          // '"Segoe UI Symbol"',
+          'Lato', 'sans-serif'
         ].join(','),
       },
   });
@@ -47,7 +50,7 @@ ReactDOM.render(
               <HashRouter basename = "/ahits">
                 <div className="App">
                   <Switch>
-                    {/* <Route path="/" component={UnauthorizedRoute} /> */}
+                    <Route exact path='/' component={UnauthorizedRoute} /> 
                     <Route path="/auth" component={UnauthorizedRoute} />
                     <AuthorisedRoute path="/app" component={App} />
                   </Switch>
