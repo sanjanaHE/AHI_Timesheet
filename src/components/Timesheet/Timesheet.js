@@ -8,7 +8,6 @@ import * as ProjectActionCreators from './../Project/projectAction'
 import * as LoginActionCreators from './../Login/loginAction'
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Header from './../Header/Header';
 import { withStyles } from '@material-ui/core/styles';
@@ -31,6 +30,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import green from '@material-ui/core/colors/green';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Tooltip from '@material-ui/core/Tooltip';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
 
 
 const moment = extendMoment(Moment);
@@ -44,7 +46,7 @@ const styles = theme => ({
         color: theme.palette.text.secondary,
     },
     successSnackbar: {
-        backgroundColor: green[600]
+        backgroundColor: "#E65100"
     }
 });
 
@@ -53,7 +55,9 @@ class Timesheet extends Component {
         super(props)
         const today = moment()
         this.state = {
-            tasks:[],
+            tasks: [],
+            errors:{},
+            errorColor: {},
             gotDates: false,
             endDate: today,
             timesheet: [],
@@ -84,7 +88,7 @@ class Timesheet extends Component {
         this.updateDateRangeBasedOnSelectedDate(this.state.endDate);
         if (this.props.login.data.length != 0) {
             this.props.task_actions.getTasks(this.props.login.data.id);
-            this.setState({tasks:this.props.tasks.data})
+            this.setState({ tasks: this.props.tasks.data })
         }
     }
 
@@ -99,81 +103,87 @@ class Timesheet extends Component {
                 this.state.startDate.format('DD-MM-YYYY'),
                 this.state.endDate.format('DD-MM-YYYY'));
         }
-        console.log("received tasks!!!", nextProps)
-        this.setState({ timesheet: nextProps.timesheet.data ,tasks : nextProps.tasks.data})
+        // console.log("received tasks!!!", nextProps)
+        this.setState({ timesheet: nextProps.timesheet.data, tasks: nextProps.tasks.data })
 
     }
 
     renderProjects(rowId, activeProject) {
         return (
             <Grid item sm={2} md={2} xs={2}>
-                {/* <InputLabel htmlFor="projectId">Projects</InputLabel> */}
-                <Select
-                    style={{ marginTop: "9%", height: "40%" }}
-                    fullWidth
-                    autoWidth={true}
-                    input={
-                        <OutlinedInput
-                            labelWidth={this.state.labelWidth}
-                            name="projectName"
-                            id="projectName"
-                        />
-                    }
-                    onChange={(e) => this.handleChangeTaskAndProjectName(e, rowId)}
-                    value={activeProject}>
-                    <MenuItem disabled value="select" selected>
-                        <em>Select</em>
-                    </MenuItem>
-                    {
-                        this.props.projects.data.map(element => {
-                            return <MenuItem value={element.projectName}>{element.projectName}</MenuItem>
-                        })
-                    }
-                </Select>
+                <FormControl fullWidth required error={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('projectName')}>
+
+                    <Select
+                        style={{ marginTop: "9%", height: "40%" }}
+                        fullWidth
+                        autoWidth={true}
+                        input={
+                            <OutlinedInput
+                                labelWidth={this.state.labelWidth}
+                                name="projectName"
+                                id="projectName"
+                            />
+                        }
+                        onChange={(e) => this.handleChangeTaskAndProjectName(e, rowId)}
+                        value={activeProject}>
+                        <MenuItem disabled value='' selected>
+                            <em>Select</em>
+                        </MenuItem>
+                        {
+                            this.props.projects.data.map(element => {
+                                return <MenuItem value={element.projectName}>{element.projectName}</MenuItem>
+                            })
+                        }
+                    </Select>
+                    {this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('projectName')?
+                    <FormHelperText>This field is required</FormHelperText>:
+                    <FormHelperText></FormHelperText>}
+                    </FormControl>
             </Grid>)
     }
 
     renderTasks(rowId, activeTask) {
-        console.log("active tasks ", activeTask)
+        // console.log("active tasks ", activeTask)
         return (<Grid item sm={2} md={2} xs={2}>
-            {/* <FormControl fullWidth> */}
-            {/* <InputLabel htmlFor="taskId">Tasks</InputLabel> */}
-            <Select
-                style={{ marginTop: "9%", height: "40%" }}
-                label="Tasks"
-                fullWidth
-                // inputProps={{
-                //     name: 'taskId',
-                //     id: 'taskId',
-                // }}
-                input={
-                    <OutlinedInput
-                        labelWidth={this.state.labelWidth}
-                        name="taskName"
-                        id="taskName"
-                    />
-                }
-                onChange={(e) => this.handleChangeTaskAndProjectName(e, rowId)}
-                value={activeTask}
-            >
-                <MenuItem disabled value="select" selected>
-                    <em>Select</em>
-                </MenuItem>
-                {
-                    this.state.tasks.map(element => {
-                        return(
-                            <MenuItem key={element.taskName} value={element.taskName}>{element.taskName}</MenuItem>
-                        );
-                    })
-                }
-            </Select>
-            {/* </FormControl> */}
+            <FormControl fullWidth required error={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('taskName')}>
+
+                <Select
+                    style={{ marginTop: "9%", height: "40%" }}
+                    label="Tasks"
+                    fullWidth
+                    input={
+                        <OutlinedInput
+                            labelWidth={this.state.labelWidth}
+                            name="taskName"
+                            id="taskName"
+                        />
+                    }
+                    onChange={(e) => this.handleChangeTaskAndProjectName(e, rowId)}
+                    value={activeTask}
+                >
+                    <MenuItem disabled value="select" selected>
+                        <em>Select</em>
+                    </MenuItem>
+                    {
+                        this.state.tasks.map(element => {
+                            return (
+                                <MenuItem key={element.taskName} value={element.taskName}>{element.taskName}</MenuItem>
+                            );
+                        })
+                    }
+                </Select>
+                {/* {this.state.errors} */}
+                {this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('taskName')?
+                <FormHelperText>This field is required</FormHelperText>:
+                null}
+            </FormControl>
         </Grid>)
     }
 
     handleChangeHours = (e, timesheetEntry) => {
         let timesheet = Object.assign([], this.state.timesheet);
         // console.log(timesheetEntry)
+
         for (let i = 0; i < timesheet.length; i++) {
             // if (timesheet[i].projectName === timesheetEntry.projectName
             //     && timesheet[i].taskName === timesheetEntry.taskName) {
@@ -190,11 +200,11 @@ class Timesheet extends Component {
 
         let timesheet = Object.assign([], this.state.timesheet);
         // console.log("handling delete ", timesheet)
-        timesheet.forEach((element,index) => {
+        timesheet.forEach((element, index) => {
             if (element.rowId == rowId) {
-                console.log(element.rowId," ==", rowId)
+                console.log(element.rowId, " ==", rowId)
                 // console.log("deleting....",timesheet[rowId])
-                timesheet.splice(index,1)
+                timesheet.splice(index, 1)
             }
         })
         this.setState({ timesheet: timesheet })
@@ -220,12 +230,14 @@ class Timesheet extends Component {
             }
         }
         this.setState({ timesheet: timesheet })
+        this.handleValidation()
         // console.log(timesheet)
 
     }
     renderTimesheetInput(timesheetEntry) {
         // console.log("in render timesheet input ",timesheetEntry.totalHours)
         if (timesheetEntry.totalHours == null) timesheetEntry.totalHours = 0;
+        else if (timesheetEntry.totalHours < 0 || timesheetEntry.totalHours > 9) timesheetEntry.totalHours = 0;
         return (
             <React.Fragment>
                 <Grid item sm={1} xs={1} md={1}>
@@ -237,8 +249,8 @@ class Timesheet extends Component {
                         fullWidth
                         margin="normal"
                         variant="outlined"
-                        inputProps={{ maxLength: 1, min: 0, max: 9 }}
-                        
+                        inputProps={{ maxLength: 1, min: 0, max: 9, minlength: 1 }}
+
                         onChange={(e) => this.handleChangeHours(e, timesheetEntry)}
                         value={timesheetEntry ? timesheetEntry.totalHours : 0}
                     />
@@ -275,7 +287,7 @@ class Timesheet extends Component {
 
     renderRow(isRowDeletable, rowId, project, task, timesheet) {
         // console.log("timesheet in render row",timesheet)
-        return (<Grid container spacing={24} style={{margin: "0 3% -3% -1%",paddingLeft:"1%"}}>
+        return (<Grid container spacing={24} style={{ margin: "0 3% -3% -1%", paddingLeft: "1%" }}>
             {this.renderProjects(rowId, project)}
             {this.renderTasks(rowId, task)}
             {/* // Generate an array of dates from startDate to endDate
@@ -288,17 +300,57 @@ class Timesheet extends Component {
             {isRowDeletable ? this.deleteRow(rowId) : null}
         </Grid>)
     }
+    handleValidation() {
+        console.log(this.state.timesheet)
+        let errors = {};    //error messages
+        let errorColor = {}; //true/false
+        let formIsValid = true;
+        let rowErrors={};
+        this.state.timesheet.forEach(element => {
+            // console.log("each element ", element)
+            if((element.projectName == "null"||element.projectName ==null) && (element.taskName == "null"|| element.taskName == null)){
+                // Object.assign(errorColor[element.rowId], {"taskName":true,"projectName":true});    //true for error(red color will appear)
+                formIsValid = false;
+                //following data structure => {2:{"projectName": "Invalid Project Name"}}
+                errors[element.rowId]={}
+                Object.assign(errors[element.rowId],{"projectName": "This field is required",
+                "taskName": "This field is required"});
+            }
+            else if (element.projectName == "null" ||element.projectName ==null) {
+                console.log(element.rowId, " is null");
+                // Object.assign(errorColor[element.rowId], {"projectName":true});    //true for error(red color will appear)
+                formIsValid = false;
+                errors[element.rowId]={}
+                Object.assign(errors[element.rowId],{"projectName": "This field is required"});
+            }
+            else if (element.taskName == "null"|| element.taskName == null) {
+                console.log(element, " is null");
+                // Object.assign(errorColor[element.rowId],{"taskName":true});    //true for error(red color will appear)
+                formIsValid = false;
+                errors[element.rowId] ={}
+                Object.assign(errors[element.rowId],{"taskName": "This field is required"});
 
-    handleSubmitAction = () => {
-        // console.log("in save ", this.state.timesheet)
-        this.props.actions.saveTimesheetEntries(this.state.timesheet)
-        this.setState({ submitSuccessSnackBar: true })
-
-        let timesheet = Object.assign([], this.state.timesheet);
-        timesheet.forEach(element => {
-            element.isRowDeletable = false;
+            }
         })
-        this.setState({ timesheet: timesheet })
+        console.log(errors)
+        this.setState({ errors: errors });
+        this.setState({ errorColor: errorColor });
+        console.log("ERRORs", this.state.errors)
+        console.log("ERRORCOLOR---s", this.state.errorColor)
+        return formIsValid;
+    }
+    handleSubmitAction = () => {
+        console.log("before timesheet submit--- ", this.state.timesheet)
+        if (this.handleValidation()) {
+            this.props.actions.saveTimesheetEntries(this.state.timesheet)
+            this.setState({ submitSuccessSnackBar: true })
+
+            let timesheet = Object.assign([], this.state.timesheet);
+            timesheet.forEach(element => {
+                element.isRowDeletable = false;
+            })
+            this.setState({ timesheet: timesheet })
+        }
     }
 
     handleCloseSnackBar = () => {
@@ -326,7 +378,7 @@ class Timesheet extends Component {
         // }
     }
     handleAddRowAction = () => {
-        console.log(this.state.timesheet.length)
+        // console.log(this.state.timesheet.length)
         this.setState({ timesheet: [...this.state.timesheet, { isRowDeletable: true, rowId: uuid.v4(), projectName: null, taskName: null, timesheetEnteries: {} }] })
     }
     render() {
@@ -340,7 +392,12 @@ class Timesheet extends Component {
                     <h1>Timesheet</h1>
                     <Grid container spacing={8} style={{ "margin-bottom": "2%" }}>
                         <Grid item md={2} sm={2} xs={2}>
-                            <Button variant="contained" color="secondary" onClick={this.handleAddRowAction}> <AddIcon /> Add Row</Button>
+                            {/* <Button variant="contained" color="secondary" onClick={this.handleAddRowAction}> <AddIcon /> Add Row</Button> */}
+                            <Tooltip title="Add row">
+                                <Button variant="fab" color="secondary" aria-label="Add" onClick={this.handleAddRowAction} >
+                                    <AddIcon />
+                                </Button>
+                            </Tooltip>
                         </Grid>
                         <Grid item md={1} sm={1} xs={1}>
                         </Grid>
@@ -362,7 +419,7 @@ class Timesheet extends Component {
                                 onClick={this.handleMoveNextWeek}> Next </Button>
                         </Grid>
                     </Grid>
-                    <Grid container style={{ "margin-bottom": "2%", "background": "#BDBDBD",fontWeight : "bold" }}>
+                    <Grid container style={{ "margin-bottom": "2%", "background": "#BDBDBD", fontWeight: "bold" }}>
                         <Grid item sm={2} md={2} xs={2}>
                             <Typography variant="subheading">Projects</Typography>
                         </Grid>
@@ -389,14 +446,17 @@ class Timesheet extends Component {
                 </div>
                 <Snackbar
                     anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
+                        vertical: 'top',
+                        horizontal: 'center',
                     }}
                     open={this.state.submitSuccessSnackBar}
-                    autoHideDuration={900}
+                    autoHideDuration={1500}
                     onClose={this.handleCloseSnackBar}
                     ContentProps={{
                         'aria-describedby': 'message-id',
+                        classes: {
+                            root: classes.successSnackbar
+                        }
                     }}
                     message={<span id="message-id">Successfully submitted timesheet</span>}
                     action={[
@@ -412,8 +472,6 @@ class Timesheet extends Component {
                         </IconButton>,
                     ]}
                 />
-
-
             </React.Fragment>
         )
     }

@@ -19,17 +19,17 @@ export function getTimesheetEntries(empId,fromDate,toDate){
 
 export function saveTimesheetEntries(timesheet){
   return (dispatch) => {
-    console.log('In Save Method', timesheet)
+    // console.log('In Save Method', timesheet)
     let entries = []
     timesheet.forEach(element => {
       let dates = Object.keys(element.timesheetEnteries)
       for (let i =0; i<dates.length; i++){
         delete element.timesheetEnteries[dates[i]]['rowId']
-        console.log(element.timesheetEnteries[dates[i]])
+        // console.log(element.timesheetEnteries[dates[i]])
         entries.push(element.timesheetEnteries[dates[i]])
       }
 
-    console.log('Save Method entries', entries)    
+    // console.log('Save Method entries', entries)    
   });
     axios({
       method: 'post',
