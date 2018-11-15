@@ -67,14 +67,14 @@ class SignIn extends React.Component {
   }
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log("this.props.login.isAuthenticated",this.props.login.isAuthenticated);
+    // console.log("this.props.login.isAuthenticated",this.props.login.isAuthenticated);
       this.props.actions.login(this.state)
       
       // return <Redirect to="http://localhost:3000/#/ahits/home" push />
     }
   render(){
     const { classes,login } = this.props;
-    // console.log(this.props.login)
+    console.log(this.props.login)
     if(this.props.login.isAuthenticated == true){
         console.log("redirecting to homepage....")
         return <Redirect to="/app/home" push />
@@ -123,6 +123,9 @@ class SignIn extends React.Component {
               >
                 Sign in
               </Button>
+              <Typography component="h4" variant="display6"  style={{color:"red", marginTop :"2%"}} >
+              {this.props.login.hasError ? "Please enter valid credentials" : ""}
+            </Typography>
             </form>
           </Paper>
         </main>

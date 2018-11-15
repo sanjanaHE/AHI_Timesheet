@@ -19,6 +19,11 @@ export function login(creds){
             isAuthenticated : true,
             data:response.data
         })
+    }).catch(error  => {
+        console.log(error);
+        dispatch({
+            type : 'LOGIN_FAILURE'
+        })
     })
   }
 }

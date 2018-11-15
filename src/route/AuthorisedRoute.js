@@ -43,7 +43,7 @@ class AuthorizedRouteComponent extends React.Component {
       <Route {...rest} render={props => {
         if (this.props.login.dataFetched == false) {return <div><CircularProgress className={classes.progress} color="secondary" /></div>}
         else{
-          console.log("PROPS--",this.props);
+          // console.log("PROPS--",this.props);
           if(this.props.login.isAuthenticated == false){
             return <Redirect to={{
                           pathname: '/auth/login',
