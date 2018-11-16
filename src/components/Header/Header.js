@@ -143,7 +143,7 @@ class ButtonAppBar extends React.Component {
                             <MenuItem component={Link} to="/app/admin/project" onClick={this.handleClose}>Project</MenuItem>
                         </Menu>
                         <Typography align="right" variant="subheading" color="inherit" className={classes.grow}>
-                            <Button>
+                            <Button disabled>
                                <span className={classes.head}>Welcome {this.props.login.data.firstName}</span>
                             </Button>
                             <Button>

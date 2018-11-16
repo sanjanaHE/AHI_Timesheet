@@ -47,6 +47,9 @@ const styles = theme => ({
     },
     successSnackbar: {
         backgroundColor: "#E65100"
+    },
+    timesheetHeader : {
+        "margin-bottom": "2%", "background": "#BDBDBD", fontWeight: "bold"
     }
 });
 
@@ -111,7 +114,7 @@ class Timesheet extends Component {
     renderProjects(rowId, activeProject) {
         return (
             <Grid item sm={2} md={2} xs={2}>
-                <FormControl fullWidth required error={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('projectName')}>
+                <FormControl fullWidth style={{height:"100%"}} required error={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('projectName')}>
 
                     <Select
                         style={{ marginTop: "9%", height: "40%" }}
@@ -145,7 +148,7 @@ class Timesheet extends Component {
     renderTasks(rowId, activeTask) {
         // console.log("active tasks ", activeTask)
         return (<Grid item sm={2} md={2} xs={2}>
-            <FormControl fullWidth required error={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('taskName')}>
+            <FormControl fullWidth style={{height:"100%"}} required error={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('taskName')}>
 
                 <Select
                     style={{ marginTop: "9%", height: "40%" }}
@@ -419,7 +422,7 @@ class Timesheet extends Component {
                                 onClick={this.handleMoveNextWeek}> Next </Button>
                         </Grid>
                     </Grid>
-                    <Grid container style={{ "margin-bottom": "2%", "background": "#BDBDBD", fontWeight: "bold" }}>
+                    <Grid container className = {classes.timesheetHeader}>
                         <Grid item sm={2} md={2} xs={2}>
                             <Typography variant="subheading">Projects</Typography>
                         </Grid>

@@ -50,7 +50,7 @@ const CustomTableCell = withStyles(theme => ({
   head: {
     // backgroundColor: theme.palette.common.black,
     // color: theme.palette.common.white,
-    backgroundColor: '#E0E0E0',
+    backgroundColor: '#BDBDBD',
     color: theme.palette.common.black,
     fontSize:16
   },

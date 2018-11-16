@@ -124,7 +124,7 @@ class ChangePassword extends Component {
         else if (trim(fields["confirmPassword"]) != trim(fields["newPassword"])) {
             errorColor["confirmPassword"] = true;
             formIsValid = false;
-            errors["confirmPassword"] = "Password doesnot match with new password";
+            errors["confirmPassword"] = "Confirm password and new password should be same";
         }
         else if (trim(fields["confirmPassword"]) == trim(fields["oldPassword"])) {
             errorColor["confirmPassword"] = true;
@@ -227,8 +227,8 @@ class ChangePassword extends Component {
                             </Grid>
                         </Grid>
                         {/* {error} */}
-                        <p style={{ "color": "#4CAF50" }}>{successMessage}</p>
-                        <p style={{ "color": "#F44336" }}>{errorMessage}</p>
+                        {/* <p style={{ "color": "#4CAF50" }}>{successMessage}</p>
+                        <p style={{ "color": "#F44336" }}>{errorMessage}</p> */}
                         {/* {error ?<p style={{"color":"#4CAF50"}}>{successMessage}</p> : <p style={{"color":"#F44336"}}>{errorMessage}</p>} */}
 
                         <Snackbar

@@ -285,7 +285,7 @@ class Employee extends React.Component {
             <React.Fragment>
                 {/* <Header>
                 </Header> */}
-                <div style={{ margin: "2%" }}>
+                <div style={{ margin: "1%" }}>
                     <h1>Employees</h1>
                     <Tooltip title="Add employee">
                         <Button variant="fab" color="secondary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >

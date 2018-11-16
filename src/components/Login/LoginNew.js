@@ -94,7 +94,7 @@ class SignIn extends React.Component {
             
             <form className={classes.form} autoComplete="off" onSubmit={this.handleSubmit}>
               <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="username">Employee Id</InputLabel>
+                <InputLabel htmlFor="username">User id</InputLabel>
                 <Input id="username" name="username" autoComplete="username" autoFocus
                 onChange={this.handleChange.bind(this)} 
                 value={this.state["username"]} />
