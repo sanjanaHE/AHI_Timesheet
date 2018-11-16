@@ -214,10 +214,36 @@ class Timesheet extends Component {
         console.log(timesheet)
     }
     handleChangeTaskAndProjectName = (e, rowId) => {
-        // console.log("in change taskName,projectname ", e.target.value);
-        // console.log("state --- ", this.state.timesheet);
+        console.log("in change taskName,projectname ", e.target.value,rowId);
+        console.log("state --- ", this.state.timesheet);
         let timesheet = Object.assign([], this.state.timesheet);
+        let taskName, projectName;
+        //validation for duplicate task name and project name pairs
         for (let i = 0; i < timesheet.length; i++) {
+            if (timesheet[i].rowId == rowId ) {
+                if(e.target.name == 'taskName'){
+                    taskName = e.target.value;
+                    projectName = timesheet[i].projectName
+                } else {
+                    taskName = timesheet[i].taskName
+                    projectName = e.target.value;
+                }
+            }           
+        }
+        for(let i =0; i< timesheet.length; i++){
+            if(timesheet[i].rowId != rowId && 
+                timesheet[i].projectName == projectName 
+                && timesheet[i].taskName == taskName
+                && projectName !=null && taskName !=null){
+              console.log('RAISE ERROR')  
+              alert("duplicate entry")
+              return;
+            }
+        }
+
+        console.log('REACHED HERE')
+        for (let i = 0; i < timesheet.length; i++) {
+            // console.log(timesheet[i].rowId , "__",timesheet[i].projectName,"___",timesheet[i].taskName)
             if (timesheet[i].rowId == rowId) {
                 timesheet[i][e.target.name] = e.target.value;
             }
@@ -310,7 +336,13 @@ class Timesheet extends Component {
         let formIsValid = true;
         let rowErrors={};
         this.state.timesheet.forEach(element => {
-            // console.log("each element ", element)
+            console.log("each element ", element)
+            
+            // if(element.rowId != this.state.rowId && 
+            //     element.projectName == this.state.projectName &&
+            //     element.taskName == this.state.taskName){
+            //         console.log("projectname task name repeating")
+            // }
             if((element.projectName == "null"||element.projectName ==null) && (element.taskName == "null"|| element.taskName == null)){
                 // Object.assign(errorColor[element.rowId], {"taskName":true,"projectName":true});    //true for error(red color will appear)
                 formIsValid = false;
@@ -335,11 +367,10 @@ class Timesheet extends Component {
 
             }
         })
-        console.log(errors)
+        // console.log(errors)
         this.setState({ errors: errors });
         this.setState({ errorColor: errorColor });
-        console.log("ERRORs", this.state.errors)
-        console.log("ERRORCOLOR---s", this.state.errorColor)
+        // console.log("ERRORs", this.state.errors)
         return formIsValid;
     }
     handleSubmitAction = () => {
