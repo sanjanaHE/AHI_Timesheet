@@ -250,10 +250,10 @@ class Project extends React.Component {
                             </form>
                         </DialogContent>
                         <DialogActions>
-                            <Button variant="contained" onClick={this.handleClose} color="primary">
+                            <Button  onClick={this.handleClose} color="primary">
                                 Cancel
                         </Button>
-                            <Button variant="contained" type="submit" onClick={this.handleSubmit} color="primary">
+                            <Button  type="submit" onClick={this.handleSubmit} color="primary">
                                 Submit
                         </Button>
                         </DialogActions>
