@@ -33,7 +33,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
-
+import ErrorIcon from '@material-ui/icons/Error';
+import InfoIcon from '@material-ui/icons/Info';
+import classNames from 'classnames';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 const moment = extendMoment(Moment);
 const styles = theme => ({
@@ -48,8 +51,22 @@ const styles = theme => ({
     successSnackbar: {
         backgroundColor: "#E65100"
     },
-    timesheetHeader : {
+    duplAlertSnackbar: {
+        backgroundColor: "#D50000"
+    },
+    timesheetHeader: {
         "margin-bottom": "2%", "background": "#BDBDBD", fontWeight: "bold"
+    },
+    icon: {
+        fontSize: 20,
+    },
+    iconVariant: {
+        opacity: 0.9,
+        marginRight: theme.spacing.unit,
+    },
+    message: {
+        display: 'flex',
+        alignItems: 'center',
     }
 });
 
@@ -59,7 +76,7 @@ class Timesheet extends Component {
         const today = moment()
         this.state = {
             tasks: [],
-            errors:{},
+            errors: {},
             errorColor: {},
             gotDates: false,
             endDate: today,
@@ -114,12 +131,12 @@ class Timesheet extends Component {
     renderProjects(rowId, activeProject) {
         return (
             <Grid item sm={2} md={2} xs={2}>
-                <FormControl fullWidth style={{height:"100%"}} required error={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('projectName')}>
+                <FormControl fullWidth style={{ height: "100%" }} required error={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('projectName')}>
 
                     <Select
                         style={{ marginTop: "9%", height: "40%" }}
+                        label="Projects"
                         fullWidth
-                        autoWidth={true}
                         input={
                             <OutlinedInput
                                 labelWidth={this.state.labelWidth}
@@ -138,17 +155,17 @@ class Timesheet extends Component {
                             })
                         }
                     </Select>
-                    {this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('projectName')?
-                    <FormHelperText>This field is required</FormHelperText>:
-                    <FormHelperText></FormHelperText>}
-                    </FormControl>
+                    {this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('projectName') ?
+                        <FormHelperText>This field is required</FormHelperText> :
+                        <FormHelperText></FormHelperText>}
+                </FormControl>
             </Grid>)
     }
 
     renderTasks(rowId, activeTask) {
         // console.log("active tasks ", activeTask)
         return (<Grid item sm={2} md={2} xs={2}>
-            <FormControl fullWidth style={{height:"100%"}} required error={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('taskName')}>
+            <FormControl fullWidth style={{ height: "100%" }} required error={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('taskName')}>
 
                 <Select
                     style={{ marginTop: "9%", height: "40%" }}
@@ -176,9 +193,9 @@ class Timesheet extends Component {
                     }
                 </Select>
                 {/* {this.state.errors} */}
-                {this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('taskName')?
-                <FormHelperText>This field is required</FormHelperText>:
-                null}
+                {this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('taskName') ?
+                    <FormHelperText>This field is required</FormHelperText> :
+                    null}
             </FormControl>
         </Grid>)
     }
@@ -214,30 +231,31 @@ class Timesheet extends Component {
         console.log(timesheet)
     }
     handleChangeTaskAndProjectName = (e, rowId) => {
-        console.log("in change taskName,projectname ", e.target.value,rowId);
+        console.log("in change taskName,projectname ", e.target.value, rowId);
         console.log("state --- ", this.state.timesheet);
         let timesheet = Object.assign([], this.state.timesheet);
         let taskName, projectName;
         //validation for duplicate task name and project name pairs
         for (let i = 0; i < timesheet.length; i++) {
-            if (timesheet[i].rowId == rowId ) {
-                if(e.target.name == 'taskName'){
+            if (timesheet[i].rowId == rowId) {
+                if (e.target.name == 'taskName') {
                     taskName = e.target.value;
                     projectName = timesheet[i].projectName
                 } else {
                     taskName = timesheet[i].taskName
                     projectName = e.target.value;
                 }
-            }           
+            }
         }
-        for(let i =0; i< timesheet.length; i++){
-            if(timesheet[i].rowId != rowId && 
-                timesheet[i].projectName == projectName 
-                && timesheet[i].taskName == taskName
-                && projectName !=null && taskName !=null){
-              console.log('RAISE ERROR')  
-              alert("duplicate entry")
-              return;
+        for (let i = 0; i < timesheet.length; i++) {
+            //check if duplicate entry exists
+            if (timesheet[i].rowId != rowId &&
+                timesheet[i].projectName == projectName
+                && timesheet[i].taskName == taskName) {
+                console.log('RAISE ERROR')
+                this.setState({ submitAlertSnackBar: true })
+
+                return;
             }
         }
 
@@ -327,6 +345,39 @@ class Timesheet extends Component {
             {this.dateCheck(rowId, project, task, timesheet)}
 
             {isRowDeletable ? this.deleteRow(rowId) : null}
+
+            {/* for duplicate entry alert */}
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+                open={this.state.submitAlertSnackBar}
+                autoHideDuration={1500}
+                onClose={this.handleCloseSnackBar}
+                ContentProps={{
+                    'aria-describedby': 'message-id',
+                    classes: {
+                        root: this.props.classes.duplAlertSnackbar
+                    }
+                }}
+                message={
+                    <span id="message-id" className={this.props.classes.message}>
+                        <ErrorIcon className={classNames(this.props.classes.icon, this.props.classes.iconVariant)} />
+                        Duplicate entry</span>}
+                action={[
+
+                    <IconButton
+                        key="close"
+                        aria-label="Close"
+                        color="inherit"
+                        className={this.props.classes.close}
+                        onClick={this.handleCloseAlertSnackBar}
+                    >
+                        <CloseIcon />
+                    </IconButton>,
+                ]}
+            />
         </Grid>)
     }
     handleValidation() {
@@ -334,36 +385,38 @@ class Timesheet extends Component {
         let errors = {};    //error messages
         let errorColor = {}; //true/false
         let formIsValid = true;
-        let rowErrors={};
+        let rowErrors = {};
         this.state.timesheet.forEach(element => {
             console.log("each element ", element)
-            
+
             // if(element.rowId != this.state.rowId && 
             //     element.projectName == this.state.projectName &&
             //     element.taskName == this.state.taskName){
             //         console.log("projectname task name repeating")
             // }
-            if((element.projectName == "null"||element.projectName ==null) && (element.taskName == "null"|| element.taskName == null)){
+            if ((element.projectName == "null" || element.projectName == null) && (element.taskName == "null" || element.taskName == null)) {
                 // Object.assign(errorColor[element.rowId], {"taskName":true,"projectName":true});    //true for error(red color will appear)
                 formIsValid = false;
                 //following data structure => {2:{"projectName": "Invalid Project Name"}}
-                errors[element.rowId]={}
-                Object.assign(errors[element.rowId],{"projectName": "This field is required",
-                "taskName": "This field is required"});
+                errors[element.rowId] = {}
+                Object.assign(errors[element.rowId], {
+                    "projectName": "This field is required",
+                    "taskName": "This field is required"
+                });
             }
-            else if (element.projectName == "null" ||element.projectName ==null) {
+            else if (element.projectName == "null" || element.projectName == null) {
                 console.log(element.rowId, " is null");
                 // Object.assign(errorColor[element.rowId], {"projectName":true});    //true for error(red color will appear)
                 formIsValid = false;
-                errors[element.rowId]={}
-                Object.assign(errors[element.rowId],{"projectName": "This field is required"});
+                errors[element.rowId] = {}
+                Object.assign(errors[element.rowId], { "projectName": "This field is required" });
             }
-            else if (element.taskName == "null"|| element.taskName == null) {
+            else if (element.taskName == "null" || element.taskName == null) {
                 console.log(element, " is null");
                 // Object.assign(errorColor[element.rowId],{"taskName":true});    //true for error(red color will appear)
                 formIsValid = false;
-                errors[element.rowId] ={}
-                Object.assign(errors[element.rowId],{"taskName": "This field is required"});
+                errors[element.rowId] = {}
+                Object.assign(errors[element.rowId], { "taskName": "This field is required" });
 
             }
         })
@@ -389,6 +442,9 @@ class Timesheet extends Component {
 
     handleCloseSnackBar = () => {
         this.setState({ submitSuccessSnackBar: false })
+    }
+    handleCloseAlertSnackBar = () => {
+        this.setState({ submitAlertSnackBar: false })
     }
     handleMovePrevWeek = () => {
         let endDate = this.state.endDate.subtract(7, "day")
@@ -453,7 +509,7 @@ class Timesheet extends Component {
                                 onClick={this.handleMoveNextWeek}> Next </Button>
                         </Grid>
                     </Grid>
-                    <Grid container className = {classes.timesheetHeader}>
+                    <Grid container className={classes.timesheetHeader}>
                         <Grid item sm={2} md={2} xs={2}>
                             <Typography variant="subheading">Projects</Typography>
                         </Grid>
@@ -492,7 +548,10 @@ class Timesheet extends Component {
                             root: classes.successSnackbar
                         }
                     }}
-                    message={<span id="message-id">Successfully submitted timesheet</span>}
+                    message={
+                        <span id="message-id" className={classes.message}>
+                            <CheckCircleIcon className={classNames(classes.icon,classes.iconVariant)} />
+                            Successfully submitted timesheet</span>}
                     action={[
 
                         <IconButton
