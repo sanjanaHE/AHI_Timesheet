@@ -37,6 +37,11 @@ import ErrorIcon from '@material-ui/icons/Error';
 import InfoIcon from '@material-ui/icons/Info';
 import classNames from 'classnames';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContentText from '@material-ui/core/DialogContentText';
 
 const moment = extendMoment(Moment);
 const styles = theme => ({
@@ -347,7 +352,29 @@ class Timesheet extends Component {
             {isRowDeletable ? this.deleteRow(rowId) : null}
 
             {/* for duplicate entry alert */}
-            <Snackbar key = "duplicate entry"
+            <Dialog
+                        open={this.state.submitAlertSnackBar}
+                        onClose={this.handleCloseDupAlertSnackBar}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        {/* <DialogTitle id="alert-dialog-title">Warning!</DialogTitle> */}
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                You are trying to enter duplicate entry!
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            {/* <Button onClick={this.handleCloseDupAlertSnackBar} color="primary">
+                                No
+                            </Button> */}
+                            <Button onClick={this.handleCloseDupAlertSnackBar} color="primary" autoFocus>
+                                Ok
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+
+            {/* <Snackbar key = "duplicate entry"
                 anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'center',
@@ -378,7 +405,7 @@ class Timesheet extends Component {
                         <CloseIcon />
                     </IconButton>,
                 ]}
-            />
+            /> */}
         </Grid>)
     }
     handleValidation() {
@@ -442,9 +469,10 @@ class Timesheet extends Component {
     }
 
     handleCloseSnackBar = () => {
+
         this.setState({ submitSuccessSnackBar: false })
     }
-    handleCloseAlertSnackBar = () => {
+    handleCloseDupAlertSnackBar = () => {
         this.setState({ submitAlertSnackBar: false })
     }
     handleMovePrevWeek = () => {
