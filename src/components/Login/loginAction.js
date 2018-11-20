@@ -9,7 +9,7 @@ export function login(creds){
       return (dispatch) => {
       axios({
           method : 'post' ,
-          url:'http://localhost:6090/ahits/login',
+          url:`${baseUrl}ahits/login`,
           data
           
     }).then(response => {
@@ -33,7 +33,7 @@ export function getLoggedUser(){
         dispatch({
             type: 'INITIATE_GET_LOGGED_IN_USER'
         })
-        axios.get('http://localhost:6090/ahits/rest/user/userdetails')
+        axios.get(`${baseUrl}ahits/rest/user/userdetails`)
         .then(response => {
             console.log("GET lOGGED USER ID" , response.status)
             dispatch({
