@@ -347,13 +347,14 @@ class Timesheet extends Component {
             {isRowDeletable ? this.deleteRow(rowId) : null}
 
             {/* for duplicate entry alert */}
-            <Snackbar
+            <Snackbar key = "duplicate entry"
                 anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'center',
                 }}
                 open={this.state.submitAlertSnackBar}
                 autoHideDuration={1500}
+                disableWindowBlurListener = "true"
                 onClose={this.handleCloseSnackBar}
                 ContentProps={{
                     'aria-describedby': 'message-id',

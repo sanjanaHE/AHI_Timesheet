@@ -53,16 +53,13 @@ class Employee extends React.Component {
         this.setState({ open: false });
         this.setState({ errors: {} });
         this.setState({ errorColor: {} });
+        this.setState({fields:  {}})
     };
     handleEdit = (rowData) => {
-
-
-        rowData['dob'] = moment(rowData.dob, 'DD-MM-YYYY').format('MM-DD-YYYY')
-        rowData['joiningDate'] = moment(rowData.joiningDate, 'DD-MM-YYYY').format('MM-DD-YYYY')
-        console.log("EDIT USER DATA", rowData)
-        this.setState({ fields: rowData })
-        // this.setState({ fields: rowData, dob: moment(rowData.dob).format('MM-DD-YYYY'),  })
-        // this.setState({ fields: rowData })
+        var fields =  Object.assign({}, rowData)
+        fields['dob'] = moment(rowData.dob, 'DD-MM-YYYY').format('MM-DD-YYYY')
+        fields['joiningDate'] = moment(rowData.joiningDate, 'DD-MM-YYYY').format('MM-DD-YYYY')
+        this.setState({ fields: fields })
         this.setState({ open: true });
         this.setState({ isEditDialog: true })
     }

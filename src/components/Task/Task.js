@@ -58,7 +58,9 @@ class Task extends React.Component {
     handleEdit = (rowData) => {
 
         console.log("DATA", rowData)
-        this.setState({ fields: rowData })
+        var fields = Object.assign({}, rowData); //fix for edit changing grid on cancel
+
+        this.setState({ fields: fields })
         this.setState({ open: true });
         this.setState({ isEditDialog: true })
     }

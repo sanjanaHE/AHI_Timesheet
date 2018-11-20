@@ -34,10 +34,13 @@ const styles = theme =>({
         marginRight: 20,
     },
     toolbar: {
-        display:'flow-root',
+        // display:'flow-root',
+        display: 'flex',
+        overflowX: 'scroll',
         [theme.breakpoints.up('md')]: {
           display: 'flex',
-          minHeight:"55px"
+          minHeight:"55px",
+          overflowX: 'hidden',
         },
       },
     active:{

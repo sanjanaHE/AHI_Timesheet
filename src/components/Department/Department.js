@@ -50,14 +50,15 @@ class Department extends React.Component {
     };
     handleEdit = (rowData) => {
         console.log("EDIT DEPT DATA", rowData)
+        var fields = Object.assign({}, rowData); 
         // this.props.actions.addDepartment(rowData.departmentId)
-        this.setState({ fields: rowData })
+        this.setState({ fields: fields })
         this.setState({ open: true });
         this.setState({ isEditDialog: true })
     }
     handleDelete = (rowData) => {
         console.log("row data id ", rowData);
-        this.setState({rowData : rowData})
+        this.setState({rowData: rowData})
         this.setState({openDeleteDialog:true})
     }
     handleDeleteDialog =()=>{

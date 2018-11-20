@@ -92,7 +92,8 @@ class Project extends React.Component {
     handleEdit = (rowData) => {
 
         console.log("DATA", rowData)
-        this.setState({ fields: rowData })
+        var fields = Object.assign({}, rowData);
+        this.setState({ fields: fields })
         this.setState({ open: true });
         this.setState({ isEditDialog: true })
     }
