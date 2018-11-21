@@ -321,9 +321,9 @@ class Timesheet extends Component {
     }
 
     dateCheck(rowId, project, task, timesheet) {
-        return this.state.selectedDatesRange.map(date => {
-            var m = momentTZ.tz(date + 'T00:00:00.000', 'Asia/Kolkata');
-            let timesheetDate = m.utc().format('YYYY-MM-DDTHH:mm:ss.000+0000');
+        return this.state.selectedDatesRange.map(timesheetDate => {
+            // var m = momentTZ.tz(date + 'T00:00:00.000', 'Asia/Kolkata');
+            // let timesheetDate = m.utc().format('YYYY-MM-DDTHH:mm:ss.000+0000');
             if (timesheet.hasOwnProperty(timesheetDate)) {
                 timesheet[timesheetDate]['rowId'] = rowId;
                 return this.renderTimesheetInput(timesheet[timesheetDate])
