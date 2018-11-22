@@ -7,13 +7,23 @@ function transformData(data) {
   let resp = []
   data.forEach(entry => {
     // console.log(entry)
-    if (transformData.hasOwnProperty(entry.projectName + '|' + entry.taskName)) {
-      transformData[entry.projectName + '|' + entry.taskName][entry.date] = entry
+    let refactoredEntry = {
+      date:entry.date,
+      id:entry.id,
+      empId:entry.empId,
+      projectId:entry.projectId,
+      taskId:entry.taskId,
+      totalHours:parseInt(entry.totalHours),
+      rowId:entry.rowId
+
+    }
+    if (transformData.hasOwnProperty(entry.projectId + '|' + entry.taskId)) {
+      transformData[entry.projectId + '|' + entry.taskId][entry.date] = refactoredEntry
     } else {
       let temp = {}
-      temp[entry.date] = entry
+      temp[entry.date] = refactoredEntry
       // console.log("temp",temp)
-      transformData[entry.projectName + '|' + entry.taskName] = temp
+      transformData[entry.projectId + '|' + entry.taskId] = temp
       // console.log("trans data",transformData);
     }
   });
@@ -24,8 +34,8 @@ function transformData(data) {
     return {
       isRowDeletable: false,
       rowId: rowId,
-      projectName: splitArray[0],
-      taskName: splitArray[1],
+      projectId: parseInt(splitArray[0]),
+      taskId: parseInt(splitArray[1]),
       timesheetEnteries: transformData[ele]
     }
   })
@@ -38,7 +48,7 @@ export default function timesheetReducer(state = initialState, action) {
 
     case 'GET_TIMESHEET_SUCCESS':
       // console.log("action.data",action.data)
-      console.log("transformData", transformData(action.data))
+      // console.log("transformData", transformData(action.data))
       return { data: transformData(action.data), hasError: false }
 
     default:
