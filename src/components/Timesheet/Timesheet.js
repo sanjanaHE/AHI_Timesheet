@@ -60,7 +60,8 @@ const styles = theme => ({
         backgroundColor: "#D50000"
     },
     timesheetHeader: {
-        "margin-bottom": "2%", "background": "#BDBDBD", fontWeight: "bold"
+        marginBottom: "2%",
+        background: "#BDBDBD", fontWeight: "bold"
     },
     icon: {
         fontSize: 20,
@@ -72,6 +73,13 @@ const styles = theme => ({
     message: {
         display: 'flex',
         alignItems: 'center',
+    },
+    timesheetWrapper:{
+        margin: "2%", 
+        padding:"2%",
+        background: "whitesmoke",
+        boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.2) "
+        // 0px 2px 2px 0px rgba(0, 0, 0, 0.14) 0px 3px 1px -2px rgba(0, 0, 0, 0.12)"
     }
 });
 
@@ -312,7 +320,7 @@ class Timesheet extends Component {
     deleteRow(rowId) {
         // console.log(rowId)
         return (
-            <Grid item sm={1} xs md={1} alignItems="center" justify="center" style={{ "margin-top": "1%" }} >
+            <Grid item sm xs md alignItems="center" justify="center" style={{ "margin-top": "1%" }} >
                 <IconButton aria-label="Delete" onClick={() => this.handleDeleteRow(rowId)}>
                     <DeleteIcon style={{ "color": "red" }} fontSize="small" />
                 </IconButton>
@@ -365,47 +373,11 @@ class Timesheet extends Component {
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                            {/* <Button onClick={this.handleCloseDupAlertSnackBar} color="primary">
-                                No
-                            </Button> */}
                             <Button onClick={this.handleCloseDupAlertSnackBar} color="primary" autoFocus>
                                 Ok
                             </Button>
                         </DialogActions>
                     </Dialog>
-
-            {/* <Snackbar key = "duplicate entry"
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
-                }}
-                open={this.state.submitAlertSnackBar}
-                autoHideDuration={1500}
-                disableWindowBlurListener = "true"
-                onClose={this.handleCloseSnackBar}
-                ContentProps={{
-                    'aria-describedby': 'message-id',
-                    classes: {
-                        root: this.props.classes.duplAlertSnackbar
-                    }
-                }}
-                message={
-                    <span id="message-id" className={this.props.classes.message}>
-                        <ErrorIcon className={classNames(this.props.classes.icon, this.props.classes.iconVariant)} />
-                        Duplicate entry</span>}
-                action={[
-
-                    <IconButton
-                        key="close"
-                        aria-label="Close"
-                        color="inherit"
-                        className={this.props.classes.close}
-                        onClick={this.handleCloseAlertSnackBar}
-                    >
-                        <CloseIcon />
-                    </IconButton>,
-                ]}
-            /> */}
         </Grid>)
     }
     handleValidation() {
@@ -507,18 +479,12 @@ class Timesheet extends Component {
         return (
             <React.Fragment>
                 {/* <Header></Header> */}
-                <div style={{ margin: "2%", "background": "whitesmoke" }}>
-                    <h1>Timesheet</h1>
+                <h1>Timesheet</h1>
+                <div className={classes.timesheetWrapper}>
+                    
                     <Grid container spacing={8} style={{ "margin-bottom": "2%" }}>
-                        <Grid item md={2} sm={2} xs={2}>
-                            {/* <Button variant="contained" color="secondary" onClick={this.handleAddRowAction}> <AddIcon /> Add Row</Button> */}
-                            <Tooltip title="Add row">
-                                <Button variant="fab" color="secondary" aria-label="Add" onClick={this.handleAddRowAction} >
-                                    <AddIcon />
-                                </Button>
-                            </Tooltip>
-                        </Grid>
-                        <Grid item md={1} sm={1} xs={1}>
+                        
+                        <Grid item md={3} sm={3} xs={3}>
                         </Grid>
                         <Grid item md={2} sm={2} xs={2}>
                             <Button variant="contained" color="primary" onClick={this.handleMovePrevWeek}>
@@ -537,6 +503,14 @@ class Timesheet extends Component {
                                 disabled={this.state.endDate.diff(moment(), 'day') >= 0 ? true : false}
                                 onClick={this.handleMoveNextWeek}> Next </Button>
                         </Grid>
+                        <Grid item md={2} sm xs>
+                            {/* <Button variant="contained" color="secondary" onClick={this.handleAddRowAction}> <AddIcon /> Add Row</Button> */}
+                            <Tooltip title="Add row">
+                                <Button variant="fab"  style={{float:"right"}} color="secondary" aria-label="Add" onClick={this.handleAddRowAction} >
+                                    <AddIcon />
+                                </Button>
+                            </Tooltip>
+                        </Grid>
                     </Grid>
                     <Grid container className={classes.timesheetHeader}>
                         <Grid item sm={2} md={2} xs={2}>
@@ -553,15 +527,16 @@ class Timesheet extends Component {
                             </Grid>);
                         })}
                     </Grid>
-
-                    {this.state.timesheet.length > 0 ?
-                        this.state.timesheet.map((ele, index) => {
-                            // console.log("timesheet entries",ele.timesheetEnteries)
-                            return this.renderRow(ele.isRowDeletable, ele.rowId, ele.projectId, ele.taskId, ele.timesheetEnteries)
-                        }) : null}
+                    <div style={{height:"250px",overflowY:"scroll",overflowX:"hidden"}}>
+                        {this.state.timesheet.length > 0 ?
+                            this.state.timesheet.map((ele, index) => {
+                                // console.log("timesheet entries",ele.timesheetEnteries)
+                                return this.renderRow(ele.isRowDeletable, ele.rowId, ele.projectId, ele.taskId, ele.timesheetEnteries)
+                            }) : null}
+                    </div>
                     <Button variant="contained" color="primary"
                         onClick={this.handleSubmitAction}
-                        style={{ "margin-top": "2%" }}>Submit</Button>
+                        >Submit</Button>
                 </div>
                 <Snackbar
                     anchorOrigin={{
