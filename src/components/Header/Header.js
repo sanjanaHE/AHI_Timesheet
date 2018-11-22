@@ -17,9 +17,6 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-// import Logo from "./AH_Long.png";
-// import Logo from "./AH_Logo_dark_background.PNG";
-// import Logo from './../Login/AHI_Logo.png';
 import Logo from "./infotech.png";
 
 const styles = theme =>({

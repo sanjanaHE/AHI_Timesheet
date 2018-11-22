@@ -189,7 +189,7 @@ class Department extends React.Component {
                 { id: 'ID', numeric: false, disablePadding: false, label: 'ID' },
                 { id: 'departmentName', numeric: false, disablePadding: false, label: 'Department Name' },
                 { id: 'description', numeric: false, disablePadding: false, label: 'Description' },
-                { id: 'headedBy', numeric: false, disablePadding: false, label: 'Headed By' },
+                { id: 'headedBy', numeric: false, disablePadding: false, label: 'Owner' },
                 { id: 'actions', numeric: false, disablePadding: false, label: 'Actions' }
             ]
 
@@ -259,7 +259,7 @@ class Department extends React.Component {
 
 
                                 <FormControl fullWidth required error={this.state.errorColor.headedByUserId}>
-                                    <InputLabel htmlFor="headedByUserId">Headed By</InputLabel>
+                                    <InputLabel htmlFor="headedByUserId">Owner</InputLabel>
                                     <Select
                                         required
                                         inputProps={{

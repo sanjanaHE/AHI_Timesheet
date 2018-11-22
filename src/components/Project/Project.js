@@ -167,11 +167,9 @@ class Project extends React.Component {
                 { id: 'index', numeric: false, disablePadding: false, label: 'Index' },
                 { id: 'projectName', numeric: false, disablePadding: false, label: 'Project Name' },
                 { id: 'projectDescription', numeric: false, disablePadding: false, label: 'Description' },
-                { id: 'headedBy', numeric: false, disablePadding: false, label: 'Headed By' },
+                { id: 'headedBy', numeric: false, disablePadding: false, label: 'Owner' },
                 { id: 'actions', numeric: false, disablePadding: false, label: 'Actions' }
-
             ]
-
         };
     }
 
@@ -229,7 +227,7 @@ class Project extends React.Component {
                                     helperText={this.state.errors.projectDescription}
                                 />
                                 <FormControl fullWidth required  error={this.state.errorColor.headedByUserId}>
-                                    <InputLabel htmlFor="headedByUserId">Headed By</InputLabel>
+                                    <InputLabel htmlFor="headedByUserId">Owner</InputLabel>
                                     <Select
                                         inputProps={{
                                             name: 'headedByUserId',
