@@ -15,6 +15,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import Snackbar from '@material-ui/core/Snackbar';
 import green from '@material-ui/core/colors/green';
 import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper/Paper';
 
 
 var errorMessage, successMessage ,message = "";
@@ -175,7 +176,8 @@ class ChangePassword extends Component {
         return (
             <div style={{ margin: "2%" }}>
                 <h1>Change Password</h1>
-                <div style={{ margin: "2% 30%" }}>
+                <Paper style={{ width:"50%",marginLeft:"auto",marginRight:"auto"}}>
+                <div style={{ margin: "5% 5% 5% 5%" }}>
                     <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
                         <TextField
                             required
@@ -217,7 +219,7 @@ class ChangePassword extends Component {
                             error={this.state.errorColor.confirmPassword}
                             helperText={this.state.errors.confirmPassword}
                         />
-                        <Grid container spacing={8} style={{ "margin-top": "6%" }}>
+                        <Grid container spacing={24} style={{ "margin-top": "6%" }}>
                             <Grid item md={2} sm={4} xs={4}>
                                 <Button variant="contained" color="primary" onClick={this.handleReset}>Reset</Button>
 
@@ -263,6 +265,7 @@ class ChangePassword extends Component {
                         />
                     </form>
                 </div>
+                </Paper>
             </div>
         )
     }

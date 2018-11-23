@@ -198,7 +198,9 @@ const styles = theme => ({
     minWidth: 720,
   },
   tableWrapper: {
-    overflowX: 'auto',
+    overflowX: 'hidden',
+    overflowY:'scroll',
+    height:'20em'
   },
 });
 

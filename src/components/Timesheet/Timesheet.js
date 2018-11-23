@@ -527,7 +527,7 @@ class Timesheet extends Component {
                             </Grid>);
                         })}
                     </Grid>
-                    <div style={{height:"250px",overflowY:"scroll",overflowX:"hidden"}}>
+                    <div style={{height:"15em",overflowY:"scroll",overflowX:"hidden"}}>
                         {this.state.timesheet.length > 0 ?
                             this.state.timesheet.map((ele, index) => {
                                 // console.log("timesheet entries",ele.timesheetEnteries)
