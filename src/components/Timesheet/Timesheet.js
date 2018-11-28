@@ -86,12 +86,13 @@ const styles = theme => ({
 class Timesheet extends Component {
     constructor(props) {
         super(props)
-        const today = moment()
+        const today = moment().startOf('isoWeek');
         this.state = {
             tasks: [],
             errors: {},
             errorColor: {},
             gotDates: false,
+            startDate: today,
             endDate: today,
             timesheet: [],
             selectedDatesRange: [],
@@ -100,19 +101,27 @@ class Timesheet extends Component {
     }
 
     updateDateRangeBasedOnSelectedDate = (selectedDate) => {
-        let endDate = selectedDate.clone();
+        // let dayOfWeek = selectedDate.day();
+        // console.log('SELECTED DATE', selectedDate, dayOfWeek)
+        // selectedDate.subtract(6, "days")    
+        // const endDate = startDate.add("days", 7)    // set to the first day of this week, 12:00 am
+        console.log('date', selectedDate)
+        // console.log('start date', startDate)
+        // console.log('end date', endDate)
+        let startDate = selectedDate.clone()
         let dateRange = [], n = 6
         dateRange.push(selectedDate.format("YYYY-MM-DD"))
         while (n > 0) {
-            selectedDate.subtract(1, "day")
+            selectedDate.add(1, "day")
             dateRange.push(selectedDate.format("YYYY-MM-DD"))
             n--;
         }
-        dateRange = dateRange.reverse();
+        // dateRange = dateRange.reverse();
         this.props.actions.getTimesheetEntries(this.props.login.data.id,
-            selectedDate.format('DD-MM-YYYY'),
-            endDate.format('DD-MM-YYYY'));
-        this.setState({ endDate: endDate, selectedDatesRange: dateRange, startDate: selectedDate })
+            startDate.format('DD-MM-YYYY'),
+            selectedDate.format('DD-MM-YYYY'));
+        console.log(startDate, selectedDate, dateRange)
+        this.setState({ endDate: selectedDate, selectedDatesRange: dateRange, startDate: startDate })
     }
 
     componentDidMount() {
@@ -448,28 +457,14 @@ class Timesheet extends Component {
         this.setState({ submitAlertSnackBar: false })
     }
     handleMovePrevWeek = () => {
-        let endDate = this.state.endDate.subtract(7, "day")
+        let endDate = this.state.startDate.subtract(7, "days")
         this.updateDateRangeBasedOnSelectedDate(endDate)
     }
     handleMoveNextWeek = () => {
-        let endDate;
-        // let prevCurDate = this.state.endDate.subtract(1, "day")
-        // let curDate = moment();
-        // console.log("end date ",this.state.endDate)
-        // console.log("current date",moment())
-        // console.log(curDate.isSame(prevCurDate))
-        // // console.log(curDate.isAfter(this.state.endDate))
-        // // console.log(moment().isAfter(this.state.endDate))
-        // if(curDate.isAfter(this.state.endDate)){
-        //     console.log("enough faking entries!!")
-        // }
-        //  else{
-        endDate = this.state.endDate.add(7, "day")
-        this.updateDateRangeBasedOnSelectedDate(endDate)
-        // }
+        let startDate = this.state.startDate.add(7, "day")
+        this.updateDateRangeBasedOnSelectedDate(startDate)
     }
     handleAddRowAction = () => {
-        // console.log(this.state.timesheet.length)
         this.setState({ timesheet: [...this.state.timesheet, { isRowDeletable: true, rowId: uuid.v4(), projectId: null, taskId: null, timesheetEnteries: {} }] })
     }
     render() {
@@ -487,7 +482,9 @@ class Timesheet extends Component {
                         <Grid item md={3} sm={3} xs={3}>
                         </Grid>
                         <Grid item md={2} sm={2} xs={2}>
-                            <Button variant="contained" color="primary" onClick={this.handleMovePrevWeek}>
+                            <Button variant="contained" 
+                                disabled={this.state.startDate.diff(moment(), 'day') <= -21 ? true : false}
+                                color="primary" onClick={this.handleMovePrevWeek}>
                                 {/* <FontAwesomeIcon icon="arrow-left" />  */}
                                 {/* <Icon className="fa fa-plus-circle"/> */}
                                 Previous </Button>
