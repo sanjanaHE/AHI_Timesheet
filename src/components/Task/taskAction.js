@@ -32,7 +32,7 @@ function getTasksApi(dispatch,empId){
     url: `${baseUrl}ahits/api/tasks/all/${empId}`
   })
     .then((response) => {
-      console.log("getting taskss ", response.data)
+      // console.log("getting taskss ", response.data)
       dispatch({
         type: 'GET_TASKS_SUCCESS',
         data: response.data

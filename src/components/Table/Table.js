@@ -21,6 +21,15 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import Icon from '@material-ui/core/Icon';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import TextField from '@material-ui/core/TextField';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import Grid from '@material-ui/core/Grid';
+
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -50,9 +59,10 @@ const CustomTableCell = withStyles(theme => ({
   head: {
     // backgroundColor: theme.palette.common.black,
     // color: theme.palette.common.white,
-    backgroundColor: '#BDBDBD',
+    // backgroundColor: '#BDBDBD',
     color: theme.palette.common.black,
-    fontSize:16
+    fontSize: 16,
+    fontWeight:"bold"
   },
   body: {
     fontSize: 14,
@@ -88,7 +98,7 @@ class EnhancedTableHead extends React.Component {
                   placement={row.numeric ? 'bottom-end' : 'bottom-start'}
                   enterDelay={300}
                 >
-                  <TableSortLabel style={{color:(orderBy === row.id)?"black":"black"}}
+                  <TableSortLabel style={{ color: (orderBy === row.id) ? "black" : "black" }}
                     active={orderBy === row.id}
                     direction={order}
                     onClick={this.createSortHandler(row.id)}
@@ -121,13 +131,13 @@ const toolbarStyles = theme => ({
   highlight:
     theme.palette.type === 'light'
       ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
+        color: theme.palette.secondary.main,
+        backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+      }
       : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.secondary.dark,
+      },
   spacer: {
     flex: '1 1 100%',
   },
@@ -154,10 +164,10 @@ let EnhancedTableToolbar = props => {
             {numSelected} selected
           </Typography>
         ) : (
-          <Typography variant="title" id="tableTitle">
-            {title}
-          </Typography>
-        )}
+            <Typography variant="title" id="tableTitle">
+              {title}
+            </Typography>
+          )}
       </div>
       <div className={classes.spacer} />
       {/* <div className={classes.actions}>
@@ -191,30 +201,36 @@ EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 const styles = theme => ({
   root: {
     width: '90%',
-    display:"inline-block",
-    marginTop: theme.spacing.unit *1,
+    display: "inline-block",
+    marginTop: theme.spacing.unit * 1,
   },
   table: {
     minWidth: 720,
   },
   tableWrapper: {
-    overflowX: 'hidden',
-    overflowY:'scroll',
-    height:'20em'
+    overflowX: 'auto',
+    overflowY: 'scroll',
+    height: '20em'
+  },
+  tableWrapperHead: {
+    height: '3.5em'
   },
 });
 
 class EnhancedTable extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            order: 'asc',
-            orderBy: this.props.orderBy,
-            selected: [],
-            page: 0,
-            rowsPerPage: this.props.rowsPerPage || 5
-          };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      order: 'asc',
+      orderBy: this.props.orderBy,
+      selected: [],
+      page: 0,
+      rowsPerPage: this.props.rowsPerPage || 5,
+      query: '',
+      columnToQuery:'',
+      enableSearch:true
+    };
+  }
 
   handleRequestSort = (event, property) => {
     const orderBy = property;
@@ -266,17 +282,63 @@ class EnhancedTable extends React.Component {
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
+
+ Form(classes,rows) {
+    return (<form style={{ display: 'flex' }}>
+    <Grid container spacing = {8} style={{marginBottom:"1%"}}>
+      <Grid item md sm xs>
+      </Grid>
+      <Grid item md={2} sm={2} xs={2}>
+        <FormControl fullWidth>
+                <InputLabel htmlFor="SearchBy">Search by</InputLabel>
+                <Select
+                  value={this.state.columnToQuery}
+                  onChange={(event)=>{this.setState({columnToQuery:event.target.value,enableSearch: false})}}
+                  inputProps={{
+                    name: 'SearchBy',
+                    id: 'SearchBy',
+                  }}
+                >
+                {rows.map((row,index)=>{
+                  if(index != 0 && index != (rows.length-1))
+                  return <MenuItem value={row.id}>{row.label}</MenuItem>
+                })}
+                </Select>
+                
+          </FormControl>
+        </Grid>
+        <Grid item md={3} sm={3} xs={3}>
+          <TextField
+                    disabled = {this.state.enableSearch}
+                    id="query"
+                    name="query"
+                    label="Search"
+                    type="text"
+                    onChange={e=>this.setState({ query: e.target.value})}
+                    value={this.state.query}
+                />
+        </Grid>
+      </Grid>
+    </form>)
+  }
   render() {
     const { classes, data, rows } = this.props;
-    let columns = rows.map(ele => {return (ele.id)})
+    let columns = rows.map(ele => { return (ele.id) })
     const { order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    let newData = this.state.query ? 
+      data.filter(x => x[this.state.columnToQuery].includes(this.state.query)):data
     return (
-        
+     
       <Paper className={classes.root}>
+      {/* for search by field */}
+      {this.Form(classes,rows)} 
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <div className={classes.tableWrapper}>
+          {/* <div className={classes.tableWrapperHead}> */}
+
           <Table className={classes.table} aria-labelledby="tableTitle">
+
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
@@ -286,8 +348,12 @@ class EnhancedTable extends React.Component {
               rowCount={data.length}
               rows={rows}
             />
+            {/* </Table>
+        </div>
+        <div className={classes.tableWrapper}>
+          <Table > */}
             <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
+              {stableSort(newData, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(n => {
                   const isSelected = this.isSelected(n.id);
@@ -305,32 +371,32 @@ class EnhancedTable extends React.Component {
                         <Checkbox checked={isSelected} />
                       </TableCell> */}
                       {/* component="th" scope="row" padding="none" */}
-                      
+
                       {Object.keys(n).map(m => {
                         // console.log(m)
-                        if (columns.includes(m)){
-                          return(
+                        if (columns.includes(m)) {
+                          return (
                             <CustomTableCell >{n[m]}</CustomTableCell>
-                            )
+                          )
                         }
                         else {
                           return null
                         }
-                        
+
                       })}
                       <CustomTableCell>
-                      <Tooltip title="Edit">
-                        <IconButton aria-label="Edit" className={classes.button} onClick = {() => this.props.onRowEdit(n)}>
-                        <Icon>edit_icon</Icon>
-                        </IconButton>
+                        <Tooltip title="Edit">
+                          <IconButton aria-label="Edit" className={classes.button} onClick={() => this.props.onRowEdit(n)}>
+                            <Icon>edit_icon</Icon>
+                          </IconButton>
                         </Tooltip>
-                        
+
                         {this.props.isDeleteButtonRequired == "false" ? null :
-                        <Tooltip title="Delete"><IconButton aria-label="Delete" className={classes.button} onClick = {() => this.props.onRowDelete(n)}>
-                          <DeleteIcon fontSize="small" />
-                        </IconButton></Tooltip>
+                          <Tooltip title="Delete"><IconButton aria-label="Delete" className={classes.button} onClick={() => this.props.onRowDelete(n)}>
+                            <DeleteIcon fontSize="small" />
+                          </IconButton></Tooltip>
                         }
-                        
+
                       </CustomTableCell>
                       {/* <TableCell>Delete</TableCell> */}
                       {/* <TableCell>{n.departmentName}</TableCell>
@@ -345,6 +411,8 @@ class EnhancedTable extends React.Component {
                 </TableRow>
               )}
             </TableBody>
+            {/* </Table>
+        </div> */}
           </Table>
         </div>
         <TablePagination
