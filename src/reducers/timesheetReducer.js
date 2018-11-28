@@ -13,17 +13,17 @@ function transformData(data) {
       empId:entry.empId,
       projectId:entry.projectId,
       taskId:entry.taskId,
+      // ticketId:entry.ticketId, //add this for ticket field
       totalHours:parseInt(entry.totalHours),
       rowId:entry.rowId
-
     }
     if (transformData.hasOwnProperty(entry.projectId + '|' + entry.taskId)) {
       transformData[entry.projectId + '|' + entry.taskId][entry.date] = refactoredEntry
     } else {
       let temp = {}
-      temp[entry.date] = refactoredEntry
+      temp[entry.date] = refactoredEntry //for each entry date add json object // 2018-11-26:{date:'',id:'',empId:'',projectId:''...}
       // console.log("temp",temp)
-      transformData[entry.projectId + '|' + entry.taskId] = temp
+      transformData[entry.projectId + '|' + entry.taskId] = temp //'entry.projectId + '|' + entry.taskId'=temp
       // console.log("trans data",transformData);
     }
   });
@@ -34,6 +34,7 @@ function transformData(data) {
     return {
       isRowDeletable: false,
       rowId: rowId,
+     // ticketId:'',
       projectId: parseInt(splitArray[0]),
       taskId: parseInt(splitArray[1]),
       timesheetEnteries: transformData[ele]

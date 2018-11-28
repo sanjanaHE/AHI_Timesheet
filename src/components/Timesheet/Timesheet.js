@@ -100,30 +100,8 @@ class Timesheet extends Component {
         }
     }
 
-    updateDateRangeBasedOnSelectedDate = (selectedDate) => {
-        // let dayOfWeek = selectedDate.day();
-        // console.log('SELECTED DATE', selectedDate, dayOfWeek)
-        // selectedDate.subtract(6, "days")    
-        // const endDate = startDate.add("days", 7)    // set to the first day of this week, 12:00 am
-        console.log('date', selectedDate)
-        // console.log('start date', startDate)
-        // console.log('end date', endDate)
-        let startDate = selectedDate.clone()
-        let dateRange = [], n = 6
-        dateRange.push(selectedDate.format("YYYY-MM-DD"))
-        while (n > 0) {
-            selectedDate.add(1, "day")
-            dateRange.push(selectedDate.format("YYYY-MM-DD"))
-            n--;
-        }
-        // dateRange = dateRange.reverse();
-        this.props.actions.getTimesheetEntries(this.props.login.data.id,
-            startDate.format('DD-MM-YYYY'),
-            selectedDate.format('DD-MM-YYYY'));
-        console.log(startDate, selectedDate, dateRange)
-        this.setState({ endDate: selectedDate, selectedDatesRange: dateRange, startDate: startDate })
-    }
-
+    
+    //-----------------------------lifecycle methods-----------------------------------------------------
     componentDidMount() {
         this.props.login_actions.getLoggedUser();
         this.props.project_actions.getProjects();
@@ -149,14 +127,50 @@ class Timesheet extends Component {
         this.setState({ timesheet: nextProps.timesheet.data, tasks: nextProps.tasks.data })
 
     }
+    //-----------------------------------------------------------------------------------------------------
 
+    //-----------------------------------------render methods---------------------------------------------
+    renderDeleteRow(rowId) {
+        // console.log(rowId)
+        return (
+            <Grid item sm xs md={1} >
+                <IconButton aria-label="Delete" onClick={() => this.handleDeleteRow(rowId)}>
+                    <DeleteIcon style={{ "color": "red" }} fontSize="small" />
+                </IconButton>
+             </Grid>
+        )
+    }
+    renderTimesheetInput(timesheetEntry) {
+        // console.log("in render timesheet input ",timesheetEntry.totalHours)
+        if (timesheetEntry.totalHours == null) timesheetEntry.totalHours = 0;
+        else if (timesheetEntry.totalHours < 0 || timesheetEntry.totalHours > 9) timesheetEntry.totalHours = 0;
+        return (
+            <React.Fragment>
+                <Grid item sm={1} xs={1} md={1}>
+                    <TextField
+                        style={{ height: "40%" }}
+                        id="totalHours"
+                        // label={timesheetEntry?moment(timesheetEntry.date).format('DD-MM-YYYY'):null}
+                        type="number"
+                        fullWidth
+                        // margin="normal" //removed this to adjust text box and dropdown inline
+                        variant="outlined"
+                        inputProps={{ maxLength: 1, min: 0, max: 9, minlength: 1 }}
+
+                        onChange={(e) => this.handleChangeHours(e, timesheetEntry)}
+                        value={timesheetEntry ? timesheetEntry.totalHours : 0}
+                    />
+                </Grid>
+            </React.Fragment>)
+    }
     renderProjects(rowId, activeProject) {
         return (
             <Grid item sm={2} md={2} xs={2}>
                 <FormControl fullWidth style={{ height: "100%" }} required error={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('projectId')}>
 
                     <Select
-                        style={{ marginTop: "9%", height: "40%" }}
+                        // style={{ marginTop: "20%", height: "40%" }}
+                        style={{  height: "40%" }}
                         label="Projects"
                         fullWidth
                         input={
@@ -190,7 +204,8 @@ class Timesheet extends Component {
             <FormControl fullWidth style={{ height: "100%" }} required error={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('taskId')}>
 
                 <Select
-                    style={{ marginTop: "9%", height: "40%" }}
+                    // style={{ marginTop: "20%", height: "40%" }}
+                    style={{  height: "40%" }}
                     label="Tasks"
                     fullWidth
                     input={
@@ -221,7 +236,65 @@ class Timesheet extends Component {
             </FormControl>
         </Grid>)
     }
+    renderTicketId(rowId){
+        return (
+            <React.Fragment>
+                <Grid item sm={1} xs={1} md={1}>
+                    <TextField
+                        required
+                        style={{ height: "40%" }}
+                        id="ticketId"
+                        name="ticketId"
+                        type="text"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        onChange={(e) => this.handleChangeTaskAndProjectName(e, rowId)}
+                        // value={timesheetEntry ? timesheetEntry.totalHours : 0}
+                    />
+                </Grid>
+            </React.Fragment>)
+    }
+    //--------------function to render each row ------------------------------------------------------------------
+    renderRow(isRowDeletable, rowId, project, task, timesheet) {
+        // console.log("timesheet in render row",timesheet)
+        return (<Grid container spacing={24} style={{ margin: "0 0 -5% 0"}}>
+            {this.renderProjects(rowId, project)}
+            {/* {this.renderTicketId(rowId)} */}
+            {this.renderTasks(rowId, task)}
+            {/* // Generate an array of dates from startDate to endDate
+            // Iterate over the array of dates, If the value exists then render timesheet input
+            // Else
+            // Render empty timesheet input */}
 
+            {this.dateCheck(rowId, project, task, timesheet)}
+
+            {isRowDeletable ? this.renderDeleteRow(rowId) : null}
+
+            {/* for duplicate entry alert */}
+            <Dialog
+                        open={this.state.submitAlertSnackBar}
+                        onClose={this.handleCloseDupAlertSnackBar}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        {/* <DialogTitle id="alert-dialog-title">Warning!</DialogTitle> */}
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                You are trying to enter duplicate entry!
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.handleCloseDupAlertSnackBar} color="primary" autoFocus>
+                                Ok
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+        </Grid>)
+    }
+    //-----------------------------------------------------------------------------------------------------------
+
+    //-------------------------------handle methods---------------------------------------------------------------
     handleChangeHours = (e, timesheetEntry) => {
         let timesheet = Object.assign([], this.state.timesheet);
         // console.log(timesheetEntry)
@@ -257,7 +330,7 @@ class Timesheet extends Component {
         // console.log("state --- ", this.state.timesheet);
         let timesheet = Object.assign([], this.state.timesheet);
         let taskId, projectId;
-        //validation for duplicate task name and project name pairs
+        //-------validation for duplicate task name and project name pairs---------
         for (let i = 0; i < timesheet.length; i++) {
             if (timesheet[i].rowId == rowId) {
                 if (e.target.name == 'taskId') {
@@ -280,18 +353,22 @@ class Timesheet extends Component {
                 return;
             }
         }
-
-        // console.log('REACHED HERE')
+        //---------------end of validation-----------------------------------------------------
+        
         for (let i = 0; i < timesheet.length; i++) {
-            // console.log(timesheet[i].rowId , "__",timesheet[i].projectName,"___",timesheet[i].taskName)
-            if (timesheet[i].rowId == rowId) {
+            // console.log(timesheet[i].rowId , "__",timesheet[i].projectName,"___",timesheet[i].taskName,"___",timesheet[i].taskID)
+            //----------searching for rowid in the list
+            if (timesheet[i].rowId == rowId) { 
+                // console.log("ee",timesheet[i].rowId , rowId)
+                //------to fill project name and task name of corresponding row
+                console.log(e.target.name,e.target.value)
                 timesheet[i][e.target.name] = e.target.value;
             }
 
-            // since entries are {{},{},{}} ==> get keys and its values
+            //-----------to fill totalHours fields
+            //------------- since timesheet[i].timesheetEntries is in format {{},{},{}} ==> get keys('dates') and its values
             for (var key in timesheet[i].timesheetEnteries) {
                 if (timesheet[i].timesheetEnteries.hasOwnProperty(key)) {
-                    // console.log(key , " -> " , timesheet[i].timesheetEnteries[key]);
                     if (timesheet[i].rowId == rowId) {
                         timesheet[i].timesheetEnteries[key][e.target.name] = e.target.value
                     }
@@ -300,43 +377,10 @@ class Timesheet extends Component {
         }
         this.setState({ timesheet: timesheet })
         this.handleValidation()
-        // console.log(timesheet)
+        console.log(timesheet)
 
     }
-    renderTimesheetInput(timesheetEntry) {
-        // console.log("in render timesheet input ",timesheetEntry.totalHours)
-        if (timesheetEntry.totalHours == null) timesheetEntry.totalHours = 0;
-        else if (timesheetEntry.totalHours < 0 || timesheetEntry.totalHours > 9) timesheetEntry.totalHours = 0;
-        return (
-            <React.Fragment>
-                <Grid item sm={1} xs={1} md={1}>
-                    <TextField
-                        style={{ height: "40%" }}
-                        id="totalHours"
-                        // label={timesheetEntry?moment(timesheetEntry.date).format('DD-MM-YYYY'):null}
-                        type="number"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        inputProps={{ maxLength: 1, min: 0, max: 9, minlength: 1 }}
-
-                        onChange={(e) => this.handleChangeHours(e, timesheetEntry)}
-                        value={timesheetEntry ? timesheetEntry.totalHours : 0}
-                    />
-                </Grid>
-            </React.Fragment>)
-    }
-    deleteRow(rowId) {
-        // console.log(rowId)
-        return (
-            <Grid item sm xs md alignItems="center" justify="center" style={{ "margin-top": "1%" }} >
-                <IconButton aria-label="Delete" onClick={() => this.handleDeleteRow(rowId)}>
-                    <DeleteIcon style={{ "color": "red" }} fontSize="small" />
-                </IconButton>
-            </Grid>
-        )
-    }
-
+   
     dateCheck(rowId, project, task, timesheet) {
         return this.state.selectedDatesRange.map(timesheetDate => {
             // var m = momentTZ.tz(date + 'T00:00:00.000', 'Asia/Kolkata');
@@ -353,42 +397,30 @@ class Timesheet extends Component {
             }
         })
     }
-
-    renderRow(isRowDeletable, rowId, project, task, timesheet) {
-        // console.log("timesheet in render row",timesheet)
-        return (<Grid container spacing={24} style={{ margin: "0 3% -3% -1%", paddingLeft: "1%" }}>
-            {this.renderProjects(rowId, project)}
-            {this.renderTasks(rowId, task)}
-            {/* // Generate an array of dates from startDate to endDate
-            // Iterate over the array of dates, If the value exists then render timesheet input
-            // Else
-            // Render empty timesheet input */}
-
-            {this.dateCheck(rowId, project, task, timesheet)}
-
-            {isRowDeletable ? this.deleteRow(rowId) : null}
-
-            {/* for duplicate entry alert */}
-            <Dialog
-                        open={this.state.submitAlertSnackBar}
-                        onClose={this.handleCloseDupAlertSnackBar}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                        {/* <DialogTitle id="alert-dialog-title">Warning!</DialogTitle> */}
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                You are trying to enter duplicate entry!
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={this.handleCloseDupAlertSnackBar} color="primary" autoFocus>
-                                Ok
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
-        </Grid>)
+    updateDateRangeBasedOnSelectedDate = (selectedDate) => {
+        // let dayOfWeek = selectedDate.day();
+        // console.log('SELECTED DATE', selectedDate, dayOfWeek)
+        // selectedDate.subtract(6, "days")    
+        // const endDate = startDate.add("days", 7)    // set to the first day of this week, 12:00 am
+        // console.log('date', selectedDate)
+        // console.log('start date', startDate)
+        // console.log('end date', endDate)
+        let startDate = selectedDate.clone()
+        let dateRange = [], n = 6
+        dateRange.push(selectedDate.format("YYYY-MM-DD"))
+        while (n > 0) {
+            selectedDate.add(1, "day")
+            dateRange.push(selectedDate.format("YYYY-MM-DD"))
+            n--;
+        }
+        // dateRange = dateRange.reverse();
+        this.props.actions.getTimesheetEntries(this.props.login.data.id,
+            startDate.format('DD-MM-YYYY'),
+            selectedDate.format('DD-MM-YYYY'));
+        // console.log(startDate, selectedDate, dateRange)
+        this.setState({ endDate: selectedDate, selectedDatesRange: dateRange, startDate: startDate })
     }
+    
     handleValidation() {
         // console.log(this.state.timesheet)
         let errors = {};    //error messages
@@ -467,6 +499,9 @@ class Timesheet extends Component {
     handleAddRowAction = () => {
         this.setState({ timesheet: [...this.state.timesheet, { isRowDeletable: true, rowId: uuid.v4(), projectId: null, taskId: null, timesheetEnteries: {} }] })
     }
+    //--------------------------------------------------------------------------------------------------------
+
+    //------------------------------------------main render method-----------------------------------------------
     render() {
         const { classes } = this.props;
         // console.log(this.props)
@@ -477,7 +512,7 @@ class Timesheet extends Component {
                 <h1>Timesheet</h1>
                 <div className={classes.timesheetWrapper}>
                     
-                    <Grid container spacing={8} style={{ "margin-bottom": "2%" }}>
+                    <Grid container spacing={24} style={{ "margin-bottom": "2%" }}>
                         
                         <Grid item md={3} sm={3} xs={3}>
                         </Grid>
@@ -509,25 +544,29 @@ class Timesheet extends Component {
                             </Tooltip>
                         </Grid>
                     </Grid>
-                    <Grid container className={classes.timesheetHeader}>
+                    <Grid container spacing={0} className={classes.timesheetHeader}>
                         <Grid item sm={2} md={2} xs={2}>
                             <Typography variant="subheading">Projects</Typography>
                         </Grid>
                         <Grid item sm={2} md={2} xs={2}>
                             <Typography variant="subheading">Tasks</Typography>
                         </Grid>
+                        
                         {this.state.selectedDatesRange.map(date => {
-                            return (<Grid item sm={1} xs={1} md={1}>
-                                <Typography variant="subheading">{moment(date).format('DD MMM')}</Typography>
-                                <Typography variant="subheading">{moment(date).format('ddd')}</Typography>
-
-                            </Grid>);
-                        })}
+                                return (
+                                    <React.Fragment>
+                                    <Grid item sm={1} xs={1} md={1}>
+                                    <Typography variant="subheading">{moment(date).format('DD MMM')}</Typography>
+                                    <Typography variant="subheading">{moment(date).format('ddd')}</Typography>
+                                    </Grid>
+                                    </React.Fragment>
+                                )
+                            })}
                     </Grid>
                     <div style={{height:"15em",overflowY:"scroll",overflowX:"hidden"}}>
                         {this.state.timesheet.length > 0 ?
-                            this.state.timesheet.map((ele, index) => {
-                                // console.log("timesheet entries",ele.timesheetEnteries)
+                            this.state.timesheet.map((ele, index) => { //coming from api response
+                                // console.log("timesheet entries",ele)
                                 return this.renderRow(ele.isRowDeletable, ele.rowId, ele.projectId, ele.taskId, ele.timesheetEnteries)
                             }) : null}
                     </div>
@@ -570,6 +609,7 @@ class Timesheet extends Component {
         )
     }
 }
+//----------------------------------------redux functions--------------------------------------------------------
 function mapStateToProps(state) {
     return {
         timesheet: state.timesheet,
