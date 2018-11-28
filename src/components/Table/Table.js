@@ -314,7 +314,7 @@ class EnhancedTable extends React.Component {
                     name="query"
                     label="Search"
                     type="text"
-                    onChange={e=>this.setState({ query: e.target.value})}
+                    onChange={e=>this.setState({ query: e.target.value.toLowerCase()})}
                     value={this.state.query}
                 />
         </Grid>
@@ -327,7 +327,7 @@ class EnhancedTable extends React.Component {
     const { order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
     let newData = this.state.query ? 
-      data.filter(x => x[this.state.columnToQuery].includes(this.state.query)):data
+      data.filter(x => x[this.state.columnToQuery].toLowerCase().includes(this.state.query)):data
     return (
      
       <Paper className={classes.root}>
