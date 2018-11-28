@@ -278,8 +278,10 @@ class Employee extends React.Component {
         if (this.state.isEditDialog) {
             //checking for validation 
             if (this.handleValidation()) {
-                console.log(this.state.fields);
-                this.props.actions.addEmployee(this.state.fields, this.props.login.data.loginId)
+                // console.log(this.state.fields);
+                let fields = Object.assign({}, this.state.fields);
+                fields['supervisorId'] = this.state.fields.supervisorId.value;
+                this.props.actions.addEmployee(fields, this.props.login.data.loginId)
                 this.setState({ open: false });
             }
 
@@ -289,7 +291,9 @@ class Employee extends React.Component {
             this.setState({ fields })
             //checking for validation 
             if (this.handleValidation()) {
-                this.props.actions.addEmployee(this.state.fields, this.props.login.data.loginId)
+                let fields = Object.assign({}, this.state.fields);
+                fields['supervisorId'] = this.state.fields.supervisorId.value;
+                this.props.actions.addEmployee(fields, this.props.login.data.loginId)
                 this.setState({ open: false });
             }
 
@@ -531,7 +535,7 @@ class Employee extends React.Component {
                                     <FormHelperText>{this.state.errors.supervisorId}</FormHelperText>
                                 </FormControl> */}
                                 {/* <div className={classes.divider} /> */}
-                                <InputLabel htmlFor="headedByUserId" style={{'color':this.state.errorColor.supervisorId?"red":"black"}}>Supervisor* </InputLabel>
+                                <InputLabel htmlFor="supervisorId" style={{'color':this.state.errorColor.supervisorId?"red":"black"}}>Supervisor* </InputLabel>
                                 <FormControl fullWidth required error={this.state.errorColor.supervisorId}>
                                     {/* <InputLabel htmlFor="headedByUserId"> Owner</InputLabel> */}
                                     <SelectN
