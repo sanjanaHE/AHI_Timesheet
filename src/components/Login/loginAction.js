@@ -35,7 +35,7 @@ export function getLoggedUser(){
         })
         axios.get(`${baseUrl}ahits/rest/user/userdetails`)
         .then(response => {
-            console.log("GET lOGGED USER ID" , response.status)
+            // console.log("GET lOGGED USER ID" , response.status)
             dispatch({
                 type : 'GET_LOGGED_USER_SUCCESS',
                 data : response.data

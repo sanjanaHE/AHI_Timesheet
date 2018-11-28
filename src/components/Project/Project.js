@@ -21,6 +21,58 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Tooltip from '@material-ui/core/Tooltip';
+import SelectN from 'react-select';
+import { emphasize } from '@material-ui/core/styles/colorManipulator';
+import { withStyles } from '@material-ui/core/styles';
+import components from './../common/common'; //used for react-select
+
+const styles = theme => ({
+    root: {
+        flexGrow: 1,
+        height: 250,
+    },
+    input: {
+        display: 'flex',
+        padding: 0,
+    },
+    valueContainer: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        flex: 1,
+        alignItems: 'center',
+        overflow: 'hidden',
+    },
+    chip: {
+        margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+    },
+    chipFocused: {
+        backgroundColor: emphasize(
+            theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+            0.08,
+        ),
+    },
+    noOptionsMessage: {
+        padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
+    },
+    singleValue: {
+        fontSize: 16,
+    },
+    placeholder: {
+        position: 'absolute',
+        left: 2,
+        fontSize: 16,
+    },
+    paper: {
+        position: 'absolute',
+        zIndex: 1,
+        marginTop: theme.spacing.unit,
+        left: 0,
+        right: 0,
+    },
+    divider: {
+        height: theme.spacing.unit * 2,
+    },
+});
 
 
 class Project extends React.Component {
@@ -91,14 +143,38 @@ class Project extends React.Component {
 
     handleEdit = (rowData) => {
 
-        console.log("DATA", rowData)
         var fields = Object.assign({}, rowData);
+        fields.headedByUserId = { label: rowData.headedBy, value: rowData.headedByUserId }
         this.setState({ fields: fields })
         this.setState({ open: true });
         this.setState({ isEditDialog: true })
     }
     handleDelete = (rowData) => {
         this.props.actions.deleteProject(rowData.projectId)
+    }
+
+    handleChangeDropdown = (field, e) => {
+        let fields = this.state.fields;
+        fields[field] = { value: e.value, label: e.label };
+        this.setState({ fields });
+
+        //setting errors and errorcolor in state
+        let errorColor = this.state.errorColor;
+        let errors = this.state.errors;
+
+        if (fields[field] == "") {
+            errorColor['headedByUserId'] = true;
+            errors['headedByUserId'] = "This field is required";
+            this.setState({ errorColor: errorColor, errors: errors })
+        }
+        else {
+            console.log(e)
+            console.log(errorColor)
+            errorColor['headedByUserId'] = false;
+            errors['headedByUserId'] = "";
+            this.setState({ errorColor: errorColor, errors: errors })
+        }
+        console.log(this.state.errorColor.headedByUserId)
     }
 
     handleChange = (field, e) => {
@@ -130,7 +206,9 @@ class Project extends React.Component {
         if (this.state.isEditDialog) {
             //checking for validation 
             if (this.handleValidation()) {
-                this.props.actions.addProject(this.state.fields)     //edited form submission
+                let fields = Object.assign({}, this.state.fields);
+                fields['headedByUserId'] = this.state.fields.headedByUserId.value; //coverting field to value from label and value
+                this.props.actions.addProject(fields)     //edited form submission
                 this.setState({ open: false });
             }
 
@@ -140,7 +218,9 @@ class Project extends React.Component {
             this.setState({ fields })
             //checking for validation 
             if (this.handleValidation()) {
-                this.props.actions.addProject(this.state.fields)    //added form submission
+                let fields = Object.assign({}, this.state.fields);
+                fields['headedByUserId'] = this.state.fields.headedByUserId.value;
+                this.props.actions.addProject(fields)    //added form submission
                 this.setState({ open: false });
             }
 
@@ -176,6 +256,20 @@ class Project extends React.Component {
     render() {
         const { data, title, order, orderBy, selected, rowsPerPage, page, rows } = this.state;
         const { employees } = this.props;
+        const { classes, theme } = this.props;
+
+        const selectStyles = {
+            input: base => ({
+                ...base,
+                color: theme.palette.text.primary,
+                '& input': {
+                    font: 'inherit',
+                },
+            }),
+        };
+        let suggestions = employees.data.map(function (employee) {
+            return { label: employee.firstName, value: employee.id };
+        })
         return (
             <React.Fragment>
                 {/* <Header>
@@ -226,7 +320,7 @@ class Project extends React.Component {
                                     error={this.state.errorColor.projectDescription}
                                     helperText={this.state.errors.projectDescription}
                                 />
-                                <FormControl fullWidth required  error={this.state.errorColor.headedByUserId}>
+                                {/* <FormControl fullWidth required  error={this.state.errorColor.headedByUserId}>
                                     <InputLabel htmlFor="headedByUserId">Owner</InputLabel>
                                     <Select
                                         inputProps={{
@@ -245,14 +339,36 @@ class Project extends React.Component {
                                         }
                                     </Select>
                                     <FormHelperText>{this.state.errors.headedByUserId}</FormHelperText>
+                                </FormControl> */}
+                                <div className={classes.divider} />
+                                <InputLabel htmlFor="headedByUserId" style={{'color':this.state.errorColor.headedByUserId?"red":"black"}}>Owner* </InputLabel>
+                                <FormControl fullWidth required error={this.state.errorColor.headedByUserId}>
+                                    {/* <InputLabel htmlFor="headedByUserId"> </InputLabel> */}
+                                    <SelectN
+                                        inputProps={{
+                                            name: 'headedByUserId',
+                                            id: 'headedByUserId',
+                                        }}
+                                        classes={classes}
+                                        styles={selectStyles}
+                                        options={suggestions}
+                                        components={components}
+                                        value={this.state.fields["headedByUserId"]}
+                                        onChange={this.handleChangeDropdown.bind(this, "headedByUserId")}
+                                        placeholder="select owner"
+
+                                    />
+
+                                    <FormHelperText>{this.state.errors.headedByUserId}</FormHelperText>
                                 </FormControl>
+                                <div className={classes.divider} />
                             </form>
                         </DialogContent>
                         <DialogActions>
-                            <Button  onClick={this.handleClose} color="primary">
+                            <Button onClick={this.handleClose} color="primary">
                                 Cancel
                         </Button>
-                            <Button  type="submit" onClick={this.handleSubmit} color="primary">
+                            <Button type="submit" onClick={this.handleSubmit} color="primary">
                                 Submit
                         </Button>
                         </DialogActions>
@@ -288,4 +404,5 @@ function mapDispatchToProps(dispatch) {
         actions: bindActionCreators({ ...ActionCreators }, dispatch)
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Project);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(Project));
+

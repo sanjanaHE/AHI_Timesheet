@@ -24,8 +24,58 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import SelectN from 'react-select';
+import { emphasize } from '@material-ui/core/styles/colorManipulator';
+import { withStyles } from '@material-ui/core/styles';
+import components from './../common/common'; //used for react-select
 
-
+const styles = theme => ({
+    root: {
+        flexGrow: 1,
+        height: 250,
+    },
+    input: {
+        display: 'flex',
+        padding: 0,
+    },
+    valueContainer: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        flex: 1,
+        alignItems: 'center',
+        overflow: 'hidden',
+    },
+    chip: {
+        margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+    },
+    chipFocused: {
+        backgroundColor: emphasize(
+            theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+            0.08,
+        ),
+    },
+    noOptionsMessage: {
+        padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
+    },
+    singleValue: {
+        fontSize: 16,
+    },
+    placeholder: {
+        position: 'absolute',
+        left: 2,
+        fontSize: 16,
+    },
+    paper: {
+        position: 'absolute',
+        zIndex: 1,
+        marginTop: theme.spacing.unit,
+        left: 0,
+        right: 0,
+    },
+    divider: {
+        height: theme.spacing.unit * 2,
+    },
+});
 class Employee extends React.Component {
     componentDidMount() {
         this.props.actions.getEmployees();
@@ -53,15 +103,38 @@ class Employee extends React.Component {
         this.setState({ open: false });
         this.setState({ errors: {} });
         this.setState({ errorColor: {} });
-        this.setState({fields:  {}})
+        this.setState({ fields: {} })
     };
     handleEdit = (rowData) => {
-        var fields =  Object.assign({}, rowData)
+        var fields = Object.assign({}, rowData)
         fields['dob'] = moment(rowData.dob, 'DD-MM-YYYY').format('MM-DD-YYYY')
         fields['joiningDate'] = moment(rowData.joiningDate, 'DD-MM-YYYY').format('MM-DD-YYYY')
+        fields.supervisorId = { label: rowData.supervisorName, value: rowData.supervisorId }
         this.setState({ fields: fields })
         this.setState({ open: true });
         this.setState({ isEditDialog: true })
+    }
+    handleChangeDropdown = (field, e) => {
+        let fields = this.state.fields;
+        fields[field] = { value: e.value, label: e.label };
+        this.setState({ fields });
+
+        //setting errors and errorcolor in state
+        let errorColor = this.state.errorColor;
+        let errors = this.state.errors;
+
+        if (fields[field] == "") {
+            errorColor['supervisorId'] = true;
+            errors['supervisorId'] = "This field is required";
+            this.setState({ errorColor: errorColor, errors: errors })
+        }
+        else {
+            console.log(e)
+            console.log(errorColor)
+            errorColor['supervisorId'] = false;
+            errors['supervisorId'] = "";
+            this.setState({ errorColor: errorColor, errors: errors })
+        }
     }
     handleChange = (field, e) => {
         let fields = this.state.fields;
@@ -128,8 +201,8 @@ class Employee extends React.Component {
             formIsValid = false;
             errors["email"] = "Please enter valid email id";
         }
-        if(re.test(fields["email"])){}
-        else{
+        if (re.test(fields["email"])) { }
+        else {
             errorColor["email"] = true;
             formIsValid = false;
             errors["email"] = "Please enter valid email id";
@@ -241,7 +314,7 @@ class Employee extends React.Component {
                 "role": "",
                 "supervisorId": "",
                 "location": "",
-                "email":""
+                "email": ""
             },
             errors: {},
             errorColor: {},
@@ -277,12 +350,25 @@ class Employee extends React.Component {
 
     render() {
         const { title, order, orderBy, selected, rowsPerPage, page, rows } = this.state;
-        const { classes, login } = this.props;
+        const { classes, login, theme, employees } = this.props;
+
+        const selectStyles = {
+            input: base => ({
+                ...base,
+                color: theme.palette.text.primary,
+                '& input': {
+                    font: 'inherit',
+                },
+            }),
+        };
+        let suggestions = employees.data.map(function (employee) {
+            return { label: employee.firstName, value: employee.id };
+        })
         return (
             <React.Fragment>
                 {/* <Header>
                 </Header> */}
-                <div style={{ margin: "1%" }}>
+                <div style={{ margin: "0%" }}>
                     <h1>Employees</h1>
                     <Tooltip title="Add employee">
                         <Button variant="fab" color="secondary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
@@ -423,7 +509,7 @@ class Employee extends React.Component {
                                     </Select>
                                     <FormHelperText>{this.state.errors.role}</FormHelperText>
                                 </FormControl>
-                                <FormControl fullWidth required error={this.state.errorColor.supervisorId}>
+                                {/* <FormControl fullWidth required error={this.state.errorColor.supervisorId}>
                                     <InputLabel htmlFor="supervisorId">Supervisor</InputLabel>
                                     <Select
                                         inputProps={{
@@ -443,7 +529,32 @@ class Employee extends React.Component {
                                         }
                                     </Select>
                                     <FormHelperText>{this.state.errors.supervisorId}</FormHelperText>
+                                </FormControl> */}
+                                {/* <div className={classes.divider} /> */}
+                                <InputLabel htmlFor="headedByUserId" style={{'color':this.state.errorColor.supervisorId?"red":"black"}}>Supervisor* </InputLabel>
+                                <FormControl fullWidth required error={this.state.errorColor.supervisorId}>
+                                    {/* <InputLabel htmlFor="headedByUserId"> Owner</InputLabel> */}
+                                    <SelectN
+                                        inputProps={{
+                                            name: 'supervisorId',
+                                            id: 'supervisorId',
+                                        }}
+                                        optionRenderer="Owner"
+
+                                        alwaysDisplayPlaceholder="true"
+                                        classes={classes}
+                                        styles={selectStyles}
+                                        options={suggestions}
+                                        components={components}
+                                        value={this.state.fields["supervisorId"]}
+                                        onChange={this.handleChangeDropdown.bind(this, "supervisorId")}
+                                        placeholder="Select supervisor"
+
+                                    />
+
+                                    <FormHelperText>{this.state.errors.supervisorId}</FormHelperText>
                                 </FormControl>
+                                {/* <div className={classes.divider} /> */}
                                 <TextField
                                     required
                                     margin="dense"
@@ -460,10 +571,10 @@ class Employee extends React.Component {
                             </form>
                         </DialogContent>
                         <DialogActions>
-                            <Button  onClick={this.handleClose} color="primary">
+                            <Button onClick={this.handleClose} color="primary">
                                 Cancel
                         </Button>
-                            <Button  type="submit" onClick={this.handleSubmit} color="primary">
+                            <Button type="submit" onClick={this.handleSubmit} color="primary">
                                 Submit
                         </Button>
                         </DialogActions>
@@ -500,4 +611,4 @@ function mapDispatchToProps(dispatch) {
         login_actions: bindActionCreators(LoginActionCreators, dispatch)
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Employee);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(Employee));
