@@ -299,7 +299,7 @@ class Department extends React.Component {
         };
         // console.log("employees ",JSON.stringify(employees))
         let suggestions = employees.data.map(function (employee) {
-            return { label: employee.firstName, value: employee.id };
+            return { label:  employee.firstName+" "+employee.lastName, value: employee.id };
         })
         // console.log('OPTIONS', suggestions)
         return (

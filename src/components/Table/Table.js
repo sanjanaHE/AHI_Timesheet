@@ -206,11 +206,17 @@ const styles = theme => ({
   },
   table: {
     minWidth: 720,
+    // "table-layout":"fixed"
   },
   tableWrapper: {
     overflowX: 'auto',
-    overflowY: 'scroll',
-    height: '20em'
+    overflowY: 'auto',
+    height: '23em',
+    [theme.breakpoints.up('md')]: {
+      overflowX: 'hidden',
+      height: '23em',
+      overflowY: 'auto',
+    }
   },
   tableWrapperHead: {
     height: '3.5em'

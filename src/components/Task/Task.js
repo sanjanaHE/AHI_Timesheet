@@ -192,15 +192,10 @@ class Task extends React.Component {
                             <AddIcon />
                         </Button>
                     </Tooltip>
-                    {/* <Button variant="contained" color="primary">
-                        Add
-                        <AddIcon />
-                    </Button> */}
                     <Dialog
                         open={this.state.open}
                         onClose={this.handleClose}
-                        aria-labelledby="form-dialog-title"
-                    >
+                        aria-labelledby="form-dialog-title">
                         <DialogTitle id="form-dialog-title">
                             {this.state.isEditDialog ? 'Edit ' : 'Add '}
                             Task</DialogTitle>

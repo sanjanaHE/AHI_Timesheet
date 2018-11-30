@@ -31,7 +31,7 @@ const styles = theme => ({
   //   },
   // },
   layout:{
-    width:'30%',
+    width:'350px',
     position: 'fixed',
     top: '50%',
     left:' 50%',

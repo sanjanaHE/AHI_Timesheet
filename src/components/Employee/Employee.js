@@ -366,13 +366,13 @@ class Employee extends React.Component {
             }),
         };
         let suggestions = employees.data.map(function (employee) {
-            return { label: employee.firstName, value: employee.id };
+            return { label:  employee.firstName+" "+employee.lastName, value: employee.id };
         })
         return (
             <React.Fragment>
                 {/* <Header>
                 </Header> */}
-                <div style={{ margin: "0%" }}>
+                <div style={{ margin: "2%" }}>
                     <h1>Employees</h1>
                     <Tooltip title="Add employee">
                         <Button variant="fab" color="secondary" aria-label="Add" style={{ float: "right" }} onClick={this.handleClickOpen} >
