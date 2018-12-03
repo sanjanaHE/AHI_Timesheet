@@ -394,16 +394,24 @@ class Timesheet extends Component {
 
         allRowsData.forEach((i) => {
             i.forEach((j)=>{
+            //    console.log(j)
                 result[j.date] = result[j.date] || { date: j.date, totalHours: 0 };
-                result[j.date].totalHours += j.totalHours;
+                if(!Number.isNaN(j.totalHours)){
+                    result[j.date].totalHours += j.totalHours;
+                }
+                
             })
         });
 
-        result = Object.values(result)
-        console.log(result);
-        result.forEach(hr =>{
-            sumOfColArray.push(hr.totalHours)
-        })
+        // result = Object.values(result)
+        // console.log(result);
+        // console.log(this.state.selectedDatesRange)
+        // result.forEach(hr =>{
+        //     sumOfColArray.push(hr.totalHours)
+        // })
+        // this.state.selectedDatesRange.forEach(date=>{
+        //     sumOfColArray.push()
+        // })
        // console.log(sumOfColArray)
 
       
@@ -420,15 +428,16 @@ class Timesheet extends Component {
                 sumOfRow = 0
             }
         //======================================end of sum of rows==================================================================
+        console.log('RESULT', result)
         return(
             <Grid container spacing={0} className={this.props.classes.timesheetHeader}>
                 <Grid item sm={4} md={4} xs={4}>
                     Total hours(Hrs)
                 </Grid>
                 {
-                        sumOfColArray.map(colSum=>{
+                        this.state.selectedDatesRange.map(date=>{
                             return (
-                                <Grid item sm={1} md={1} xs={1}>{colSum}</Grid>
+                                <Grid item sm={1} md={1} xs={1}>{result.hasOwnProperty(date) && !Number.isNaN(result[date].totalHours) ? result[date].totalHours: 0}</Grid>
                             );
                     })
                 }
