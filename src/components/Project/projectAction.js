@@ -7,9 +7,10 @@ export function addProject(formData) {
     'projectId': formData.projectId,
     'projectName': formData.projectName,
     'projectDescription': formData.projectDescription,
-    'headedByUserId': formData.headedByUserId
+    'headedByUserId': formData.headedByUserId,
+    'clientId':formData.clientId
     } 
-    // console.log("ADD PROJECT DATA" , data)
+    console.log("ADD PROJECT DATA" , data)
     // TODO: MAKE AN API CALL TO BACKEND SERVER
     return (dispatch) => {
       axios({
@@ -69,7 +70,7 @@ export function deleteProject(id){
     url: `${baseUrl}ahits/api/projects/delete?projectIds=${id}`,
   })
     .then((response) => {
-      console.log("deleting project ", response.data)
+      // console.log("deleting project ", response.data)
       getProjectsApi(dispatch)
     });
   }

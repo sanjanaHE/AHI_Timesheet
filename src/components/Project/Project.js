@@ -1,9 +1,10 @@
 import React from 'react';
 import trim from 'trim'
-
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as ActionCreators from './projectAction';
+import * as ClientActionCreators from './../Client/clientAction';
+
 import Header from './../Header/Header';
 import EnhancedTable from './../Table/Table'
 import Button from '@material-ui/core/Button';
@@ -80,17 +81,19 @@ class Project extends React.Component {
         // Fetch Data for Department
         this.props.actions.getProjects();
         this.props.actions.getUsers();
+        this.props.client_actions.getClients();
     }
     handleClickOpen = () => {
-        console.log("in handle click open")
+        // console.log("in handle click open")
         this.setState({ open: true });
         var fields = { ...this.state.fields };
         fields.projectName = "";
         fields.projectDescription = "";
         fields.headedByUserId = "";
+        fields.clientId = "";
         this.setState({ fields });
         this.setState({ isEditDialog: false })
-        console.log(this.state)
+        // console.log(this.state.fields)
     };
 
     handleValidation() {
@@ -128,6 +131,12 @@ class Project extends React.Component {
             errors["headedByUserId"] = "This field is required";
 
         }
+        if (!fields["clientId"]) {
+            errorColor["clientId"] = true;
+            formIsValid = false;
+            errors["clientId"] = "This field is required";
+
+        }
 
         this.setState({ errors: errors });
         this.setState({ errorColor: errorColor });
@@ -142,7 +151,7 @@ class Project extends React.Component {
 
 
     handleEdit = (rowData) => {
-
+        // console.log(rowData)
         var fields = Object.assign({}, rowData);
         fields.headedByUserId = { label: rowData.headedBy, value: rowData.headedByUserId }
         this.setState({ fields: fields })
@@ -168,19 +177,20 @@ class Project extends React.Component {
             this.setState({ errorColor: errorColor, errors: errors })
         }
         else {
-            console.log(e)
-            console.log(errorColor)
+            // console.log(e)
+            // console.log(errorColor)
             errorColor['headedByUserId'] = false;
             errors['headedByUserId'] = "";
             this.setState({ errorColor: errorColor, errors: errors })
         }
-        console.log(this.state.errorColor.headedByUserId)
+        // console.log(this.state.errorColor.headedByUserId)
     }
 
     handleChange = (field, e) => {
         let fields = this.state.fields;
         fields[field] = e.target.value;
         this.setState({ fields });
+        // console.log(this.state.fields)
 
         //setting errors and errorcolor in state
         let errorColor = this.state.errorColor;
@@ -248,6 +258,7 @@ class Project extends React.Component {
                 { id: 'projectName', numeric: false, disablePadding: false, label: 'Project Name' },
                 { id: 'projectDescription', numeric: false, disablePadding: false, label: 'Description' },
                 { id: 'headedBy', numeric: false, disablePadding: false, label: 'Owner' },
+                { id: 'clientName', numeric: false, disablePadding: false, label: 'Client Name' },
                 { id: 'actions', numeric: false, disablePadding: false, label: 'Actions' }
             ]
         };
@@ -255,9 +266,9 @@ class Project extends React.Component {
 
     render() {
         const { data, title, order, orderBy, selected, rowsPerPage, page, rows } = this.state;
-        const { employees } = this.props;
+        const { employees,clients } = this.props;
         const { classes, theme } = this.props;
-
+        // console.log(this.state.rows)
         const selectStyles = {
             input: base => ({
                 ...base,
@@ -340,7 +351,29 @@ class Project extends React.Component {
                                     </Select>
                                     <FormHelperText>{this.state.errors.headedByUserId}</FormHelperText>
                                 </FormControl> */}
-                                <div className={classes.divider} />
+
+                                <FormControl fullWidth required  error={this.state.errorColor.clientId}>
+                                    <InputLabel htmlFor="clientId">Client</InputLabel>
+                                    <Select
+                                        inputProps={{
+                                            name: 'clientId',
+                                            id: 'clientId',
+                                        }}
+                                        onChange={this.handleChange.bind(this, "clientId")}
+                                        value={this.state.fields["clientId"]}
+                                    >
+                                        <MenuItem disabled value="select" selected>
+                                            <em>Select</em>
+                                        </MenuItem>
+                                        {clients.data.map(client => {
+                                            return <MenuItem key={client.clientId} value={client.clientId}>{client.clientName}</MenuItem>
+                                        })
+                                        }
+                                    </Select>
+                                    <FormHelperText>{this.state.errors.clientId}</FormHelperText>
+                                </FormControl>
+
+                                {/* <div className={classes.divider} /> */}
                                 <InputLabel htmlFor="headedByUserId" style={{'color':this.state.errorColor.headedByUserId?"red":"black"}}>Owner* </InputLabel>
                                 <FormControl fullWidth required error={this.state.errorColor.headedByUserId}>
                                     {/* <InputLabel htmlFor="headedByUserId"> </InputLabel> */}
@@ -395,13 +428,15 @@ class Project extends React.Component {
 function mapStateToProps(state) {
     return {
         projects: state.projects,
-        employees: state.employees
+        employees: state.employees,
+        clients:state.clients
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({ ...ActionCreators }, dispatch)
+        actions: bindActionCreators({ ...ActionCreators }, dispatch),
+        client_actions :bindActionCreators({ ...ClientActionCreators}, dispatch)
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(Project));

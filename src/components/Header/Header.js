@@ -141,6 +141,8 @@ class ButtonAppBar extends React.Component {
                             <MenuItem component={Link} to="/app/admin/department" onClick={this.handleClose}>Department</MenuItem>
                             <MenuItem component={Link} to="/app/admin/employee" onClick={this.handleClose}>Employees</MenuItem>
                             <MenuItem component={Link} to="/app/admin/project" onClick={this.handleClose}>Project</MenuItem>
+                            <MenuItem component={Link} to="/app/admin/client" onClick={this.handleClose}>Client</MenuItem>
+
                         </Menu>
                         <Typography align="right" variant="subheading" color="inherit" className={classes.grow}>
                             <Button disabled>

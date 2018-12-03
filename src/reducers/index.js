@@ -10,6 +10,7 @@ import timesheetReducer from './timesheetReducer';
 import logoutReducer from './logoutReducer';
 import authenticationReducer from './authenticationReducer';
 import changePassswordReducer from './changePasswordReducer';
+import clientReducer from './clientReducer';
 const rootReducer = combineReducers({
     departments: departmentReducer,
     login : loginReducer,
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
     timesheet:timesheetReducer,
     logout:logoutReducer,
     authentication:authenticationReducer,
-    changePassword : changePassswordReducer
+    changePassword : changePassswordReducer,
+    clients:clientReducer
     })
 
 export default rootReducer

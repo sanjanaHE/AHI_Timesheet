@@ -1,6 +1,6 @@
-function createData(projectId, projectName, projectDescription, headedBy, headedByUserId,clientId,clientName) {
+function createData(clientId, clientName, clientDesc, clientLocation) {
     //using params same as in api input
-    return {projectId, projectName, projectDescription, headedBy, headedByUserId,clientId,clientName};
+    return {clientId, clientName, clientDesc, clientLocation};
   }
   
   
@@ -10,21 +10,18 @@ function createData(projectId, projectName, projectDescription, headedBy, headed
     let initialData = []
     // console.log("transformDataReceivedFromServer   ",data)
     data.map(element => {
-      initialData.push(createData(element.projectId, 
-        element.projectName, 
-        element.projectDescription, 
-        element.headedBy,
-        element.headedByUserId,
-      element.clientId,
-    element.clientName))
+      initialData.push(createData(element.clientId, 
+        element.clientName, 
+        element.clientDesc, 
+        element.clientLocation))
     });
     return initialData;
   }
   
-  export default function projectReducer(state = initialState, action) {
+  export default function clientReducer(state = initialState, action) {
     
       switch (action.type) {
-        case 'GET_PROJECTS_SUCCESS': 
+        case 'GET_CLIENT_SUCCESS': 
         // console.log(state.data);
         // console.log(action.data)
         return { data: transformDataReceivedFromServer(action.data), hasError: false}
