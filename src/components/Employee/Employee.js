@@ -544,7 +544,7 @@ class Employee extends React.Component {
                                             id: 'supervisorId',
                                         }}
                                         optionRenderer="Owner"
-
+                                        maxMenuHeight = "100"
                                         alwaysDisplayPlaceholder="true"
                                         classes={classes}
                                         styles={selectStyles}
