@@ -133,7 +133,7 @@ class Timesheet extends Component {
     renderDeleteRow(rowId) {
         // console.log(rowId)
         return (
-            <Grid item sm xs md={1} >
+            <Grid item sm={1} xs={1} md={1} >
                 <IconButton aria-label="Delete" onClick={() => this.handleDeleteRow(rowId)}>
                     <DeleteIcon style={{ "color": "red" }} fontSize="small" />
                 </IconButton>
@@ -258,7 +258,7 @@ class Timesheet extends Component {
     //--------------function to render each row ------------------------------------------------------------------
     renderRow(isRowDeletable, rowId, project, task, timesheet) {
         // console.log("timesheet in render row",timesheet)
-        return (<Grid container spacing={24} style={{ margin: "0 0 -4% 0"}}>
+        return (<Grid container spacing={16} style={{ margin: "0 0 -4% 0"}}>
             {this.renderProjects(rowId, project)}
             {/* {this.renderTicketId(rowId)} */}
             {this.renderTasks(rowId, task)}
