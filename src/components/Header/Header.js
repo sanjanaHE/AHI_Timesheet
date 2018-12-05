@@ -24,7 +24,12 @@ const styles = theme =>({
         flexGrow: 1,
     },
     grow: {
+        display:'flex',
         flexGrow:1,
+        [theme.breakpoints.up('md')]: {
+            display:'block',
+            flexGrow:1,
+        }
     },
     menuButton: {
         marginLeft: -12,
@@ -85,7 +90,7 @@ class ButtonAppBar extends React.Component {
         return (
             <div className={classes.root}>
                 <AppBar position="static">
-                    <Toolbar className = {classes.toolbar}>
+                    <Toolbar className = {classes.toolbar} variant="dense">
                     {/* <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
                         <MenuIcon />
                     </IconButton> */}

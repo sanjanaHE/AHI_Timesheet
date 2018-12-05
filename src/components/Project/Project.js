@@ -382,7 +382,8 @@ class Project extends React.Component {
                                             name: 'headedByUserId',
                                             id: 'headedByUserId',
                                         }}
-                                        maxMenuHeight = "100"
+                                        name= "Owner"
+                                        maxMenuHeight = "200"
                                         classes={classes}
                                         styles={selectStyles}
                                         options={suggestions}

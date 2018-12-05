@@ -398,7 +398,7 @@ class Department extends React.Component {
                                             name: 'headedByUserId',
                                             id: 'headedByUserId',
                                         }}
-                                        maxMenuHeight = "100"
+                                        maxMenuHeight = "200"
                                         menuPlacement = "auto"
                                         backspaceRemovesValue ="true"
                                         classes={classes}

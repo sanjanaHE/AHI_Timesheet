@@ -211,15 +211,20 @@ const styles = theme => ({
   tableWrapper: {
     overflowX: 'auto',
     overflowY: 'auto',
-    height: '23em',
+    height: '50vh',
     [theme.breakpoints.up('md')]: {
       overflowX: 'hidden',
-      height: '23em',
+      height: '52vh',
       overflowY: 'auto',
+    },
+    [theme.breakpoints.down('sm')]: {
+      overflowX: 'auto',
+      overflowY: 'auto',
+      height: '50vh',
     }
   },
   tableWrapperHead: {
-    height: '3.5em'
+    height: '3em'
   },
 });
 
