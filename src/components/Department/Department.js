@@ -74,6 +74,7 @@ const styles = theme => ({
     divider: {
         height: theme.spacing.unit * 2,
     },
+    dialogPaper: { overflow: 'visible' }
 });
 
 
@@ -299,13 +300,140 @@ class Department extends React.Component {
         };
         // console.log("employees ",JSON.stringify(employees))
         let suggestions = employees.data.map(function (employee) {
-            return { label:  employee.firstName+" "+employee.lastName, value: employee.id };
+            return { label: employee.firstName + " " + employee.lastName, value: employee.id };
         })
         // console.log('OPTIONS', suggestions)
         return (
             <React.Fragment>
-                {/* <Header>
-                </Header> */}
+                {/*============== alert dialog ======================*/}
+                <Dialog
+                    open={this.state.openDeleteDialog}
+                    onClose={this.handleDeleteClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description">
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Are you sure you want to delete?
+                            </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleDeleteClose} color="primary">
+                            No
+                            </Button>
+                        <Button onClick={this.handleDeleteDialog} color="primary" autoFocus>
+                            Yes
+                            </Button>
+                    </DialogActions>
+                </Dialog>
+
+
+
+                {/*============= form dialog================= */}
+                <Dialog PaperProps={{ className: classes.dialogPaper }}
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    aria-labelledby="form-dialog-title">
+
+                    <DialogTitle id="form-dialog-title">
+                        {this.state.isEditDialog ? 'Edit ' : 'Add '}
+                        Department</DialogTitle>
+
+                    <DialogContent style={{ overflow: "visible" }}>
+                        <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+
+                            <TextField
+                                required
+                                autoFocus
+                                margin="dense"
+                                id="departmentName"
+                                name="departmentName"
+                                label="Department name"
+                                type="text"
+                                fullWidth
+                                onChange={this.handleChange.bind(this, "departmentName")}
+                                value={this.state.fields["departmentName"]}
+                                error={this.state.errorColor.departmentName}
+                                helperText={this.state.errors.departmentName}
+
+
+                            />
+
+                            <TextField
+                                required
+                                margin="dense"
+                                id="description"
+                                name="description"
+                                label="Description"
+                                type="text"
+                                fullWidth
+                                onChange={this.handleChange.bind(this, "description")}
+                                value={this.state.fields["description"]}
+                                error={this.state.errorColor.description}
+                                helperText={this.state.errors.description}
+                            />
+
+
+                            {/* <FormControl fullWidth required error={this.state.errorColor.headedByUserId}>
+                                <InputLabel htmlFor="headedByUserId">Owner</InputLabel>
+                                <Select
+                                    required
+                                    inputProps={{
+                                        name: 'headedByUserId',
+                                        id: 'headedByUserId',
+                                    }}
+                                    onChange={this.handleChange.bind(this, "headedByUserId")}
+                                    value={this.state.fields["headedByUserId"]}
+
+                                >
+                                    <MenuItem disabled value="select" >
+                                        <em>Select</em>
+                                    </MenuItem>
+                                    {employees.data.map(employee => {
+                                        return <MenuItem key={employee.id} value={employee.id}>{employee.firstName} {employee.lastName}</MenuItem>
+                                    })
+                                    }
+                                </Select>
+                                <FormHelperText>{this.state.errors.headedByUserId}</FormHelperText>
+                            </FormControl> */}
+
+                            <div className={classes.divider} />
+                            <InputLabel htmlFor="headedByUserId" style={{ 'color': this.state.errorColor.headedByUserId ? "red" : "black" }}>Owner* </InputLabel>
+                            <FormControl fullWidth required error={this.state.errorColor.headedByUserId}>
+                                {/* <InputLabel htmlFor="headedByUserId">Owner </InputLabel> */}
+                                <SelectN
+                                    inputProps={{
+                                        name: 'headedByUserId',
+                                        id: 'headedByUserId',
+                                    }}
+                                    openMenuOnClick={false}
+                                    maxMenuHeight="200"
+                                    menuPlacement="auto"
+                                    backspaceRemovesValue="true"
+                                    classes={classes}
+                                    styles={selectStyles}
+                                    options={suggestions}
+                                    components={components}
+                                    value={this.state.fields["headedByUserId"]}
+                                    onChange={this.handleChangeDropdown.bind(this, "headedByUserId")}
+                                    placeholder="Type to search"
+                                />
+
+                                <FormHelperText>{this.state.errors.headedByUserId}</FormHelperText>
+                            </FormControl>
+                            {/* <div className={classes.divider} /> */}
+
+                        </form>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="primary">
+                            Cancel
+                        </Button>
+                        <Button type="submit" onClick={this.handleSubmit} color="primary">
+                            Submit
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
 
                 <div style={{ margin: "2%" }}>
                     <h1>Departments</h1>
@@ -314,143 +442,6 @@ class Department extends React.Component {
                             <AddIcon />
                         </Button>
                     </Tooltip>
-                    <Dialog
-                        open={this.state.open}
-                        onClose={this.handleClose}
-                        aria-labelledby="form-dialog-title"
-                    >
-
-                        <DialogTitle id="form-dialog-title">
-                            {this.state.isEditDialog ? 'Edit ' : 'Add '}
-                            Department</DialogTitle>
-
-                        <DialogContent>
-                            <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-
-                                <TextField
-                                    required
-                                    autoFocus
-                                    margin="dense"
-                                    id="departmentName"
-                                    name="departmentName"
-                                    label="Department name"
-                                    type="text"
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this, "departmentName")}
-                                    value={this.state.fields["departmentName"]}
-                                    error={this.state.errorColor.departmentName}
-                                    helperText={this.state.errors.departmentName}
-
-
-                                />
-
-                                <TextField
-                                    required
-                                    margin="dense"
-                                    id="description"
-                                    name="description"
-                                    label="Description"
-                                    type="text"
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this, "description")}
-                                    value={this.state.fields["description"]}
-                                    error={this.state.errorColor.description}
-                                    helperText={this.state.errors.description}
-                                />
-
-
-                                {/* <FormControl fullWidth required error={this.state.errorColor.headedByUserId}>
-                                    <InputLabel htmlFor="headedByUserId">Owner</InputLabel>
-                                    <Select
-                                        required
-                                        inputProps={{
-                                            name: 'headedByUserId',
-                                            id: 'headedByUserId',
-                                        }}
-                                        onChange={this.handleChange.bind(this, "headedByUserId")}
-                                        value={this.state.fields["headedByUserId"]}
-
-                                    >
-                                        <MenuItem disabled value="select" >
-                                            <em>Select</em>
-                                        </MenuItem>
-                                        {employees.data.map(employee => {
-                                            return <MenuItem key={employee.id} value={employee.id}>{employee.firstName} {employee.lastName}</MenuItem>
-                                        })
-                                        }
-                                    </Select>
-                                    <FormHelperText>{this.state.errors.headedByUserId}</FormHelperText>
-                                </FormControl> */}
-
-                                {/* <SelectN
-                                    classes={classes}
-                                    styles={selectStyles}
-                                    value={this.state.fields["headedByUserId"]}
-                                    onChange={this.handleChangeDropdown.bind(this, "headedByUserId")}
-                                    options={options}
-                                /> */}
-                                <div className={classes.divider} />
-                                <InputLabel htmlFor="headedByUserId" style={{'color':this.state.errorColor.headedByUserId?"red":"black"}}>Owner* </InputLabel>
-                                <FormControl fullWidth required error={this.state.errorColor.headedByUserId}>
-                                    {/* <InputLabel htmlFor="headedByUserId">Owner </InputLabel> */}
-                                    <SelectN
-                                        inputProps={{
-                                            name: 'headedByUserId',
-                                            id: 'headedByUserId',
-                                        }}
-                                        maxMenuHeight = "200"
-                                        menuPlacement = "auto"
-                                        backspaceRemovesValue ="true"
-                                        classes={classes}
-                                        styles={selectStyles}
-                                        options={suggestions}
-                                        components={components}
-                                        value={this.state.fields["headedByUserId"]}
-                                        onChange={this.handleChangeDropdown.bind(this, "headedByUserId")}
-                                        placeholder="Select owner"
-                                    />
-
-                                    <FormHelperText>{this.state.errors.headedByUserId}</FormHelperText>
-                                </FormControl>
-                                <div className={classes.divider} />
-
-
-                            </form>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={this.handleClose} color="primary">
-                                Cancel
-                            </Button>
-                            <Button type="submit" onClick={this.handleSubmit} color="primary">
-                                Submit
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
-
-
-                    <Dialog
-                        open={this.state.openDeleteDialog}
-                        onClose={this.handleDeleteClose}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                        {/* <DialogTitle id="alert-dialog-title">Warning!</DialogTitle> */}
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                Are you sure you want to delete?
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={this.handleDeleteClose} color="primary">
-                                No
-                            </Button>
-                            <Button onClick={this.handleDeleteDialog} color="primary" autoFocus>
-                                Yes
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
-
-
                     <EnhancedTable title="Department"
                         order={order}
                         orderBy={orderBy}

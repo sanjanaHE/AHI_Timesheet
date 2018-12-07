@@ -212,22 +212,43 @@ const styles = theme => ({
     overflowX: 'auto',
     overflowY: 'auto',
     height: '50vh',
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('xl')]: {
+      overflowX: 'hidden',
+      height: '80vh',
+      overflowY: 'auto',
+    },
+    [theme.breakpoints.up('lg') && theme.breakpoints.down('xl')]: {
+      overflowX: 'hidden',
+      height: '80vh',
+      overflowY: 'auto',
+    },
+    [theme.breakpoints.up('md') && theme.breakpoints.down('lg')]: {
       overflowX: 'hidden',
       height: '52vh',
       overflowY: 'auto',
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.up('sm') && theme.breakpoints.down('md')]: {
+      overflowX: 'auto',
+      overflowY: 'auto',
+      height: '52vh',
+    },
+    [theme.breakpoints.up('xs') && theme.breakpoints.down('sm')]: {
       overflowX: 'auto',
       overflowY: 'auto',
       height: '50vh',
+    },
+    [ theme.breakpoints.down('sm')]: {
+      overflowX: 'auto',
+      overflowY: 'auto',
+      height: '45vh',
     }
   },
+ 
   tableWrapperHead: {
     height: '3em'
   },
+  
 });
-
 class EnhancedTable extends React.Component {
   constructor(props) {
     super(props);

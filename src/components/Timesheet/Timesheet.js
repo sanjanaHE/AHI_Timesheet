@@ -80,7 +80,34 @@ const styles = theme => ({
         background: "whitesmoke",
         boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.2) "
         // 0px 2px 2px 0px rgba(0, 0, 0, 0.14) 0px 3px 1px -2px rgba(0, 0, 0, 0.12)"
-    }
+    },
+    rowsWrapper:{
+       height:"40vh",
+       overflowY:"auto",
+       overflowX:"hidden",
+    
+        [theme.breakpoints.up('xl')]: {
+            height:"70vh",
+        },
+        [theme.breakpoints.up('lg') && theme.breakpoints.down('xl')]: {
+            height:"60vh",
+        },
+        [theme.breakpoints.between('md','lg')]:{
+            height:"50vh",
+        },
+        [theme.breakpoints.up('md')]: {
+            height:"30vh",
+        },
+        [theme.breakpoints.up('sm') && theme.breakpoints.down('md')]: {
+            height:"45vh",
+        },
+        [theme.breakpoints.up('xs') && theme.breakpoints.down('sm')]: {
+            height:"40vh",
+        },
+        [ theme.breakpoints.down('sm')]: {
+            height:"30vh",
+        }
+      },
 });
 
 class Timesheet extends Component {
@@ -258,7 +285,7 @@ class Timesheet extends Component {
     //--------------function to render each row ------------------------------------------------------------------
     renderRow(isRowDeletable, rowId, project, task, timesheet) {
         // console.log("timesheet in render row",timesheet)
-        return (<Grid container spacing={16} style={{ margin: "0 0 -4% 0"}}>
+        return (<Grid container spacing={16} style={{ margin: "0 0 -3% 0"}}>
             {this.renderProjects(rowId, project)}
             {/* {this.renderTicketId(rowId)} */}
             {this.renderTasks(rowId, task)}
@@ -632,7 +659,7 @@ class Timesheet extends Component {
                                 )
                             })}
                     </Grid>
-                    <div style={{height:"14em",overflowY:"scroll",overflowX:"hidden"}}>
+                    <div className = {classes.rowsWrapper}>
                         {this.state.timesheet.length > 0 ?
                             this.state.timesheet.map((ele, index) => { //coming from api response
                                 // console.log("timesheet entries",ele)

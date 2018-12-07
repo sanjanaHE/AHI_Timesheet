@@ -73,6 +73,7 @@ const styles = theme => ({
     divider: {
         height: theme.spacing.unit * 2,
     },
+    dialogPaper: { overflow: 'visible' }
 });
 
 
@@ -292,7 +293,7 @@ class Project extends React.Component {
                             <AddIcon />
                         </Button>
                     </Tooltip>
-                    <Dialog
+                    <Dialog PaperProps={{ className: classes.dialogPaper }}
                         open={this.state.open}
                         onClose={this.handleClose}
                         aria-labelledby="form-dialog-title"
@@ -300,7 +301,7 @@ class Project extends React.Component {
                         <DialogTitle id="form-dialog-title">
                             {this.state.isEditDialog ? 'Edit ' : 'Add '}
                             Project</DialogTitle>
-                        <DialogContent>
+                        <DialogContent style={{overflow:"visible"}}>
 
                             <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
 
@@ -390,13 +391,13 @@ class Project extends React.Component {
                                         components={components}
                                         value={this.state.fields["headedByUserId"]}
                                         onChange={this.handleChangeDropdown.bind(this, "headedByUserId")}
-                                        placeholder="select owner"
+                                        placeholder="Type to search "
 
                                     />
 
                                     <FormHelperText>{this.state.errors.headedByUserId}</FormHelperText>
                                 </FormControl>
-                                <div className={classes.divider} />
+                                {/* <div className={classes.divider} /> */}
                             </form>
                         </DialogContent>
                         <DialogActions>

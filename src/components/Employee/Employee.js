@@ -75,6 +75,7 @@ const styles = theme => ({
     divider: {
         height: theme.spacing.unit * 2,
     },
+    dialogPaper: { overflow: 'visible' }
 });
 class Employee extends React.Component {
     componentDidMount() {
@@ -370,8 +371,7 @@ class Employee extends React.Component {
         })
         return (
             <React.Fragment>
-                {/* <Header>
-                </Header> */}
+                
                 <div style={{ margin: "2%" }}>
                     <h1>Employees</h1>
                     <Tooltip title="Add employee">
@@ -379,15 +379,20 @@ class Employee extends React.Component {
                             <AddIcon />
                         </Button>
                     </Tooltip>
-                    <Dialog
+                    <Dialog  
+                        // PaperProps={{ className: classes.dialogPaper }}
                         open={this.state.open}
                         onClose={this.handleClose}
                         aria-labelledby="form-dialog-title"
+                        scroll='paper'
+                        // maxWidth ='xs'
+                        // fullWidth ='true'
+                        // fullScreen
                     >
                         <DialogTitle id="form-dialog-title">
                             {this.state.isEditDialog ? 'Edit ' : 'Add '}
                             Employee</DialogTitle>
-                        <DialogContent>
+                        <DialogContent style={{overflow:"visible"}}>
                             <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
                                 <TextField
                                     required
@@ -433,6 +438,30 @@ class Employee extends React.Component {
                                     error={this.state.errorColor.lastName}
                                     helperText={this.state.errors.lastName}
                                 />
+                                 <InputLabel htmlFor="supervisorId" style={{'color':this.state.errorColor.supervisorId?"red":"black"}}>Supervisor* </InputLabel>
+                                <FormControl fullWidth required error={this.state.errorColor.supervisorId}>
+                                    {/* <InputLabel htmlFor="headedByUserId"> Owner</InputLabel> */}
+                                    <SelectN
+                                        inputProps={{
+                                            name: 'supervisorId',
+                                            id: 'supervisorId',
+                                        }}
+                                        optionRenderer="Owner"
+                                        maxMenuHeight = "200"
+                                        menuPlacement="top"
+                                        alwaysDisplayPlaceholder="true"
+                                        classes={classes}
+                                        styles={selectStyles}
+                                        options={suggestions}
+                                        components={components}
+                                        value={this.state.fields["supervisorId"]}
+                                        onChange={this.handleChangeDropdown.bind(this, "supervisorId")}
+                                        placeholder="Type to search"
+
+                                    />
+
+                                    <FormHelperText>{this.state.errors.supervisorId}</FormHelperText>
+                                </FormControl>
                                 <TextField
                                     required
                                     margin="dense"
@@ -535,29 +564,7 @@ class Employee extends React.Component {
                                     <FormHelperText>{this.state.errors.supervisorId}</FormHelperText>
                                 </FormControl> */}
                                 {/* <div className={classes.divider} /> */}
-                                <InputLabel htmlFor="supervisorId" style={{'color':this.state.errorColor.supervisorId?"red":"black"}}>Supervisor* </InputLabel>
-                                <FormControl fullWidth required error={this.state.errorColor.supervisorId}>
-                                    {/* <InputLabel htmlFor="headedByUserId"> Owner</InputLabel> */}
-                                    <SelectN
-                                        inputProps={{
-                                            name: 'supervisorId',
-                                            id: 'supervisorId',
-                                        }}
-                                        optionRenderer="Owner"
-                                        maxMenuHeight = "200"
-                                        alwaysDisplayPlaceholder="true"
-                                        classes={classes}
-                                        styles={selectStyles}
-                                        options={suggestions}
-                                        components={components}
-                                        value={this.state.fields["supervisorId"]}
-                                        onChange={this.handleChangeDropdown.bind(this, "supervisorId")}
-                                        placeholder="Select supervisor"
-
-                                    />
-
-                                    <FormHelperText>{this.state.errors.supervisorId}</FormHelperText>
-                                </FormControl>
+                               
                                 {/* <div className={classes.divider} /> */}
                                 <TextField
                                     required

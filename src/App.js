@@ -24,10 +24,10 @@ library.add(faGhost)
 
 const App = () => {
     return (
-      <div>
-      <Header />
-      <Main />
-      </div>
+      <React.Fragment>
+      <Header style={{"flex-shrink":"0"}}/>
+      <Main style={{"flex-grow":"1",overflowY:"auto"}}/>
+      </React.Fragment>
     );
   }
 
