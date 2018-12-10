@@ -24,7 +24,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import SelectN from 'react-select';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
-
+import SnackbarMsg from './../SnackbarMsg/SnackbarMsg'
 
 import components from './../common/common'; //used for react-select
 
@@ -169,8 +169,14 @@ class Department extends React.Component {
     }
     handleChangeDropdown = (field, e) => {
         let fields = this.state.fields;
-        fields[field] = { value: e.value, label: e.label };
-        this.setState({ fields });
+        if(e){
+            fields[field] = { value: e.value, label: e.label };
+            this.setState({ fields });
+        }
+        else{
+            fields[field] ="" //on backspace setting value empty from null value
+        }
+       
 
         //setting errors and errorcolor in state
         let errorColor = this.state.errorColor;
@@ -182,13 +188,12 @@ class Department extends React.Component {
             this.setState({ errorColor: errorColor, errors: errors })
         }
         else {
-            console.log(e)
-            console.log(errorColor)
+            // console.log(e)
+            // console.log(errorColor)
             errorColor['headedByUserId'] = false;
             errors['headedByUserId'] = "";
             this.setState({ errorColor: errorColor, errors: errors })
         }
-        console.log(this.state.errorColor.headedByUserId)
     }
     handleChange = (field, e) => {
         let fields = this.state.fields;
@@ -305,6 +310,7 @@ class Department extends React.Component {
         // console.log('OPTIONS', suggestions)
         return (
             <React.Fragment>
+                <SnackbarMsg/>
                 {/*============== alert dialog ======================*/}
                 <Dialog
                     open={this.state.openDeleteDialog}
@@ -405,10 +411,8 @@ class Department extends React.Component {
                                         name: 'headedByUserId',
                                         id: 'headedByUserId',
                                     }}
-                                    openMenuOnClick={false}
                                     maxMenuHeight="200"
-                                    menuPlacement="auto"
-                                    backspaceRemovesValue="true"
+                                    isClearable = "true"
                                     classes={classes}
                                     styles={selectStyles}
                                     options={suggestions}
@@ -463,7 +467,8 @@ class Department extends React.Component {
 function mapStateToProps(state) {
     return {
         departments: state.departments,
-        employees: state.employees
+        employees: state.employees,
+        snackbarMsg : state.snackbarMsg
     }
 }
 

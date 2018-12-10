@@ -20,10 +20,10 @@ export function addDepartment(formData) {
           console.log("adding departmnet ..... ", response.data)
           // On Success Trigger this action
 
-        //   dispatch({
-        //     type: 'ADD_DEPARTMENT_SUCCESS',
-        //     data:response.data
-        //   })
+          dispatch({
+            type: 'SUCCESS_MESSAGE',
+            data:'Successfully submitted'
+          })
         getDepartmentsApi(dispatch)
         });
         

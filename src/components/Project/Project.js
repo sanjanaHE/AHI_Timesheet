@@ -165,8 +165,13 @@ class Project extends React.Component {
 
     handleChangeDropdown = (field, e) => {
         let fields = this.state.fields;
-        fields[field] = { value: e.value, label: e.label };
-        this.setState({ fields });
+        if(e){
+            fields[field] = { value: e.value, label: e.label };
+            this.setState({ fields });
+        }
+        else{
+            fields[field] = "";
+        }
 
         //setting errors and errorcolor in state
         let errorColor = this.state.errorColor;
@@ -297,6 +302,8 @@ class Project extends React.Component {
                         open={this.state.open}
                         onClose={this.handleClose}
                         aria-labelledby="form-dialog-title"
+                        maxWidth ='sm'
+                        fullWidth ='false'
                     >
                         <DialogTitle id="form-dialog-title">
                             {this.state.isEditDialog ? 'Edit ' : 'Add '}
@@ -385,6 +392,7 @@ class Project extends React.Component {
                                         }}
                                         name= "Owner"
                                         maxMenuHeight = "200"
+                                        isClearable = "true"
                                         classes={classes}
                                         styles={selectStyles}
                                         options={suggestions}
