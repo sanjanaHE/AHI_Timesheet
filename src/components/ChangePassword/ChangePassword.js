@@ -22,11 +22,11 @@ var errorMessage, successMessage ,message = "";
 var color;
 const styles = theme => ({
     successSnackbar: {
-        backgroundColor: "#E65100"
+        backgroundColor: "#4CAF50"
     },
     errorSnackbar: {
-        backgroundColor: green[600]
-    }
+        backgroundColor: "#FF7043"
+    },
 });
 class ChangePassword extends Component {
 
@@ -36,13 +36,13 @@ class ChangePassword extends Component {
             if (nextProps.changePassword.pending ==  false 
                 && nextProps.changePassword.hasError == true) {
                 message = "Failed to change password";
-                this.setState({ showSnackBar: true })
+                this.setState({ showSnackBar: true ,error:true})
                 this.handleReset();
             }
             else if (nextProps.changePassword.pending ==  false 
                 && nextProps.changePassword.hasError == false) {
                 message =  "Successfully changed password";
-                this.setState({ showSnackBar: true })
+                this.setState({ showSnackBar: true ,error:false})
                 this.handleReset();
             }
         // }
@@ -78,7 +78,8 @@ class ChangePassword extends Component {
         this.state = {
             fields: {},
             errorColor: {},
-            errors: {}
+            errors: {},
+            
         }
         
     }
@@ -173,6 +174,7 @@ class ChangePassword extends Component {
     }
     render() {
         const { classes } = this.props;
+        // console.log(this.props)
         return (
             <div style={{ margin: "2%" }}>
                 <h1>Change Password</h1>
@@ -242,12 +244,20 @@ class ChangePassword extends Component {
                             open={this.state.showSnackBar}
                             autoHideDuration={1500}
                             onClose={this.handleCloseSnackBar}
-                            ContentProps={{
-                                'aria-describedby': 'message-id',
-                                classes: {
-                                    root: classes.successSnackbar
+                    
+                            ContentProps={
+                                this.state.error==true ?{
+                                    'aria-describedby': 'message-id',
+                                    classes: {
+                                        root: classes.errorSnackbar
+                                    }
+                                }:
+                                {'aria-describedby': 'message-id',
+                                    classes: {
+                                        root: classes.successSnackbar
+                                    }
                                 }
-                            }}
+                            }
                             
                             message={<span id="message-id">{message}</span>}
                             action={[

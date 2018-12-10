@@ -54,10 +54,7 @@ const styles = theme => ({
         color: theme.palette.text.secondary,
     },
     successSnackbar: {
-        backgroundColor: "#E65100"
-    },
-    duplAlertSnackbar: {
-        backgroundColor: "#D50000"
+        backgroundColor: "#4CAF50"
     },
     timesheetHeader: {
         marginBottom: "2%",

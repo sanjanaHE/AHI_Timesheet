@@ -11,6 +11,7 @@ import logoutReducer from './logoutReducer';
 import authenticationReducer from './authenticationReducer';
 import changePassswordReducer from './changePasswordReducer';
 import clientReducer from './clientReducer';
+import snackbarMsgReducer from './snackbarMsgReducer';
 const rootReducer = combineReducers({
     departments: departmentReducer,
     login : loginReducer,
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
     logout:logoutReducer,
     authentication:authenticationReducer,
     changePassword : changePassswordReducer,
-    clients:clientReducer
+    clients:clientReducer,
+    snackbarMsg : snackbarMsgReducer
     })
 
 export default rootReducer

@@ -22,10 +22,16 @@ export function addDepartment(formData) {
 
           dispatch({
             type: 'SUCCESS_MESSAGE',
-            data:'Successfully submitted'
+            data:{message : 'Successfully submitted',error:false}
           })
         getDepartmentsApi(dispatch)
-        });
+        }).catch(error  => {
+          console.log(error);
+          dispatch({
+              type : 'FAILURE_MESSAGE',
+              data:{message : 'Failed to submit',error:true}
+          })
+      });
         
     }
 }
