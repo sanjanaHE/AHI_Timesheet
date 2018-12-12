@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {baseUrl} from './../../contants';
 import moment from 'moment';
+import messages from './../../messages'
 
 function getEmployeesApi(dispatch){
     axios({
@@ -48,9 +49,19 @@ function getEmployeesApi(dispatch){
         })
           .then((response) => {
             console.log("adding employee ..... ", response.data)
+            dispatch({
+              type: 'SUCCESS_MESSAGE',
+              data:{message : messages.successMessage ,error:false}
+            })
             // On Success Trigger this action
             getEmployeesApi(dispatch)
-          });
+          }).catch(error  => {
+            console.log(error);
+            dispatch({
+                type : 'FAILURE_MESSAGE',
+                data:{message :  messages.errorMessage ,error:true}
+            })
+        });
           
       }
   }

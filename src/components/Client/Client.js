@@ -24,6 +24,7 @@ import SelectN from 'react-select';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
 import components from './../common/common'; //used for react-select
+import SnackbarMsg from './../SnackbarMsg/SnackbarMsg'
 
 const styles = theme => ({
     root: {
@@ -228,8 +229,7 @@ class Client extends React.Component {
        
         return (
             <React.Fragment>
-                {/* <Header>
-                </Header> */}
+                <SnackbarMsg/>
                 <div style={{ margin: "2%" }}>
                     <h1>Clients</h1>
                     <Tooltip title="Add client">
@@ -321,7 +321,8 @@ class Client extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        clients: state.clients
+        clients: state.clients,
+        snackbarMsg : state.snackbarMsg
     }
 }
 

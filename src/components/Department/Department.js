@@ -293,7 +293,7 @@ class Department extends React.Component {
         const { title, order, orderBy, selected, rowsPerPage, page, rows } = this.state;
         const { employees } = this.props;
         const { classes, theme } = this.props;
-        console.log(this.props)
+        // console.log(this.props)
         const selectStyles = {
             input: base => ({
                 ...base,

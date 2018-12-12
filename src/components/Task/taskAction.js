@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {baseUrl} from './../../contants';
+import messages from './../../messages'
 
 export function addTask(formData,empId) {
   console.log("IN ADD TASK ",formData);
@@ -19,8 +20,18 @@ export function addTask(formData,empId) {
       })
         .then((response) => {
           // console.log("adding tasks ..... ", response.data)
+          dispatch({
+            type: 'SUCCESS_MESSAGE',
+            data:{message : messages.successMessage ,error:false}
+          })
           getTasksApi(dispatch,empId)
-        });
+        }).catch(error  => {
+          console.log(error);
+          dispatch({
+              type : 'FAILURE_MESSAGE',
+              data:{message :  messages.errorMessage ,error:true}
+          })
+      });
         
     }
 }

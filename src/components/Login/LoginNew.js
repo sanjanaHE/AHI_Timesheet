@@ -87,9 +87,9 @@ class SignIn extends React.Component {
     }
   render(){
     const { classes,login } = this.props;
-    console.log(this.props.login)
+    // console.log(this.props.login)
     if(this.props.login.isAuthenticated == true){
-        console.log("redirecting to homepage....")
+        // console.log("redirecting to homepage....")
         return <Redirect to="/app/home" push />
       }
     return (

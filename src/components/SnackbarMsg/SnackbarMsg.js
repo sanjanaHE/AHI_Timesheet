@@ -26,10 +26,11 @@ const styles = theme => ({
         color: theme.palette.text.secondary,
     },
     successSnackbar: {
-        backgroundColor: "#4CAF50"
+        // backgroundColor: "#4CAF50"
+        backgroundColor: theme.palette.secondary.main
     },
     errorSnackbar: {
-        backgroundColor: "#FF7043"
+        backgroundColor: theme.palette.primary.error
     },
     icon: {
         fontSize: 20,
@@ -55,7 +56,7 @@ class SnackbarMsg extends Component {
     }
   render() {
       const { classes } = this.props;
-      console.log(this.props.snackbarMsg)
+    //   console.log(this.props.snackbarMsg)
     return (
         this.props.snackbarMsg.length > 0 ?
         <Snackbar

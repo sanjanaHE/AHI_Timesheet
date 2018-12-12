@@ -18,14 +18,14 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper/Paper';
 
 
-var errorMessage, successMessage ,message = "";
+var errorMessage, successMessage, message = "";
 var color;
 const styles = theme => ({
     successSnackbar: {
-        backgroundColor: "#4CAF50"
+        backgroundColor: theme.palette.secondary.main
     },
     errorSnackbar: {
-        backgroundColor: "#FF7043"
+        backgroundColor: theme.palette.primary.error
     },
 });
 class ChangePassword extends Component {
@@ -33,18 +33,18 @@ class ChangePassword extends Component {
     componentWillReceiveProps(nextProps) {
         console.log("NEXT PROPS ", nextProps)
         // if (nextProps.changePassword.pending == true) {
-            if (nextProps.changePassword.pending ==  false 
-                && nextProps.changePassword.hasError == true) {
-                message = "Failed to change password";
-                this.setState({ showSnackBar: true ,error:true})
-                this.handleReset();
-            }
-            else if (nextProps.changePassword.pending ==  false 
-                && nextProps.changePassword.hasError == false) {
-                message =  "Successfully changed password";
-                this.setState({ showSnackBar: true ,error:false})
-                this.handleReset();
-            }
+        if (nextProps.changePassword.pending == false
+            && nextProps.changePassword.hasError == true) {
+            message = "Failed to change password";
+            this.setState({ showSnackBar: true, error: true })
+            this.handleReset();
+        }
+        else if (nextProps.changePassword.pending == false
+            && nextProps.changePassword.hasError == false) {
+            message = "Successfully changed password";
+            this.setState({ showSnackBar: true, error: false })
+            this.handleReset();
+        }
         // }
     }
     handleChange = (e) => {
@@ -70,7 +70,7 @@ class ChangePassword extends Component {
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.actions.resetPasswordState();
     }
     constructor(props) {
@@ -79,9 +79,9 @@ class ChangePassword extends Component {
             fields: {},
             errorColor: {},
             errors: {},
-            
+
         }
-        
+
     }
     handleValidation() {
 
@@ -178,103 +178,104 @@ class ChangePassword extends Component {
         return (
             <div style={{ margin: "2%" }}>
                 <h1>Change Password</h1>
-                <Paper style={{ width:"50%",marginLeft:"auto",marginRight:"auto"}}>
-                <div style={{ margin: "5% 5% 5% 5%" }}>
-                    <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-                        <TextField
-                            required
-                            autoFocus
-                            margin="dense"
-                            id="oldPassword"
-                            name="oldPassword"
-                            label="Old Password"
-                            type="password"
-                            fullWidth
-                            onChange={this.handleChange.bind(this)}
-                            value={this.state.fields["oldPassword"]}
-                            error={this.state.errorColor.oldPassword}
-                            helperText={this.state.errors.oldPassword}
-                        />
-                        <TextField
-                            required
-                            margin="dense"
-                            id="newPassword"
-                            name="newPassword"
-                            label="New Password"
-                            type="password"
-                            fullWidth
-                            onChange={this.handleChange.bind(this)}
-                            value={this.state.fields["newPassword"]}
-                            error={this.state.errorColor.newPassword}
-                            helperText={this.state.errors.newPassword}
-                        />
-                        <TextField
-                            required
-                            margin="dense"
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            label="Confirm new password"
-                            type="password"
-                            fullWidth
-                            onChange={this.handleChange.bind(this)}
-                            value={this.state.fields["confirmPassword"]}
-                            error={this.state.errorColor.confirmPassword}
-                            helperText={this.state.errors.confirmPassword}
-                        />
-                        <Grid container spacing={24} style={{ "margin-top": "6%" }}>
-                            <Grid item md={2} sm={4} xs={4}>
-                                <Button variant="contained" color="primary" onClick={this.handleReset}>Reset</Button>
+                <Paper style={{ width: "50%", marginLeft: "auto", marginRight: "auto" }}>
+                    <div style={{ margin: "5% 5% 5% 5%" }}>
+                        <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+                            <TextField
+                                required
+                                autoFocus
+                                margin="dense"
+                                id="oldPassword"
+                                name="oldPassword"
+                                label="Old Password"
+                                type="password"
+                                fullWidth
+                                onChange={this.handleChange.bind(this)}
+                                value={this.state.fields["oldPassword"]}
+                                error={this.state.errorColor.oldPassword}
+                                helperText={this.state.errors.oldPassword}
+                            />
+                            <TextField
+                                required
+                                margin="dense"
+                                id="newPassword"
+                                name="newPassword"
+                                label="New Password"
+                                type="password"
+                                fullWidth
+                                onChange={this.handleChange.bind(this)}
+                                value={this.state.fields["newPassword"]}
+                                error={this.state.errorColor.newPassword}
+                                helperText={this.state.errors.newPassword}
+                            />
+                            <TextField
+                                required
+                                margin="dense"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                label="Confirm new password"
+                                type="password"
+                                fullWidth
+                                onChange={this.handleChange.bind(this)}
+                                value={this.state.fields["confirmPassword"]}
+                                error={this.state.errorColor.confirmPassword}
+                                helperText={this.state.errors.confirmPassword}
+                            />
+                            <Grid container spacing={24} style={{ "margin-top": "6%" }}>
+                                <Grid item md={2} sm={4} xs={4}>
+                                    <Button variant="contained" color="primary" onClick={this.handleReset}>Reset</Button>
 
+                                </Grid>
+                                <Grid item md={2} sm xs>
+                                    <Button variant="contained" color="primary" onClick={this.handleSubmit}>Submit</Button>
+                                </Grid>
                             </Grid>
-                            <Grid item md={2} sm xs>
-                                <Button variant="contained" color="primary" onClick={this.handleSubmit}>Submit</Button>
-                            </Grid>
-                        </Grid>
-                        {/* {error} */}
-                        {/* <p style={{ "color": "#4CAF50" }}>{successMessage}</p>
+                            {/* {error} */}
+                            {/* <p style={{ "color": "#4CAF50" }}>{successMessage}</p>
                         <p style={{ "color": "#F44336" }}>{errorMessage}</p> */}
-                        {/* {error ?<p style={{"color":"#4CAF50"}}>{successMessage}</p> : <p style={{"color":"#F44336"}}>{errorMessage}</p>} */}
+                            {/* {error ?<p style={{"color":"#4CAF50"}}>{successMessage}</p> : <p style={{"color":"#F44336"}}>{errorMessage}</p>} */}
 
-                        <Snackbar
-                        // className={classes.successSnackbar}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'center',
-                            }}
-                            open={this.state.showSnackBar}
-                            autoHideDuration={1500}
-                            onClose={this.handleCloseSnackBar}
-                    
-                            ContentProps={
-                                this.state.error==true ?{
-                                    'aria-describedby': 'message-id',
-                                    classes: {
-                                        root: classes.errorSnackbar
-                                    }
-                                }:
-                                {'aria-describedby': 'message-id',
-                                    classes: {
-                                        root: classes.successSnackbar
-                                    }
+                            <Snackbar
+                                // className={classes.successSnackbar}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                                open={this.state.showSnackBar}
+                                autoHideDuration={1500}
+                                onClose={this.handleCloseSnackBar}
+
+                                ContentProps={
+                                    this.state.error == true ? {
+                                        'aria-describedby': 'message-id',
+                                        classes: {
+                                            root: classes.errorSnackbar
+                                        }
+                                    } :
+                                        {
+                                            'aria-describedby': 'message-id',
+                                            classes: {
+                                                root: classes.successSnackbar
+                                            }
+                                        }
                                 }
-                            }
-                            
-                            message={<span id="message-id">{message}</span>}
-                            action={[
 
-                                <IconButton
-                                    key="close"
-                                    aria-label="Close"
-                                    color="inherit"
-                                    // className={classes.close}
-                                    onClick={this.handleCloseSnackBar}
-                                >
-                                    <CloseIcon />
-                                </IconButton>,
-                            ]}
-                        />
-                    </form>
-                </div>
+                                message={<span id="message-id">{message}</span>}
+                                action={[
+
+                                    <IconButton
+                                        key="close"
+                                        aria-label="Close"
+                                        color="inherit"
+                                        // className={classes.close}
+                                        onClick={this.handleCloseSnackBar}
+                                    >
+                                        <CloseIcon />
+                                    </IconButton>,
+                                ]}
+                            />
+                        </form>
+                    </div>
                 </Paper>
             </div>
         )

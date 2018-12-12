@@ -21,12 +21,14 @@ const theme = createMuiTheme({
         // main:'#E0E0E0'
         // dark: will be calculated from palette.primary.main,
         // contrastText: will be calculated to contrast with palette.primary.main
+        error:'#D50000'
       },
       secondary:{
         // main:'#00e676'
         main:'#377627'
-      }
+      },
     },
+    
     typography: {
         // Use the system font instead of the default Roboto font.
         fontFamily: [

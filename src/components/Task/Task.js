@@ -20,6 +20,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Tooltip from '@material-ui/core/Tooltip';
+import SnackbarMsg from './../SnackbarMsg/SnackbarMsg'
 
 import trim from 'trim'
 
@@ -183,8 +184,7 @@ class Task extends React.Component {
         // console.log(this.props.login.data.id)
         return (
             <React.Fragment>
-                {/* <Header>
-                </Header> */}
+                <SnackbarMsg/>
                 <div style={{ margin: "2%" }}>
                     <h1>Tasks</h1>
                     <Tooltip title="Add task">
@@ -265,7 +265,8 @@ class Task extends React.Component {
 function mapStateToProps(state) {
     return {
         tasks: state.tasks,
-        login: state.login
+        login: state.login,
+        snackbarMsg : state.snackbarMsg
     }
 }
 

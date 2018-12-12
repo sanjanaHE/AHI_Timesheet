@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {baseUrl} from './../../contants';
+import messages from './../../messages'
 
 export function addDepartment(formData) {
   console.log("IN ADD DEPT ",formData);
@@ -22,14 +23,14 @@ export function addDepartment(formData) {
 
           dispatch({
             type: 'SUCCESS_MESSAGE',
-            data:{message : 'Successfully submitted',error:false}
+            data:{message : messages.successMessage , error:false}
           })
         getDepartmentsApi(dispatch)
         }).catch(error  => {
           console.log(error);
           dispatch({
               type : 'FAILURE_MESSAGE',
-              data:{message : 'Failed to submit',error:true}
+              data:{message : messages.errorMessage , error:true}
           })
       });
         

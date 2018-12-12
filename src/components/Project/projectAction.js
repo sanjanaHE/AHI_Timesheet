@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {baseUrl} from './../../contants';
+import messages from './../../messages'
 
 export function addProject(formData) {
   console.log("IN ADD PROJ ",formData);
@@ -20,8 +21,18 @@ export function addProject(formData) {
       })
         .then((response) => {
           // console.log("adding project ..... ", response.data)
+          dispatch({
+            type: 'SUCCESS_MESSAGE',
+            data:{message : messages.successMessage ,error:false}
+          })
           getProjectsApi(dispatch)
-        });
+        }).catch(error  => {
+          console.log(error);
+          dispatch({
+              type : 'FAILURE_MESSAGE',
+              data:{message :  messages.errorMessage ,error:true}
+          })
+      });
         
     }
 }

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {baseUrl} from './../../contants';
+import messages from './../../messages'
 
 export function addClient(formData) {
 //   console.log("IN ADD CLIENT ",formData);
@@ -19,8 +20,18 @@ export function addClient(formData) {
       })
         .then((response) => {
           // console.log("adding project ..... ", response.data)
+          dispatch({
+            type: 'SUCCESS_MESSAGE',
+            data:{message : messages.successMessage ,error:false}
+          })
           getClientsApi(dispatch)
-        });
+        }).catch(error  => {
+          console.log(error);
+          dispatch({
+              type : 'FAILURE_MESSAGE',
+              data:{message :  messages.errorMessage ,error:true}
+          })
+      });
         
     }
 }
