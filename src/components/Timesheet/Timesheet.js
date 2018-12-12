@@ -42,6 +42,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import SnackbarMsg from './../SnackbarMsg/SnackbarMsg'
 
 const moment = extendMoment(Moment);
 const styles = theme => ({
@@ -54,7 +55,7 @@ const styles = theme => ({
         color: theme.palette.text.secondary,
     },
     successSnackbar: {
-        backgroundColor: "#4CAF50"
+        backgroundColor: theme.palette.secondary.main
     },
     timesheetHeader: {
         marginBottom: "2%",
@@ -72,7 +73,7 @@ const styles = theme => ({
         alignItems: 'center',
     },
     timesheetWrapper:{
-        margin: "2%", 
+        margin: "4%", 
         padding:"2%",
         background: "whitesmoke",
         boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.2) "
@@ -189,7 +190,7 @@ class Timesheet extends Component {
     }
     renderProjects(rowId, activeProject) {
         return (
-            <Grid item sm={2} md={2} xs={2}>
+            <Grid item sm={1} md={1} xs={1}>
                 <FormControl fullWidth style={{ height: "100%" }} required error={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('projectId')}>
 
                     <Select
@@ -224,7 +225,7 @@ class Timesheet extends Component {
 
     renderTasks(rowId, activeTask) {
         // console.log("active tasks ", activeTask)
-        return (<Grid item sm={2} md={2} xs={2}>
+        return (<Grid item sm={1} md={1} xs={1}>
             <FormControl fullWidth style={{ height: "100%" }} required error={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('taskId')}>
 
                 <Select
@@ -260,31 +261,35 @@ class Timesheet extends Component {
             </FormControl>
         </Grid>)
     }
-    renderTicketId(rowId){
+    renderTicketId(rowId,taskDesc){
         return (
             <React.Fragment>
-                <Grid item sm={1} xs={1} md={1}>
+                <Grid item sm={2} xs={2} md={2}>
                     <TextField
                         required
                         style={{ height: "40%" }}
-                        id="ticketId"
-                        name="ticketId"
+                        id="taskDesc"
+                        name="taskDesc"
                         type="text"
                         fullWidth
-                        margin="normal"
+                        // margin="normal"
                         variant="outlined"
                         onChange={(e) => this.handleChangeTaskAndProjectName(e, rowId)}
-                        // value={timesheetEntry ? timesheetEntry.totalHours : 0}
+                        value={taskDesc}
+                        error={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('taskDesc')}
+                        helperText={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('taskDesc') ?
+                        this.state.errors[rowId].taskDesc :
+                        null}
                     />
                 </Grid>
             </React.Fragment>)
     }
     //--------------function to render each row ------------------------------------------------------------------
-    renderRow(isRowDeletable, rowId, project, task, timesheet) {
-        // console.log("timesheet in render row",timesheet)
+    renderRow(isRowDeletable, rowId, project,taskDesc, task, timesheet) {
+        // console.log("timesheet in render row",rowId, project, task ,timesheet)
         return (<Grid container spacing={16} style={{ margin: "0 0 -3% 0"}}>
             {this.renderProjects(rowId, project)}
-            {/* {this.renderTicketId(rowId)} */}
+            {this.renderTicketId(rowId,taskDesc)}
             {this.renderTasks(rowId, task)}
             {/* // Generate an array of dates from startDate to endDate
             // Iterate over the array of dates, If the value exists then render timesheet input
@@ -297,23 +302,22 @@ class Timesheet extends Component {
 
             {/* for duplicate entry alert */}
             <Dialog
-                        open={this.state.submitAlertSnackBar}
-                        onClose={this.handleCloseDupAlertSnackBar}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                        {/* <DialogTitle id="alert-dialog-title">Warning!</DialogTitle> */}
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                You are trying to enter duplicate entry!
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={this.handleCloseDupAlertSnackBar} color="primary" autoFocus>
-                                Ok
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
+                open={this.state.submitAlertSnackBar}
+                onClose={this.handleCloseDupAlertSnackBar}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description">
+                {/* <DialogTitle id="alert-dialog-title">Warning!</DialogTitle> */}
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        You are trying to enter duplicate entry!
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={this.handleCloseDupAlertSnackBar} color="primary" autoFocus>
+                        Ok
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Grid>)
     }
     //-----------------------------------------------------------------------------------------------------------
@@ -353,16 +357,22 @@ class Timesheet extends Component {
         // console.log("in change taskName,projectname ", e.target.value, rowId);
         // console.log("state --- ", this.state.timesheet);
         let timesheet = Object.assign([], this.state.timesheet);
-        let taskId, projectId;
+        let taskId, projectId, taskDesc;
         //-------validation for duplicate task name and project name pairs---------
         for (let i = 0; i < timesheet.length; i++) {
             if (timesheet[i].rowId == rowId) {
                 if (e.target.name == 'taskId') {
                     taskId = e.target.value;
-                    projectId = timesheet[i].projectId
-                } else {
-                    taskId = timesheet[i].taskId
+                    projectId = timesheet[i].projectId;
+                    taskDesc = timesheet[i].taskDesc;
+                } else if(e.target.name == 'projectId') {
+                    taskId = timesheet[i].taskId;
                     projectId = e.target.value;
+                    taskDesc = timesheet[i].taskDesc;
+                }else{
+                    taskDesc = e.target.value;
+                    taskId = timesheet[i].taskId;
+                    projectId = timesheet[i].projectId;
                 }
             }
         }
@@ -370,7 +380,7 @@ class Timesheet extends Component {
             //check if duplicate entry exists
             if (timesheet[i].rowId != rowId &&
                 timesheet[i].projectId == projectId
-                && timesheet[i].taskId == taskId) {
+                && timesheet[i].taskId == taskId && timesheet[i].taskDesc == taskDesc ) {
                 // console.log('RAISE ERROR')
                 this.setState({ submitAlertSnackBar: true })
 
@@ -381,9 +391,11 @@ class Timesheet extends Component {
         
         for (let i = 0; i < timesheet.length; i++) {
             // console.log(timesheet[i].rowId , "__",timesheet[i].projectName,"___",timesheet[i].taskName,"___",timesheet[i].taskID)
+           
             //----------searching for rowid in the list
             if (timesheet[i].rowId == rowId) { 
                 // console.log("ee",timesheet[i].rowId , rowId)
+
                 //------to fill project name and task name of corresponding row
                 console.log(e.target.name,e.target.value)
                 timesheet[i][e.target.name] = e.target.value;
@@ -452,7 +464,7 @@ class Timesheet extends Component {
                 sumOfRow = 0
             }
         //======================================end of sum of rows==================================================================
-        console.log('RESULT', result)
+        // console.log('RESULT', result)
         return(
             <Grid container spacing={0} className={this.props.classes.timesheetHeader}>
                 <Grid item sm={4} md={4} xs={4}>
@@ -517,43 +529,23 @@ class Timesheet extends Component {
         let formIsValid = true;
         let rowErrors = {};
         this.state.timesheet.forEach(element => {
-            // console.log("each element ", element)
-
-            // if(element.rowId != this.state.rowId && 
-            //     element.projectName == this.state.projectName &&
-            //     element.taskName == this.state.taskName){
-            //         console.log("projectname task name repeating")
-            // }
-            if ((element.projectId == "null" || element.projectId == null) && (element.taskId == "null" || element.taskId == null)) {
-                // Object.assign(errorColor[element.rowId], {"taskName":true,"projectName":true});    //true for error(red color will appear)
+            let errorsPerRow = {}
+            if (element.projectId == "null" || element.projectId == null) {
                 formIsValid = false;
-                //following data structure => {2:{"projectName": "Invalid Project Name"}}
-                errors[element.rowId] = {}
-                Object.assign(errors[element.rowId], {
-                    "projectId": "This field is required",
-                    "taskId": "This field is required"
-                });
+                errorsPerRow.projectId = "This field is required"
             }
-            else if (element.projectId == "null" || element.projectId == null) {
-                // console.log(element.rowId, " is null");
-                // Object.assign(errorColor[element.rowId], {"projectName":true});    //true for error(red color will appear)
+            if (element.taskId == "null" || element.taskId == null) {
                 formIsValid = false;
-                errors[element.rowId] = {}
-                Object.assign(errors[element.rowId], { "projectId": "This field is required" });
+                errorsPerRow.taskId = "This field is required"
             }
-            else if (element.taskId == "null" || element.taskId == null) {
-                // console.log(element, " is null");
-                // Object.assign(errorColor[element.rowId],{"taskName":true});    //true for error(red color will appear)
+            if (element.taskDesc == "null" || element.taskDesc == null) {
                 formIsValid = false;
-                errors[element.rowId] = {}
-                Object.assign(errors[element.rowId], { "taskId": "This field is required" });
-
+                errorsPerRow.taskDesc = "This field is required"
             }
+            errors[element.rowId] = errorsPerRow
         })
-        // console.log(errors)
         this.setState({ errors: errors });
         this.setState({ errorColor: errorColor });
-        // console.log("ERRORs", this.state.errors)
         return formIsValid;
     }
     handleSubmitAction = () => {
@@ -567,6 +559,7 @@ class Timesheet extends Component {
                 element.isRowDeletable = false;
             })
             this.setState({ timesheet: timesheet })
+            console.log(this.state.timesheet)
         }
     }
 
@@ -586,7 +579,7 @@ class Timesheet extends Component {
         this.updateDateRangeBasedOnSelectedDate(startDate)
     }
     handleAddRowAction = () => {
-        this.setState({ timesheet: [...this.state.timesheet, { isRowDeletable: true, rowId: uuid.v4(), projectId: null, taskId: null, timesheetEnteries: {} }] })
+        this.setState({ timesheet: [...this.state.timesheet, { isRowDeletable: true, rowId: uuid.v4(), projectId: null,taskDesc : null, taskId: null, timesheetEnteries: {} }] })
     }
     //--------------------------------------------------------------------------------------------------------
 
@@ -638,10 +631,13 @@ class Timesheet extends Component {
                         </Grid>
                     </Grid>
                     <Grid container spacing={0} className={classes.timesheetHeader}>
-                        <Grid item sm={2} md={2} xs={2} style={{lineHeight:"200%"}}>
+                        <Grid item sm={1} md={1} xs={1} style={{lineHeight:"200%"}}>
                             <Typography variant="h3">Projects</Typography>
                         </Grid>
                         <Grid item sm={2} md={2} xs={2} style={{lineHeight:"200%"}}>
+                            <Typography variant="h3">Task description</Typography>
+                        </Grid>
+                        <Grid item sm={1} md={1} xs={1} style={{lineHeight:"200%"}}>
                             <Typography variant="h3">Tasks</Typography>
                         </Grid>
                         
@@ -655,12 +651,15 @@ class Timesheet extends Component {
                                     </React.Fragment>
                                 )
                             })}
+                        <Grid item sm={1} md={1} xs={1} style={{lineHeight:"200%"}}>
+                            <Typography variant="h3">Action</Typography>
+                        </Grid>
                     </Grid>
                     <div className = {classes.rowsWrapper}>
                         {this.state.timesheet.length > 0 ?
                             this.state.timesheet.map((ele, index) => { //coming from api response
                                 // console.log("timesheet entries",ele)
-                                return this.renderRow(ele.isRowDeletable, ele.rowId, ele.projectId, ele.taskId, ele.timesheetEnteries)
+                                return this.renderRow(ele.isRowDeletable, ele.rowId, ele.projectId,ele.taskDesc, ele.taskId, ele.timesheetEnteries)
                             }) : null}
                     </div>
                     {/* {this.state.timesheet} */}
@@ -669,6 +668,7 @@ class Timesheet extends Component {
                         onClick={this.handleSubmitAction}
                         >Submit</Button>
                 </div>
+                {/* <SnackbarMsg/> */}
                 <Snackbar
                     anchorOrigin={{
                         vertical: 'top',
@@ -710,7 +710,8 @@ function mapStateToProps(state) {
         timesheet: state.timesheet,
         tasks: state.tasks,
         projects: state.projects,
-        login: state.login
+        login: state.login,
+        // snackbarMsg : state.snackbarMsg
     }
 }
 

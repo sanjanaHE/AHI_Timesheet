@@ -13,34 +13,36 @@ function transformData(data) {
       empId:entry.empId,
       projectId:entry.projectId,
       taskId:entry.taskId,
-      // ticketId:entry.ticketId, //add this for ticket field
+      taskDesc:entry.taskDesc, //add this for taskDesc field
       totalHours:parseInt(entry.totalHours),
       rowId:entry.rowId
     }
-    if (transformData.hasOwnProperty(entry.projectId + '|' + entry.taskId)) {
-      transformData[entry.projectId + '|' + entry.taskId][entry.date] = refactoredEntry
+    const timesheetKey = entry.projectId + '|' + entry.taskId + '|' + entry.taskDesc;
+    if (transformData.hasOwnProperty(timesheetKey)) {
+      transformData[timesheetKey][entry.date] = refactoredEntry
     } else {
       let temp = {}
       temp[entry.date] = refactoredEntry //for each entry date add json object // 2018-11-26:{date:'',id:'',empId:'',projectId:''...}
       // console.log("temp",temp)
-      transformData[entry.projectId + '|' + entry.taskId] = temp //'entry.projectId + '|' + entry.taskId'=temp
+      transformData[timesheetKey] = temp //'entry.projectId + '|' + entry.taskId'=temp
       // console.log("trans data",transformData);
     }
   });
   let counter = 0
+  console.log("transformed data",transformData)
   resp = Object.keys(transformData).map(ele => {
     let rowId = uuid.v4()
     let splitArray = ele.split('|')
     return {
       isRowDeletable: false,
       rowId: rowId,
-     // ticketId:'',
+      taskDesc: splitArray[2],
       projectId: parseInt(splitArray[0]),
       taskId: parseInt(splitArray[1]),
       timesheetEnteries: transformData[ele]
     }
   })
-  // console.log("resp ",resp)
+  console.log("resp ",resp)
   return resp
 }
 export default function timesheetReducer(state = initialState, action) {
