@@ -80,8 +80,8 @@ const styles = theme => ({
         // 0px 2px 2px 0px rgba(0, 0, 0, 0.14) 0px 3px 1px -2px rgba(0, 0, 0, 0.12)"
     },
     input: {
-        paddingTop: "6px",
-        paddingBottom: "7px",
+        paddingTop: "0.2em",
+        paddingBottom: "0.5em",
     },
     rowsWrapper:{
        height:"40vh",
