@@ -79,6 +79,10 @@ const styles = theme => ({
         boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.2) "
         // 0px 2px 2px 0px rgba(0, 0, 0, 0.14) 0px 3px 1px -2px rgba(0, 0, 0, 0.12)"
     },
+    input: {
+        paddingTop: "6px",
+        paddingBottom: "7px",
+    },
     rowsWrapper:{
        height:"40vh",
        overflowY:"auto",
@@ -173,17 +177,16 @@ class Timesheet extends Component {
             <React.Fragment>
                 <Grid item sm={1} xs={1} md={1}>
                     <TextField
-                        style={{ height: "40%" }}
                         id="totalHours"
-                        // label={timesheetEntry?moment(timesheetEntry.date).format('DD-MM-YYYY'):null}
                         type="number"
                         fullWidth
-                        // margin="normal" //removed this to adjust text box and dropdown inline
                         variant="outlined"
                         inputProps={{ maxLength: 1, min: 0, max: 9, minlength: 1 }}
-
                         onChange={(e) => this.handleChangeHours(e, timesheetEntry)}
                         value={timesheetEntry ? timesheetEntry.totalHours : 0}
+                        InputProps={{classes:{
+                            input: this.props.classes.input
+                        } }}
                     />
                 </Grid>
             </React.Fragment>)
@@ -267,19 +270,20 @@ class Timesheet extends Component {
                 <Grid item sm={2} xs={2} md={2}>
                     <TextField
                         required
-                        style={{ height: "40%" }}
                         id="taskDesc"
                         name="taskDesc"
                         type="text"
                         fullWidth
-                        // margin="normal"
-                        variant="outlined"
                         onChange={(e) => this.handleChangeTaskAndProjectName(e, rowId)}
                         value={taskDesc}
+                        variant="outlined"
                         error={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('taskDesc')}
                         helperText={this.state.errors.hasOwnProperty(`${rowId}`) && this.state.errors[rowId].hasOwnProperty('taskDesc') ?
                         this.state.errors[rowId].taskDesc :
                         null}
+                        InputProps={{classes:{
+                            input: this.props.classes.input
+                        } }}
                     />
                 </Grid>
             </React.Fragment>)
