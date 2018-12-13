@@ -358,6 +358,7 @@ class Timesheet extends Component {
         // console.log(timesheet)
     }
     handleChangeTaskAndProjectName = (e, rowId) => {
+        //console.log("rowid",rowId)
         // console.log("in change taskName,projectname ", e.target.value, rowId);
         // console.log("state --- ", this.state.timesheet);
         let timesheet = Object.assign([], this.state.timesheet);
@@ -401,19 +402,23 @@ class Timesheet extends Component {
                 // console.log("ee",timesheet[i].rowId , rowId)
 
                 //------to fill project name and task name of corresponding row
-                console.log(e.target.name,e.target.value)
+                // console.log(e.target.name,e.target.value)
                 timesheet[i][e.target.name] = e.target.value;
             }
 
             //-----------to fill totalHours fields
             //------------- since timesheet[i].timesheetEntries is in format {{},{},{}} ==> get keys('dates') and its values
-            for (var key in timesheet[i].timesheetEnteries) {
-                if (timesheet[i].timesheetEnteries.hasOwnProperty(key)) {
-                    if (timesheet[i].rowId == rowId) {
-                        timesheet[i].timesheetEnteries[key][e.target.name] = e.target.value
+                for (var key in timesheet[i].timesheetEnteries) {
+                    // console.log("key",key, rowId)
+                    if (timesheet[i].timesheetEnteries.hasOwnProperty(key)) {
+                        // console.log(timesheet[i].rowId )
+                        if (timesheet[i].rowId == rowId) {
+                            // console.log("timesheet[i].rowId == rowId")
+                           // console.log("row id matches-----------------")
+                            timesheet[i].timesheetEnteries[key][e.target.name] = e.target.value
+                        }
                     }
                 }
-            }
         }
         this.setState({ timesheet: timesheet })
         this.handleValidation()
@@ -553,7 +558,7 @@ class Timesheet extends Component {
         return formIsValid;
     }
     handleSubmitAction = () => {
-        // console.log("before timesheet submit--- ", this.state.timesheet)
+        //console.log("before timesheet submit--- ", this.state.timesheet)
         if (this.handleValidation()) {
             this.props.actions.saveTimesheetEntries(this.state.timesheet)
             this.setState({ submitSuccessSnackBar: true })
@@ -563,7 +568,7 @@ class Timesheet extends Component {
                 element.isRowDeletable = false;
             })
             this.setState({ timesheet: timesheet })
-            console.log(this.state.timesheet)
+            // console.log(this.state.timesheet)
         }
     }
 
