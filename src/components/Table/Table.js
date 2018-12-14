@@ -214,12 +214,12 @@ const styles = theme => ({
     height: '50vh',
     [theme.breakpoints.up('xl')]: {
       overflowX: 'hidden',
-      height: '80vh',
+      height: '75vh',
       overflowY: 'auto',
     },
     [theme.breakpoints.up('lg') && theme.breakpoints.down('xl')]: {
       overflowX: 'hidden',
-      height: '80vh',
+      height: '57vh',
       overflowY: 'auto',
     },
     [theme.breakpoints.up('md') && theme.breakpoints.down('lg')]: {
