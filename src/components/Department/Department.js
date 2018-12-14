@@ -456,7 +456,9 @@ class Department extends React.Component {
                         rowsPerPage={rowsPerPage}
                         rows={rows}
                         onRowEdit={this.handleEdit}
-                        onRowDelete={this.handleDelete}></EnhancedTable>
+                        onRowDelete={this.handleDelete}
+                        isDeleteButtonRequired="false"></EnhancedTable>
+
                 </div>
             </React.Fragment>
         );

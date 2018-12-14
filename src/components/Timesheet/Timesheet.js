@@ -181,7 +181,10 @@ class Timesheet extends Component {
                         type="number"
                         fullWidth
                         variant="outlined"
-                        inputProps={{ maxLength: 1, min: 0, max: 9, minlength: 1 }}
+                        inputProps={{ maxLength: 4, min: 0, max: 9,step :"0.01", minlength: 1 }}
+                        // onInput={(e)=>{ 
+                        //     e.target.value = Math.max(0, parseFloat(e.target.value) ).toString().slice(0,2)
+                        // }}
                         onChange={(e) => this.handleChangeHours(e, timesheetEntry)}
                         value={timesheetEntry ? timesheetEntry.totalHours : 0}
                         InputProps={{classes:{
@@ -293,8 +296,9 @@ class Timesheet extends Component {
         // console.log("timesheet in render row",rowId, project, task ,timesheet)
         return (<Grid container spacing={16} style={{ margin: "0 0 -3% 0"}}>
             {this.renderProjects(rowId, project)}
-            {this.renderTicketId(rowId,taskDesc)}
             {this.renderTasks(rowId, task)}
+            {this.renderTicketId(rowId,taskDesc)}
+
             {/* // Generate an array of dates from startDate to endDate
             // Iterate over the array of dates, If the value exists then render timesheet input
             // Else
@@ -338,7 +342,7 @@ class Timesheet extends Component {
             if (timesheet[i].rowId == timesheetEntry.rowId) {
                 // console.log(timesheet[i].rowId, "==", timesheetEntry.rowId);
                 timesheet[i].timesheetEnteries[timesheetEntry.date] = timesheetEntry
-                timesheet[i].timesheetEnteries[timesheetEntry.date]['totalHours'] = parseInt(e.target.value)
+                timesheet[i].timesheetEnteries[timesheetEntry.date]['totalHours'] = parseFloat(e.target.value)
             }
         }
         this.setState({ timesheet: timesheet })
@@ -643,11 +647,12 @@ class Timesheet extends Component {
                         <Grid item sm={1} md={1} xs={1} style={{lineHeight:"200%"}}>
                             <Typography variant="h3">Projects</Typography>
                         </Grid>
-                        <Grid item sm={2} md={2} xs={2} style={{lineHeight:"200%"}}>
-                            <Typography variant="h3">Task description</Typography>
-                        </Grid>
+                        
                         <Grid item sm={1} md={1} xs={1} style={{lineHeight:"200%"}}>
                             <Typography variant="h3">Tasks</Typography>
+                        </Grid>
+                        <Grid item sm={2} md={2} xs={2} style={{lineHeight:"200%"}}>
+                            <Typography variant="h3">Task description</Typography>
                         </Grid>
                         
                         {this.state.selectedDatesRange.map(date => {
