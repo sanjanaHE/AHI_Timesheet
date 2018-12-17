@@ -231,7 +231,7 @@ class Project extends React.Component {
 
         } else {
             let fields = this.state.fields;
-            fields.departmentId = null;
+            fields.projectId = null;
             this.setState({ fields })
             //checking for validation 
             if (this.handleValidation()) {
