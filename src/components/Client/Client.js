@@ -185,6 +185,7 @@ class Client extends React.Component {
 
         } else {
             let fields = this.state.fields;
+            fields.clientId = null;
             this.setState({ fields })
             //checking for validation 
             if (this.handleValidation()) {
