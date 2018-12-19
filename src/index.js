@@ -49,7 +49,7 @@ const theme = createMuiTheme({
 ReactDOM.render(
           <Provider store = {store}>  
             <MuiThemeProvider theme={theme}>
-              <HashRouter basename = "/ahits">
+              <HashRouter basename = "">
                 <div className="App">
                   <Switch>
                     <Route exact path='/' component={UnauthorizedRoute} /> 
