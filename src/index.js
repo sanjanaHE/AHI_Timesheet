@@ -9,7 +9,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import UnauthorizedRoute  from '../src/route/UnauthorisedRoute';
 import AuthorisedRoute  from '../src/route/AuthorisedRoute';
 import { HashRouter,Switch, Route, Link,Redirect  } from 'react-router-dom';
-
+import HttpsRedirect from 'react-https-redirect';
 
 
 const theme = createMuiTheme({
@@ -49,15 +49,17 @@ const theme = createMuiTheme({
 ReactDOM.render(
           <Provider store = {store}>  
             <MuiThemeProvider theme={theme}>
-              <HashRouter basename = "">
-                <div className="App">
-                  <Switch>
-                    <Route exact path='/' component={UnauthorizedRoute} /> 
-                    <Route path="/auth" component={UnauthorizedRoute} />
-                    <AuthorisedRoute path="/app" component={App} />
-                  </Switch>
-              </div>
-            </HashRouter>
+              <HttpsRedirect>
+                <HashRouter basename = "">
+                  <div className="App">
+                    <Switch>
+                      <Route exact path='/' component={UnauthorizedRoute} /> 
+                      <Route path="/auth" component={UnauthorizedRoute} />
+                      <AuthorisedRoute path="/app" component={App} />
+                    </Switch>
+                </div>
+              </HashRouter>
+            </HttpsRedirect>
        </MuiThemeProvider>
      </Provider>
 , document.getElementById('root'));

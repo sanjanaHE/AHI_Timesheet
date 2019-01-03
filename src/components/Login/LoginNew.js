@@ -90,7 +90,7 @@ class SignIn extends React.Component {
     // console.log(this.props.login)
     if(this.props.login.isAuthenticated == true){
         // console.log("redirecting to homepage....")
-        return <Redirect to="https://my.ahinfotech.in/ahits/#/app/home" push />
+        return <Redirect to="/app/home" push />
       }
     return (
       <React.Fragment>
