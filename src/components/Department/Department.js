@@ -114,7 +114,7 @@ class Department extends React.Component {
         this.setState({ isEditDialog: true })
     }
     handleDelete = (rowData) => {
-        console.log("row data id ", rowData);
+        // console.log("row data id ", rowData);
         this.setState({ rowData: rowData })
         this.setState({ openDeleteDialog: true })
     }
@@ -225,7 +225,7 @@ class Department extends React.Component {
         this.setState({ open: true });
         if (this.state.isEditDialog) {
 
-            console.log("Fields in EDIT mode ", this.state.fields);
+            // console.log("Fields in EDIT mode ", this.state.fields);
 
             //checking for validation 
             if (this.handleValidation()) {

@@ -136,8 +136,8 @@ class Employee extends React.Component {
             this.setState({ errorColor: errorColor, errors: errors })
         }
         else {
-            console.log(e)
-            console.log(errorColor)
+            // console.log(e)
+            // console.log(errorColor)
             errorColor['supervisorId'] = false;
             errors['supervisorId'] = "";
             this.setState({ errorColor: errorColor, errors: errors })

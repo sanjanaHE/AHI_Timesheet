@@ -10,7 +10,7 @@ export function resetPasswordState() {
   }
 }
 export function changePassword(oldPassword, newPassword) {
-  console.log("IN PASSWORD CHANGE ", oldPassword, newPassword);
+  // console.log("IN PASSWORD CHANGE ", oldPassword, newPassword);
   let  data  =  {
     'passwordCurrent':  oldPassword,
     'password':  newPassword,
@@ -28,14 +28,14 @@ export function changePassword(oldPassword, newPassword) {
       data
     })
       .then((response) => {
-        console.log("changing password ..... ", response.data)
+        // console.log("changing password ..... ", response.data)
         dispatch({
           type: 'CHANGE_PASSOWORD_SUCCESS',
           data: response,
           message: "Successfully changed password"
         })
       }).catch(error => {
-        console.log(error);
+        // console.log(error);
         dispatch({
           type: 'CHANGE_PASSWORD_FAILURE',
           message: error.message

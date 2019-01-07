@@ -4,7 +4,7 @@ const initialState = {"data": initialData, "hasError": false, isAuthenticated: f
 export default function logout(state = initialState, action) {
   switch (action.type) {
     case 'LOGOUT_SUCCESS':
-        console.log(action)
+        // console.log(action)
         // return { data:action.data ,isAuthenticated : action.isAuthenticated}
         return { data:[] ,isAuthenticated : action.isAuthenticated}
    

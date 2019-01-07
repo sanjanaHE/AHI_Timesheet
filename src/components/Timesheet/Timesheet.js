@@ -426,7 +426,7 @@ class Timesheet extends Component {
         }
         this.setState({ timesheet: timesheet })
         this.handleValidation()
-        console.log(timesheet)
+        // console.log(timesheet)
 
     }
     

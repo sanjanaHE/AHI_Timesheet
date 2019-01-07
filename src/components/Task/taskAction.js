@@ -3,7 +3,7 @@ import {baseUrl} from './../../contants';
 import messages from './../../messages'
 
 export function addTask(formData,empId) {
-  console.log("IN ADD TASK ",formData);
+  // console.log("IN ADD TASK ",formData);
   let data = {
     'taskId': formData.taskId,
     'taskName': formData.taskName,
@@ -26,7 +26,7 @@ export function addTask(formData,empId) {
           })
           getTasksApi(dispatch,empId)
         }).catch(error  => {
-          console.log(error);
+          // console.log(error);
           dispatch({
               type : 'FAILURE_MESSAGE',
               data:{message :  messages.errorMessage ,error:true}
@@ -66,7 +66,7 @@ export function deleteTask(id,empId){
     url: `${baseUrl}ahits/api/tasks/delete?taskIds=${id}`,
   })
     .then((response) => {
-      console.log("deleting tasks ", response.data)
+      // console.log("deleting tasks ", response.data)
       getTasksApi(dispatch,empId)
     });
   }

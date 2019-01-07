@@ -26,7 +26,7 @@ export function addClient(formData) {
           })
           getClientsApi(dispatch)
         }).catch(error  => {
-          console.log(error);
+          // console.log(error);
           dispatch({
               type : 'FAILURE_MESSAGE',
               data:{message :  messages.errorMessage ,error:true}

@@ -3,7 +3,7 @@ import {baseUrl} from './../../contants';
 import messages from './../../messages'
 
 export function addDepartment(formData) {
-  console.log("IN ADD DEPT ",formData);
+  // console.log("IN ADD DEPT ",formData);
   let data = {
     'departmentId': formData.departmentId,
     'departmentName': formData.departmentName,
@@ -18,7 +18,7 @@ export function addDepartment(formData) {
         data
       })
         .then((response) => {
-          console.log("adding departmnet ..... ", response.data)
+          // console.log("adding departmnet ..... ", response.data)
           // On Success Trigger this action
 
           dispatch({
@@ -27,7 +27,7 @@ export function addDepartment(formData) {
           })
         getDepartmentsApi(dispatch)
         }).catch(error  => {
-          console.log(error);
+          // console.log(error);
           dispatch({
               type : 'FAILURE_MESSAGE',
               data:{message : messages.errorMessage , error:true}

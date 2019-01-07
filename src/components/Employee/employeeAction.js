@@ -39,7 +39,7 @@ function getEmployeesApi(dispatch){
       'location': formData.location,
       'email':formData.email
       } 
-      console.log("IN ADD EMPL ",data,userId);
+      // console.log("IN ADD EMPL ",data,userId);
       // TODO: MAKE AN API CALL TO BACKEND SERVER
       return (dispatch) => {
         axios({
@@ -48,7 +48,7 @@ function getEmployeesApi(dispatch){
           data
         })
           .then((response) => {
-            console.log("adding employee ..... ", response.data)
+            // console.log("adding employee ..... ", response.data)
             dispatch({
               type: 'SUCCESS_MESSAGE',
               data:{message : messages.successMessage ,error:false}
@@ -56,7 +56,7 @@ function getEmployeesApi(dispatch){
             // On Success Trigger this action
             getEmployeesApi(dispatch)
           }).catch(error  => {
-            console.log(error);
+            // console.log(error);
             dispatch({
                 type : 'FAILURE_MESSAGE',
                 data:{message :  messages.errorMessage ,error:true}

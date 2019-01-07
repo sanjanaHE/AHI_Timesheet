@@ -24,13 +24,13 @@ class Logout extends Component {
 
     }
     render() {
-        console.log(this.props.logout.isAuthenticated);
-        console.log("LOGOUT SUCCESS---")
+        // console.log(this.props.logout.isAuthenticated);
+        // console.log("LOGOUT SUCCESS---")
         // return(
         //     <div>LOGOUT SUCCESS</div>
         // )
         if(this.state.isAuthenticated == false){
-            console.log("redirecting to login....")
+            // console.log("redirecting to login....")
             return <Redirect to="/auth/login" push />
           }
     }

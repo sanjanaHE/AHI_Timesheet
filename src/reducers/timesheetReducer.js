@@ -29,7 +29,7 @@ function transformData(data) {
     }
   });
   let counter = 0
-  console.log("transformed data",transformData)
+  // console.log("transformed data",transformData)
   resp = Object.keys(transformData).map(ele => {
     let rowId = uuid.v4()
     let splitArray = ele.split('|')
@@ -42,7 +42,7 @@ function transformData(data) {
       timesheetEnteries: transformData[ele]
     }
   })
-  console.log("resp ",resp)
+  // console.log("resp ",resp)
   return resp
 }
 export default function timesheetReducer(state = initialState, action) {

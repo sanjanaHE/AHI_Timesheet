@@ -58,7 +58,7 @@ class Task extends React.Component {
 
     handleEdit = (rowData) => {
 
-        console.log("DATA", rowData)
+        // console.log("DATA", rowData)
         var fields = Object.assign({}, rowData); //fix for edit changing grid on cancel
 
         this.setState({ fields: fields })

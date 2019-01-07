@@ -3,7 +3,7 @@ import {baseUrl} from './../../contants';
 let isAuthenticated = false;
 
 export function logout(){
-  console.log("in logout action ")
+//   console.log("in logout action ")
 
       return (dispatch) => {
       axios({

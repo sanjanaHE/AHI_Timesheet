@@ -3,7 +3,7 @@ import {baseUrl} from './../../contants';
 import messages from './../../messages'
 
 export function addProject(formData) {
-  console.log("IN ADD PROJ ",formData);
+  // console.log("IN ADD PROJ ",formData);
   let data = {
     'projectId': formData.projectId,
     'projectName': formData.projectName,
@@ -11,7 +11,7 @@ export function addProject(formData) {
     'headedByUserId': formData.headedByUserId,
     'clientId':formData.clientId
     } 
-    console.log("ADD PROJECT DATA" , data)
+    // console.log("ADD PROJECT DATA" , data)
     // TODO: MAKE AN API CALL TO BACKEND SERVER
     return (dispatch) => {
       axios({
@@ -27,7 +27,7 @@ export function addProject(formData) {
           })
           getProjectsApi(dispatch)
         }).catch(error  => {
-          console.log(error);
+          // console.log(error);
           dispatch({
               type : 'FAILURE_MESSAGE',
               data:{message :  messages.errorMessage ,error:true}

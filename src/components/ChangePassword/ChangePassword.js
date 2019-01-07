@@ -31,7 +31,7 @@ const styles = theme => ({
 class ChangePassword extends Component {
 
     componentWillReceiveProps(nextProps) {
-        console.log("NEXT PROPS ", nextProps)
+        // console.log("NEXT PROPS ", nextProps)
         // if (nextProps.changePassword.pending == true) {
         if (nextProps.changePassword.pending == false
             && nextProps.changePassword.hasError == true) {
@@ -142,7 +142,7 @@ class ChangePassword extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         if (this.handleValidation()) {
-            console.log("valid", this.props.actions);
+            // console.log("valid", this.props.actions);
             this.props.actions.changePassword(this.state.fields.oldPassword, this.state.fields.newPassword);
             // console.log(this.props.changePassword)
             // if((this.state.apiError == true) && (this.props.changePassword.pending == true)){

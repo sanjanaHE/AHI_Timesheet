@@ -2,7 +2,7 @@ import axios from 'axios';
 import {baseUrl} from './../../contants';
 let isAuthenticated = false
 export function login(creds){
-  console.log("in login action ",  creds)
+//   console.log("in login action ",  creds)
       let data = new FormData();
       data.append('username', creds.username);
         data.append('password', creds.password);
@@ -20,7 +20,7 @@ export function login(creds){
             data:response.data
         })
     }).catch(error  => {
-        console.log(error);
+        // console.log(error);
         dispatch({
             type : 'LOGIN_FAILURE'
         })
@@ -41,7 +41,7 @@ export function getLoggedUser(){
                 data : response.data
             })
         }).catch(error  => {
-            console.log(error);
+            // console.log(error);
             dispatch({
                 type : 'GET_LOGGED_USER_ERROR',
                 data:error
